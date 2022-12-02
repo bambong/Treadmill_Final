@@ -21,7 +21,7 @@ namespace jiho
         private bool isFunction = true;
         private bool isMoving = true;
         private bool isSet = true;
-        private int showDistance = 0;
+        private float showDistance = 0;
 
         private void Awake()
         {
@@ -33,7 +33,7 @@ namespace jiho
         private void UpdateDistance()
         {
             distance = (Vector3.Distance(startPos, player_obj.transform.position)) / 3;
-            showDistance += (int)(TokenInputManager.Instance.CurSeed * FUNC_UPDATE_TIME);
+            showDistance += (TokenInputManager.Instance.CurSpeed * FUNC_UPDATE_TIME);
         }
 
         private void UpdateHealth()

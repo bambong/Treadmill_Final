@@ -73,7 +73,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
     public float RightTokenTerm { get => rightToken.TokenEventTerm; }
 
     [Obsolete("미터 기준")]
-    public float CurSeed { get => CurRpm * 240.0f / 60000.0f; }
+    public float CurSpeed { get => CurRpm * 240.0f / 60000.0f; }
     public float CurRpm { get { return _save_left_rpm + _save_right_rpm * 0.5f; } }
     public float Bpm { get => _save_bpm; }
     public bool IsConnect { get => _connect; } 
@@ -87,6 +87,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
     private GymchairConnectPopupController _popup;
     private bool _connect = false;
+    public Action ReceivedEvent { get; set; }
 
     // 마지막 이벤트 입력이 들어온 이 후 시간 (두 개 중 하나라도 입력이 들어오면 더 작은쪽을 반환) 
     public float LastEventTime
@@ -112,14 +113,6 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         }
         ConnectToDevice();
         Debug.Log("토큰 매니저 시작!");
-        //BluetoothMgr.Instance._actionConnect -= OnConnected;
-        //BluetoothMgr.Instance._actionConnect += OnConnected;
-
-        //BluetoothMgr.Instance._actionReceivedMessage -= OnReceivedMessage;
-        //BluetoothMgr.Instance._actionReceivedMessage += OnReceivedMessage;
-
-        //BluetoothMgr.Instance._actionDisconnect -= OnDisconnect;
-        //BluetoothMgr.Instance._actionDisconnect += OnDisconnect;
 
     }
   
@@ -192,6 +185,8 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             _save_right_rpm = float.Parse(splitMessage[RIGHT_RPM_INDEX]);
             Debug.Log($"RIGHT_RPM : {splitMessage[RIGHT_RPM_INDEX]}");
             _save_bpm = float.Parse(splitMessage[BPM_INDEX]);
+           
+            ReceivedEvent?.Invoke();
 
             if(_save_left_rpm > MIN_CHECK_RPM) 
             {
@@ -323,6 +318,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             BluetoothMgr.Instance._actionConnect -= OnConnected;
             BluetoothMgr.Instance._actionReceivedMessage -= OnReceivedMessage;
             BluetoothMgr.Instance._actionDisconnect -= OnDisconnect;
+            ReceivedEvent = null;
         }
 
         _connect = false;

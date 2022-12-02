@@ -65,7 +65,7 @@ namespace bambong
         }
         private string GetSpeedText()
         {
-            var curGuage = TokenInputManager.Instance.CurSeed;
+            var curGuage = TokenInputManager.Instance.CurSpeed;
           
             return curGuage.ToString("00") + " m/s";
         }

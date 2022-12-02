@@ -59,7 +59,7 @@ namespace bambong
             var speedData = speedRevisionData.GetCollectAreaData(GameSceneManager.Instance.GetCurDistanceRatio(transform));
             if(moveSpeed != speedData.speed)
             {
-                moveSpeed = speedData.speed;
+                moveSpeed = speedData.speed *  GameSceneManager.Instance.CurRoadDistance/50;
                 if(speedChangeCo != null) 
                 {
                     StopCoroutine(speedChangeCo);

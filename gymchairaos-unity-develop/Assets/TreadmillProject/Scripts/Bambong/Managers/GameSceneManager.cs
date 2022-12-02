@@ -78,8 +78,9 @@ namespace bambong
         {
             Init();
            /// TokenInputManager.Instance.ConnectToDevice();
-            TokenInputManager.Instance.AddRightTokenEvent(IncreaseGauage);
-            TokenInputManager.Instance.AddLeftTokenEvent(IncreaseGauage);
+            //TokenInputManager.Instance.AddRightTokenEvent(IncreaseGauage);
+            //TokenInputManager.Instance.AddLeftTokenEvent(IncreaseGauage);
+            TokenInputManager.Instance.ReceivedEvent += IncreaseGauage;
         }
 
         public void IncreaseGauage()
@@ -88,7 +89,7 @@ namespace bambong
             {
                 return;
             }
-            curGauage = Mathf.Min(curGauage + TokenInputManager.Instance.CurRpm * increaseGauageAmount * 0.01f, maximumGauage);
+            curGauage = Mathf.Min(curGauage + TokenInputManager.Instance.CurRpm * increaseGauageAmount * 0.005f, maximumGauage);
         }
         public bool CheckSpeedGageOring() => curGauage <= 0;
         private void Update()

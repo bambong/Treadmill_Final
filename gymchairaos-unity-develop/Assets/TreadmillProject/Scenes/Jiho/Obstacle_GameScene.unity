@@ -7733,8 +7733,8 @@ MonoBehaviour:
   speedGauageImage: {fileID: 1592978918}
   maximumGauage: 100
   fixedDir: {x: 0, y: 0, z: 0}
-  rotateProcessTime: 0.15
-  rotateAmount: 5
+  rotateProcessTime: 0.1
+  rotateAmount: 3
   animSpeed: 90
 --- !u!1 &1659156260
 GameObject:

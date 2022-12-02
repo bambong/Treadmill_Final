@@ -55,6 +55,7 @@ namespace bambong
         {
 
             var speed = GetCurSpeed() * Time.deltaTime;
+            //var speed = TokenInputManager.Instance.CurRpm * 0.02f * Time.deltaTime;
             var pos = transform.position;
             pos += transform.forward * speed; 
             transform.position = pos;

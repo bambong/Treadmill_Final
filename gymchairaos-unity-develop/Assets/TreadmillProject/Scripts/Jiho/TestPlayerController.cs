@@ -54,7 +54,7 @@ namespace jiho
         // left right 회전 수의 차를 얼마만큼 허용해줄지 
         private readonly int BUFFER_ROTATE_DIFF = 0;
         // 최대 회전 각도 
-        private readonly float ROTATE_LIMIT = 90f;
+        private readonly float ROTATE_LIMIT = 60f;
         // 몇 초동안 입력이 없으면 멈출것 인지
         private readonly float INPUT_ANIMATE_STOP_TIME = 1f;
 
@@ -68,24 +68,26 @@ namespace jiho
             //SpeedGauageFillUpdate();
 
             TokenInputManager.Instance.AddRightTokenEvent(IncreaseGauage);
-            TokenInputManager.Instance.AddRightTokenEvent(() =>
-            {
-                if (!isMoving) 
-                {
-                    return;
-                }
-                tokenDiff = (int)(TokenInputManager.Instance.Save_left_rpm - TokenInputManager.Instance.Save_right_rpm); 
-            });
+            //TokenInputManager.Instance.AddRightTokenEvent(() =>
+            //{
+            //    if (!isMoving) 
+            //    {
+            //        return;
+            //    }
+            //    tokenDiff = (int)(TokenInputManager.Instance.Save_left_rpm - TokenInputManager.Instance.Save_right_rpm); 
+            //});
 
             TokenInputManager.Instance.AddLeftTokenEvent(IncreaseGauage);
-            TokenInputManager.Instance.AddLeftTokenEvent(() => 
+
+            TokenInputManager.Instance.ReceivedEvent += () =>
             {
-                if (!isMoving) 
+                if (!isMoving)
                 {
                     return;
                 }
                 tokenDiff = (int)(TokenInputManager.Instance.Save_left_rpm - TokenInputManager.Instance.Save_right_rpm);
-            });
+                RotateMoveUpdate();
+            };
         }
         //private void SpeedGauageFillUpdate()
         //{
@@ -125,8 +127,8 @@ namespace jiho
             if(isMoving)
             {
                 PlayerMoveUpdate();
-                RotateInput();
-                RotateMoveUpdate();
+               // RotateInput();
+                //RotateMoveUpdate();
                 PlayerInputCheckForStop();
             }
             else if(!isMoving)
@@ -137,16 +139,27 @@ namespace jiho
 
         private void RotateMoveUpdate()
         {
+            if(tokenDiff == 0) 
+            {
+                
+                var temp = Quaternion.Euler(fixedDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, temp, rotateSpeed * Time.deltaTime);
+                return;
+            }
+            var curRotateAngle = Quaternion.Angle(Quaternion.Euler(fixedDir), transform.rotation);
+            var rotateDir = Vector3.Dot(Vector3.right, transform.forward) < 0 ? -1 : 1;
+            desireRotateAngle = Mathf.Clamp(curRotateAngle * rotateDir + (rotateAmount * tokenDiff * 0.005f), -ROTATE_LIMIT, ROTATE_LIMIT);
 
-            var desireRotate = (Quaternion.Euler(fixedDir) * Quaternion.Euler(new Vector3(0, desireRotateAngle, 0)));
-
+            var desireRotate = Quaternion.Euler(new Vector3(0, desireRotateAngle, 0));
+            transform.rotation = desireRotate;
+            tokenDiff = 0;
             //if (desireRotateAngle == 0)
             //{
-                transform.rotation = desireRotate;
-            //    return;
+            //    transform.rotation = desireRotate;
+            //     return;
             //}
 
-            transform.rotation = Quaternion.Slerp(transform.rotation, desireRotate, rotateSpeed * Time.deltaTime);
+            // transform.rotation = Quaternion.Slerp(transform.rotation, desireRotate, rotateSpeed * Time.deltaTime);
 
         }
         private void RotateInput()
@@ -167,7 +180,7 @@ namespace jiho
 
                 var curRotateAngle = Quaternion.Angle(Quaternion.Euler(fixedDir), transform.rotation);
 
-                if (curRotateAngle < rotateAmount)
+                if (Mathf.Abs(curRotateAngle) < rotateAmount)
                 {
                     desireRotateAngle = 0;
                 }
