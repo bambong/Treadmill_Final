@@ -46,8 +46,12 @@ namespace Gymchair.Contents.Login
 
         private void Awake()
         {
-            StartCoroutine(onBlack(true, 0.5f));
+            StartCoroutine(onBlack(true, 0.5f, () =>
+            {
+                WarnningPopup.Create();
+            }));
         }
+
 
         public void showWarnningPopup()
         {
@@ -88,9 +92,9 @@ namespace Gymchair.Contents.Login
                 userList = new UserData.UserList();
             }
 
-             bool login = false;
             if (userList.users != null)
             {
+                bool login = false;
 
                 int count = userList.users.Length;
 
@@ -100,46 +104,65 @@ namespace Gymchair.Contents.Login
                     {
                         DataMgr.Instance.UserName = name;
 
-                        //SceneManager.LoadScene(bambong.E_SceneName.Speed_GameScene.ToString());
-
-                        StartCoroutine(onBlack(false,0.5f,() =>
+                        StartCoroutine(onBlack(false, 0.5f, () =>
                         {
-                          SoundMgr.Instance.StopBGM();
+                            SoundMgr.Instance.StopBGM();
 
-                          SceneMgr.Instance.UnLoadSceneAsync("Login",() =>
-                           {
-                              SceneMgr.Instance.LoadSceneAsync(bambong.E_SceneName.SelectGame.ToString(),LoadSceneMode.Additive);
-                              //SceneMgr.Instance.LoadSceneAsync("Game",LoadSceneMode.Additive);
-                          });
+                            SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
+                            {
+                                SceneMgr.Instance.LoadSceneAsync("SelectGame", LoadSceneMode.Additive);
+                            });
                         }));
 
                         login = true;
                         return;
                     }
                 }
-            }
 
-            if (!login)
+                if (!login)
+                {
+                    MessagePopup.Create()
+                        .SetText("등록되지 않은 회원입니다.\n새로운 사용자를 등록하시겠습니까?")
+                        .ShowCancelButton()
+                        .SetOKAction((popup) =>
+                        {
+                            Destroy(popup.gameObject);
+
+                            StartCoroutine(onBlack(false, 0.5f, () =>
+                            {
+                                SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
+                                {
+                                    SceneMgr.Instance.LoadSceneAsync("Join", LoadSceneMode.Additive);
+                                });
+                            }));
+                        })
+                        .SetCancelAction((popup) =>
+                        {
+                            Destroy(popup.gameObject);
+                        });
+                }
+            }
+            else
             {
                 MessagePopup.Create()
-                    .SetText("등록되지 않은 회원입니다.\n새로운 사용자를 등록하시겠습니까?")
-                    .ShowCancelButton()
-                    .SetOKAction((popup) =>
-                    {
-                        Destroy(popup.gameObject);
+                .SetText("등록되지 않은 회원입니다.\n새로운 사용자를 등록하시겠습니까?")
+                .ShowCancelButton()
+                .SetOKAction((popup) =>
+                {
+                    Destroy(popup.gameObject);
 
-                        StartCoroutine(onBlack(false, 0.5f, () =>
-                        {
-                            SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
-                            {
-                                SceneMgr.Instance.LoadSceneAsync("Join", LoadSceneMode.Additive);
-                            });
-                        }));
-                    })
-                    .SetCancelAction((popup) =>
+                    StartCoroutine(onBlack(false, 0.5f, () =>
                     {
-                        Destroy(popup.gameObject);
-                    });
+                        SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
+                        {
+                            SceneMgr.Instance.LoadSceneAsync("Join", LoadSceneMode.Additive);
+                        });
+                    }));
+                })
+                .SetCancelAction((popup) =>
+                {
+                    Destroy(popup.gameObject);
+                });
             }
         }
     }

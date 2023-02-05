@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/Init.unity
+    guid: 10137115c19d646bda2293f27d50a4f8
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/Login.unity
+    guid: 7c54887fe30ad409f8a7b7c37f329a6d
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/Main.unity
+    guid: 181dd8ba7f6a64267a2152a1c28cd641
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/Join.unity
+    guid: b574a29f0400f48f9a78d9ddbc2ed5cf
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/Game.unity
+    guid: 8614959646b0742138be7f74bbf05f70
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/Record.unity
+    guid: 6ab12e602307d4a3cb01d6860ac3caa7
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/Result.unity
+    guid: 5c5011ebee53da64e96aa2ef312ba831
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/TargetResult.unity
+    guid: 3eb487c87336c47b2b644a34c9771dce
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/TestResult.unity
+    guid: 78aa9ff72151e4515abc5224292272cb
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/Modify.unity
+    guid: 586274364d67145dcbbc18de02866c96
+  m_configObjects: {}
