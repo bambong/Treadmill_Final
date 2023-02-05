@@ -27,7 +27,9 @@ namespace Gymchair.Core.Mgr
         private UserData.UserData _userData;
         public UserData.UserData UserData { get => _userData; }
 
-        public void AddGymData(UserGymData gymData)
+        int _key_number = 0;
+        
+        public void AddGymData(UserGymData gymData, GymchairData[] gymchairDatas)
         {
             int keyNumber = 0;
 
@@ -45,6 +47,7 @@ namespace Gymchair.Core.Mgr
 
             PlayerPrefs.SetString($"{UserName}_Gymchair", JsonConvert.SerializeObject(gymDatas.ToArray()));
             PlayerPrefs.SetString($"{UserName}_Gymchair_{keyNumber}", JsonConvert.SerializeObject(gymData));
+            PlayerPrefs.SetString($"{UserName}_Gymchair_{keyNumber}_Datas", JsonConvert.SerializeObject(gymchairDatas));
             PlayerPrefs.Save();
         }
 
@@ -68,10 +71,76 @@ namespace Gymchair.Core.Mgr
             return gymData;
         }
 
+        public GymchairData[] GetLastGymTickData()
+        {
+            GymchairData[] gymchairDatas = null;
+
+            List<string> gymDatas = new List<string>();
+
+            if (PlayerPrefs.HasKey($"{UserName}_Gymchair"))
+            {
+                string text = PlayerPrefs.GetString($"{UserName}_Gymchair");
+                string[] datas = JsonConvert.DeserializeObject<string[]>(text);
+                gymDatas = new List<string>(datas);
+
+                int keyNumber = gymDatas.Count - 1;
+                string gymText = PlayerPrefs.GetString($"{UserName}_Gymchair_{keyNumber}_Datas");
+                gymchairDatas = JsonConvert.DeserializeObject<GymchairData[]>(gymText);
+            }
+
+            return gymchairDatas;
+        }
+
+        public int GetKeyNumber()
+        {
+            return _key_number;
+        }
+
+        public void SetKeyNumber(int keyNumber)
+        {
+            _key_number = keyNumber;
+        }
+
+        public UserGymData GetTargetGymData(int keynumber)
+        {
+            UserGymData gymData = null;
+
+            List<string> gymDatas = new List<string>();
+
+            if (PlayerPrefs.HasKey($"{UserName}_Gymchair"))
+            {
+                string gymText = PlayerPrefs.GetString($"{UserName}_Gymchair_{keynumber}");
+                gymData = JsonConvert.DeserializeObject<UserGymData>(gymText);
+            }
+
+            return gymData;
+        }
+
+        public GymchairData[] GetTargetGymTickData(int keynumber)
+        {
+            GymchairData[] gymchairDatas = null;
+
+            List<string> gymDatas = new List<string>();
+
+            if (PlayerPrefs.HasKey($"{UserName}_Gymchair"))
+            {
+                string gymText = PlayerPrefs.GetString($"{UserName}_Gymchair_{keynumber}_Datas");
+                gymchairDatas = JsonConvert.DeserializeObject<GymchairData[]>(gymText);
+            }
+
+            return gymchairDatas;
+        }
+
         public UserGymData GetGymData(int key)
         {
             string gymText = PlayerPrefs.GetString($"{UserName}_Gymchair_{key}");
             return JsonConvert.DeserializeObject<UserGymData>(gymText);
+        }
+
+        public GymchairData[] GetGymTickData(int key)
+        {
+            string gymText = PlayerPrefs.GetString($"{UserName}_Gymchair_{key}_Datas");
+            return JsonConvert.DeserializeObject<GymchairData[]>(gymText);
         }
 
         public string[] GetGymList()

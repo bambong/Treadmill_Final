@@ -16,5 +16,18 @@ namespace Gymchair.Contents.Record
         public Text _textHighSpeed;
         public Text _textBPM;
         public Text _textkcal;
+
+        public int _keyNumber;
+
+        public Action<int> _actionClick;
+
+        [SerializeField] Button _buttonClick;
+
+        private void Awake()
+        {
+            _buttonClick.onClick.AddListener(() => {
+                _actionClick?.Invoke(_keyNumber);
+            });
+        }
     }
 }

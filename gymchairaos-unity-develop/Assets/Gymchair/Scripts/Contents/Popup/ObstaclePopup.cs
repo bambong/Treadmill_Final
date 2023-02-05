@@ -265,14 +265,14 @@ public class ObstaclePopup : MonoBehaviour
 
         if (value == 0)
         {
-            for (var iNum = 1; iNum < 8; iNum++)
+            for (var iNum = 1; iNum < 6; iNum++)
             {
                 options.Add(iNum.ToString());
             }
         }
         else if (value == 1)
         {
-            for (var iNum = 1; iNum < 16; iNum++)
+            for (var iNum = 1; iNum < 6; iNum++)
             {
                 options.Add(iNum.ToString());
             }
@@ -287,5 +287,30 @@ public class ObstaclePopup : MonoBehaviour
 
         _dropNumber.AddOptions(options);
         _dropNumber.value = 0;
+    }
+
+    public void OnBackNonePanel()
+    {
+        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        _panelNone.SetActive(false);
+        _panelFirst.SetActive(true);
+    }
+    public void OnBackSecondPanel()
+    {
+        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        _panelSecond.SetActive(false);
+        _panelFirst.SetActive(true);
+    }
+    public void OnBackThirdPanel()
+    {
+        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        _panelThird.SetActive(false);
+        _panelSecond.SetActive(true);
+    }
+    public void OnBackFourthPanel()
+    {
+        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        _panelFourth.SetActive(false);
+        _panelThird.SetActive(true);
     }
 }

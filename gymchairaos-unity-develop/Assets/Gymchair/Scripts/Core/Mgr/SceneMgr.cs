@@ -13,9 +13,9 @@ namespace Gymchair.Core.Mgr
         Main,
         Join,
         Game,
-        OldResult,
         Record,
         Result,
+        TargetResult,
         TestResult,
         Modify
     }

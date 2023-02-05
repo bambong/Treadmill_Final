@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 namespace Gymchair.Contents.Result
 {
-    public class ResultController : MonoBehaviour
+    public class TargetResultController : MonoBehaviour
     {
         UserGymData _gymData;
         GymchairData[] _gymTickData;
@@ -86,8 +86,9 @@ namespace Gymchair.Contents.Result
 
             SoundMgr.Instance.PlayBGM("back");
 
-            _gymData = Core.Mgr.DataMgr.Instance.GetLastGymData();
-            _gymTickData = Core.Mgr.DataMgr.Instance.GetLastGymTickData();
+            int keyNumber = Core.Mgr.DataMgr.Instance.GetKeyNumber();
+            _gymData = Core.Mgr.DataMgr.Instance.GetTargetGymData(keyNumber);
+            _gymTickData = Core.Mgr.DataMgr.Instance.GetTargetGymTickData(keyNumber);
 
             int minute = (int)_gymData.gymTime / 60;
             int second = (int)_gymData.gymTime % 60;
@@ -194,7 +195,7 @@ namespace Gymchair.Contents.Result
 
             StartCoroutine(onBlack(false, 0.5f, () =>
             {
-                SceneMgr.Instance.UnLoadSceneAsync("Result", () =>
+                SceneMgr.Instance.UnLoadSceneAsync("TargetResult", () =>
                 {
                     SceneMgr.Instance.LoadSceneAsync("Record", LoadSceneMode.Additive);
                 });

@@ -100,8 +100,10 @@ namespace Gymchair.Contents.Game
         bool _testMode;
 
         bool _isPlay;
-        float _deltaTime;
+        float _deltaTime = -999.0f;
         string _targetAddress = "DC:A6:32:EC:1C:2C";
+
+        string _description = "";
 
         List<GymchairData> _listData = new List<GymchairData>();
 
@@ -112,6 +114,8 @@ namespace Gymchair.Contents.Game
         float _save_bpm = 0.0f;
         float _save_left_rpm = 0.0f;
         float _save_right_rpm = 0.0f;
+        float _save_left_count = 0.0f;
+        float _save_right_count = 0.0f;
 
         bool _show_warnning = false;
         List<float> _left_values = new List<float>();
@@ -120,6 +124,12 @@ namespace Gymchair.Contents.Game
         [SerializeField] GameObject _objBlckPanel;
         [SerializeField] Image _imgBlckPanel;
 
+
+        float _save_to_rotateZ = -999.0f;
+        float _save_to_leftRotateZ = -999.0f;
+        float _save_to_rightRotateZ = -999.0f;
+
+        float _save_roll_count = -999.0f;
         IEnumerator onBlack(bool fadein, float time, Action success = null)
         {
             _imgBlckPanel.color = new Color(0, 0, 0, (fadein) ? 1.0f : 0.0f);
@@ -152,7 +162,6 @@ namespace Gymchair.Contents.Game
             StartCoroutine(onBlack(true, 0.5f, () =>
             {
                 StartCoroutine(connectServer());
-
                 //StartCoroutine(testCorutine());
             }));
         }
@@ -250,6 +259,20 @@ namespace Gymchair.Contents.Game
             }
         }
 
+        void setMsgData(string key, float value)
+        {
+            if (key.Equals("left_rpm"))
+                _save_left_rpm = Math.Abs(value);
+            else if (key.Equals("left_count"))
+                _save_left_count = Math.Abs(value);
+            else if (key.Equals("right_rpm"))
+                _save_right_rpm = Math.Abs(value);
+            else if (key.Equals("right_count"))
+                _save_right_count = Math.Abs(value);
+            else if (key.Equals("heart_rate"))
+                _save_bpm = Math.Abs(value);
+        }
+
         public void OnReceivedMessage(string message)
         {
             if (!this._connect)
@@ -260,25 +283,15 @@ namespace Gymchair.Contents.Game
 
             try
             {
-                int count = message.Length;
+                message = message.Replace(" ", "");
+                message = message.Replace("\r\n", "");
+                message = message.Replace("\n", "");
 
-                if (message.Contains("bpm_"))
+                string[] msgs = message.Split("/");
+
+                for (var num = 0; num < msgs.Length; num += 2)
                 {
-                    string str = message.Substring("bpm_".Length, count - "bpm_".Length);
-                    str = str.Replace("\n", "");
-                    _save_bpm = float.Parse(str);
-                }
-                else if (message.Contains("left_rpm_"))
-                {
-                    string str = message.Substring("left_rpm_".Length, count - "left_rpm_".Length);
-                    str = str.Replace("\n", "");
-                    _save_left_rpm = float.Parse(str);
-                }
-                else if (message.Contains("right_rpm_"))
-                {
-                    string str = message.Substring("right_rpm_".Length, count - "right_rpm_".Length);
-                    str = str.Replace("\n", "");
-                    _save_right_rpm = float.Parse(str);
+                    setMsgData(msgs[num], float.Parse(msgs[num + 1]));
                 }
             }
             catch (Exception e)
@@ -300,21 +313,16 @@ namespace Gymchair.Contents.Game
                 {
                     TestStopPopup.Create(() =>
                     {
-                        WarnningSuccessPopup.Create(() =>
+                        StopDescriptionPopup.Create((description) =>
                         {
-                            SoundMgr.Instance.StopBGM();
-                            SoundMgr.Instance.PlayEffect("touch");
+                            _description = description;
 
-                            StartCoroutine(onBlack(false, 0.5f, () =>
+                            WarnningSuccessPopup.Create(() =>
                             {
-                                SceneMgr.Instance.UnLoadSceneAsync("Game", () =>
-                                {
-                                    SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive, () =>
-                                    {
-                                        SoundMgr.Instance.PlayBGM("back");
-                                    });
-                                });
-                            }));
+                                SoundMgr.Instance.StopBGM();
+                                SoundMgr.Instance.PlayEffect("touch");
+                                OnGymEnd();
+                            });
                         });
                     }, () =>
                     {
@@ -323,21 +331,21 @@ namespace Gymchair.Contents.Game
                 }
                 else
                 {
-                    MessagePopup.Create()
-                    .SetText("운동을 종료 하시겠습니?")
-                    .SetOKAction((script) =>
+                    StopPopup.Create(() =>
                     {
-                        Destroy(script.gameObject);
-                        WarnningSuccessPopup.Create(() =>
+                        StopDescriptionPopup.Create((description) =>
                         {
-                            SoundMgr.Instance.StopBGM();
-                            SoundMgr.Instance.PlayEffect("touch");
-                            OnGymEnd();
+                            _description = description;
+
+                            WarnningSuccessPopup.Create(() =>
+                            {
+                                SoundMgr.Instance.StopBGM();
+                                SoundMgr.Instance.PlayEffect("touch");
+                                OnGymEnd();
+                            });
                         });
-                    })
-                    .SetCancelAction((script) =>
+                    }, () =>
                     {
-                        Destroy(script.gameObject);
                         _isPlay = true;
                     });
                 }
@@ -348,17 +356,18 @@ namespace Gymchair.Contents.Game
         {
             UserGymData user = new UserGymData();
             user.gymDate = _today;
-            user.gymchairDatas = _listData.ToArray();
 
             foreach (var gym in _listData)
             {
-                user.gymMeter += gym.meter;
+                // user.gymMeter += gym.meter;
                 user.gymTime += gym.time;
-                user.gymCalorie += gym.calorie;
+                // user.gymCalorie += gym.calorie;
 
                 user.speed += gym.speed;
                 user.bpm += gym.bpm;
                 user.rpm += gym.rpm;
+                user.left_rpm += gym.left_speed;
+                user.right_rpm += gym.right_speed;
 
                 // 속도 
                 if (user.high_speed == 0)
@@ -393,11 +402,21 @@ namespace Gymchair.Contents.Game
                 if (user.high_bpm < gym.bpm)
                     user.high_bpm = gym.bpm;
             }
+
+            user.gymMeter = _meter;
+
+            float ml = 5.189f + (2.768f * (_meter * 0.001f));
+            user.gymCalorie = ((ml * DataMgr.Instance.UserData.weight * (user.gymTime / 60.0f)) * 0.001f) * 5.0f;
+
             user.speed /= _listData.Count;
             user.bpm /= _listData.Count;
             user.rpm /= _listData.Count;
+            user.left_rpm /= _listData.Count;
+            user.right_rpm /= _listData.Count;
+            user.description = _description;
+            user.allow = true;
 
-            DataMgr.Instance.AddGymData(user);
+            DataMgr.Instance.AddGymData(user, _listData.ToArray());
 
             StartCoroutine(onBlack(false, 0.5f, () =>
             {
@@ -486,8 +505,8 @@ namespace Gymchair.Contents.Game
                         StartCoroutine(onBlack(false, 0.5f, () =>
                         {
                             SceneMgr.Instance.UnLoadSceneAsync("Game", () =>
-                                                    {
-                                           SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive, () =>
+                            {
+                                SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive, () =>
                                 {
                                     SoundMgr.Instance.PlayBGM("back");
                                 });
@@ -512,7 +531,7 @@ namespace Gymchair.Contents.Game
                 BluetoothMgr.Instance.Connect("wheelchair");
 
             int count = 0;
-            
+
             while (true)
             {
                 yield return new WaitForSeconds(1.0f);
@@ -577,11 +596,13 @@ namespace Gymchair.Contents.Game
             while (true)
             {
                 yield return new WaitForSeconds(0.1f);
+                // 누적 회전수 x 드럼 외경(24cm) / 100
+
                 float rpm = (_save_left_rpm + _save_right_rpm) * 0.5f;
-                
-               
+                //float rpm = ((_save_right_count + _save_left_count) / 2.0f) * 24.0f / 100.0f;
+
                 float speed = rpm * 240.0f / 60000.0f;
-                
+
                 //float speed = 3.14f * 1.89f * rpm;
                 //speed /= 60.0f;
                 //speed *= 10.0f;
@@ -678,8 +699,14 @@ namespace Gymchair.Contents.Game
             {
                 if (_isPlay)
                 {
+                    _save_left_rpm = 0.0f;
+                    _save_right_rpm = 0.0f;
+
                     _save_left_rpm = UnityEngine.Random.Range(7200, 9600) * 0.1f;
                     _save_right_rpm = UnityEngine.Random.Range(7200, 9600) * 0.1f;
+
+                    _save_right_count += (UnityEngine.Random.Range(0, 30) * 0.1f);
+                    _save_left_count += (UnityEngine.Random.Range(0, 30) * 0.1f);
 
                     float bpm = UnityEngine.Random.Range(80, 120);
                     float rpm = (_save_left_rpm + _save_right_rpm) * 0.5f;
@@ -731,7 +758,7 @@ namespace Gymchair.Contents.Game
             if (!_isPlay)
                 return;
 
-            if (_deltaTime == 0.0f)
+            if (_deltaTime < 0.0f)
             {
                 _deltaTime = Time.time;
             }
@@ -740,22 +767,37 @@ namespace Gymchair.Contents.Game
 
             // 150 : 0, 145 : 1, 93 : 2, 43 : 3, 0.0 : 4, -45 : 5
             // 데이터 수정 예정
-            float meter = speed * deltatime;
-            _meter += meter;
+
+            float roll_count = (_save_right_count + _save_left_count) / 2.0f;
+
+            if (_save_roll_count < 0.0f)
+                _save_roll_count = roll_count;
+
+            roll_count = roll_count - _save_roll_count;
+
+            float meter = roll_count * 24.0f / 100.0f;
+            _meter = meter;
 
             if (_maxSpeed < speed)
                 _maxSpeed = speed;
 
             GymchairData gymchairData = new GymchairData();
             gymchairData.time = deltatime;
-            gymchairData.bpm = bpm;
-            gymchairData.rpm = rpm;
-            gymchairData.speed = speed;
+            gymchairData.bpm = (bpm == 0.0f) ? 0.00001f : bpm;
+            gymchairData.rpm = (rpm == 0.0f) ? 0.00001f : rpm;
+            gymchairData.speed = (speed == 0.0f) ? 0.00001f : speed;
             gymchairData.left_speed = _save_left_rpm;
             gymchairData.right_speed = _save_right_rpm;
-            gymchairData.meter = meter;
-            gymchairData.calorie = ((DataMgr.Instance.UserData.weight * 0.0175f) / 60.0f) * deltatime;
+            
+            /*
 
+            gymchairData.meter = meter;
+
+            float ml = 5.189f + (2.768f * (meter * 0.001f));
+            gymchairData.calorie = ((ml * DataMgr.Instance.UserData.weight * (deltatime / 60.0f)) * 0.001f) * 5.0f;
+
+            */
+            
             _listData.Add(gymchairData);
 
             float rotateValue = speed;
@@ -765,28 +807,42 @@ namespace Gymchair.Contents.Game
 
             float rotateZ = 250 * ((rotateValue >= 4.8f)? 1.0f : rotateValue / 4.8f);
             rotateZ = 150 - rotateZ;
+            
+            if (_save_to_rotateZ < 0.0f)
+                _save_to_rotateZ = rotateZ;
 
-            _imageGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, rotateZ);
+            _save_to_rotateZ = Mathf.Lerp(_save_to_rotateZ, rotateZ, 0.3f);
+            _imageGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, _save_to_rotateZ);
 
             float leftPercent = _save_left_rpm * 240.0f / 60000.0f;
             leftPercent = (leftPercent > 4.8f) ? 1.0f : leftPercent / 4.8f;
             float leftRotateZ = 180 * leftPercent;
             leftRotateZ = 90 - leftRotateZ;
 
+            if (_save_to_leftRotateZ < 0.0f)
+                _save_to_leftRotateZ = leftRotateZ;
+
+            _save_to_leftRotateZ = Mathf.Lerp(_save_to_leftRotateZ, leftRotateZ, 0.3f);
+
             float rightPercent = _save_right_rpm *  240.0f / 60000.0f;
             rightPercent = (rightPercent > 4.8f) ? 1.0f : rightPercent / 4.8f;
             float rightRotateZ = 180 * rightPercent;
             rightRotateZ = 90 - rightRotateZ;
 
-            _imageLeftGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, leftRotateZ);
-            _imageRightGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, rightRotateZ);
+            if (_save_to_rightRotateZ < 0.0f)
+                _save_to_rightRotateZ = rightRotateZ;
+            
+            _save_to_rightRotateZ = Mathf.Lerp(_save_to_rightRotateZ, rightRotateZ, 0.3f);
+
+            _imageLeftGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, _save_to_leftRotateZ);
+            _imageRightGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, _save_to_rightRotateZ);
 
 
-            if (leftPercent >= 0.6f)
+            if (_save_to_leftRotateZ >= 0.6f)
             {
                 _imageLeftGage.sprite = _spriteLeftRightAccentGage;
             }
-            else if (leftPercent != 0.0f)
+            else if (_save_to_leftRotateZ != 0.0f)
             {
                 _imageLeftGage.sprite = _spriteLeftRightActiveGage;
             }
@@ -795,11 +851,11 @@ namespace Gymchair.Contents.Game
                 _imageLeftGage.sprite = _spriteLeftRightNormalGage;
             }
 
-            if (rightPercent >= 0.6f)
+            if (_save_to_rightRotateZ >= 0.6f)
             {
                 _imageRightGage.sprite = _spriteLeftRightAccentGage;
             }
-            else if (rightPercent != 0.0f)
+            else if (_save_to_rightRotateZ != 0.0f)
             {
                 _imageRightGage.sprite = _spriteLeftRightActiveGage;
             }
@@ -817,31 +873,31 @@ namespace Gymchair.Contents.Game
             Sprite gage5 = _spriteNormalGage5;
 
 
-            if (rotateZ <= 145)
+            if (_save_to_rotateZ <= 145)
             {
                 background = _spriteBackground1;
                 gage1 = _spriteActiveGage1;
 
             }
 
-            if (rotateZ <= 93)
+            if (_save_to_rotateZ <= 93)
             {
                 background = _spriteBackground2;
                 gage2 = _spriteActiveGage2;
             }
 
-            if (rotateZ <= 43)
+            if (_save_to_rotateZ <= 43)
             {
                 background = _spriteBackground3;
                 gage3 = _spriteActiveGage3;
             }
 
-            if (rotateZ <= 0)
+            if (_save_to_rotateZ <= 0)
             {
                 gage4 = _spriteActiveGage4;
             }
 
-            if (rotateZ <= -45)
+            if (_save_to_rotateZ <= -45)
             {
                 gage5 = _spriteActiveGage5;
             }
@@ -861,8 +917,6 @@ namespace Gymchair.Contents.Game
             _imageGage3.sprite = gage3;
             _imageGage4.sprite = gage4;
             _imageGage5.sprite = gage5;
-
-            Debug.Log($"{bpm}, {speed}, {_save_left_rpm}, {_save_right_rpm}");
 
             ChartUtil.Data rpmData = new ChartUtil.Data();
             rpmData.value = (bpm == 0.0f)? 0.00001f:bpm;

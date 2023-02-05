@@ -96,6 +96,7 @@ namespace Gymchair.Contents.Record
             endMonth = endMonth.AddDays(-1);
 
             DateTime weekStart = dateMonth.AddDays(-((int)dateMonth.DayOfWeek));
+            weekStart = new DateTime(weekStart.Year, weekStart.Month, weekStart.Day, 0, 0, 0);
 
             UserData.UserData userData = null;
 
@@ -155,11 +156,24 @@ namespace Gymchair.Contents.Record
                 RecordPrefabController script = obj.GetComponent<RecordPrefabController>();
                 script._textTime.text = string.Format("{0:D2}:{1:D2}", min, sec);
                 script._textMeter.text = $"{(int)userGymData.gymMeter} m";
-                script._textHighSpeed.text = $"{(int)userGymData.high_speed} m/s";
+                script._textHighSpeed.text = string.Format("{0:0.#} m/s", userGymData.high_speed);
                 script._textBPM.text = $"{(int)userGymData.bpm} BPM";
                 script._textkcal.text = $"{(int)userGymData.gymCalorie} kcal";
-                script._textDate.text = gymDate.ToString("yyyy년 MM월 dd일");
+                script._textDate.text = gymDate.ToString("yyyy년 MM월 dd일 tt hh시 mm분");
                 script._textCount.text = $"{num + 1}회";
+                script._keyNumber = num;
+                script._actionClick = (keyNumber) =>
+                {
+                    DataMgr.Instance.SetKeyNumber(keyNumber);
+                    
+                    StartCoroutine(onBlack(false, 0.5f, () =>
+                    {
+                        SceneMgr.Instance.UnLoadSceneAsync("Record", () =>
+                        {
+                            SceneMgr.Instance.LoadSceneAsync("TargetResult", LoadSceneMode.Additive);
+                        });
+                    }));
+                };
             }
 
             int second = (int)gymWeekTime % 60;
