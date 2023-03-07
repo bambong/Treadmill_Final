@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44402242, g: 0.49316543, b: 0.5722324, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: eb2bde6f6f9aadf4ab9be23637c851d2, type: 2}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 4a4cf8d4b57a2c5428962a00b466319a, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 8f563120399efa64d84a4e46fc0c613d, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -597,7 +597,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aiCharPrefab: {fileID: 4774162383062574196, guid: 9af65f25d57a3624ca7ef2b2df0587ca, type: 3}
+  aiRivalPrefab: {fileID: 4774162383062574196, guid: 6e9b63142fe465d42990d921b7ab6d8f, type: 3}
   aiInstanceCount: 4
+  airivalCount: 1
   colors:
   - {r: 0, g: 1, b: 0.06529045, a: 0}
   - {r: 1, g: 0, b: 0, a: 0}
@@ -956,7 +958,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.92280257, b: 0.7122642, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -3132,7 +3134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.2784314}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.84313726}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4126,7 +4128,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.039215688}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.68235296}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4349,8 +4351,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

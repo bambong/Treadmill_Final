@@ -77,10 +77,13 @@ namespace bambong
         private void Awake()
         {
             Init();
-           /// TokenInputManager.Instance.ConnectToDevice();
-            //TokenInputManager.Instance.AddRightTokenEvent(IncreaseGauage);
-            //TokenInputManager.Instance.AddLeftTokenEvent(IncreaseGauage);
+            //TokenInputManager.Instance.ConnectToDevice();
+#if UNITY_EDITOR
+            TokenInputManager.Instance.AddRightTokenEvent(IncreaseGauage);
+            TokenInputManager.Instance.AddLeftTokenEvent(IncreaseGauage);
+#else
             TokenInputManager.Instance.ReceivedEvent += IncreaseGauage;
+#endif
         }
 
         public void IncreaseGauage()
@@ -89,7 +92,11 @@ namespace bambong
             {
                 return;
             }
-            curGauage = Mathf.Min(curGauage + TokenInputManager.Instance.CurRpm * increaseGauageAmount * 0.005f, maximumGauage);
+            float factor = 1;
+#if !UNITY_EDITOR
+            factor = 0.005f * TokenInputManager.Instance.CurRpm ;
+#endif
+            curGauage = Mathf.Min(curGauage +  increaseGauageAmount * factor, maximumGauage);
         }
         public bool CheckSpeedGageOring() => curGauage <= 0;
         private void Update()
@@ -149,7 +156,7 @@ namespace bambong
             DecreaseGauage();
 
         }
-        #region SetState
+#region SetState
         public void SetStateGameStart() 
         {
             gameStateController.ChangeState(GameStart.Instance);
@@ -181,9 +188,9 @@ namespace bambong
             AIControlManager.Instance.SetStateAIsStop();
             UISceneManager.Instance.EndPanelOpen();
         }
-        #endregion SetState
+#endregion SetState
 
-        #region ease
+#region ease
         protected float easeInQuad(float start,float end,float value)
         {
             end -= start;
@@ -203,7 +210,7 @@ namespace bambong
         }
 
        
-        #endregion ease
+#endregion ease
     }
 
 }

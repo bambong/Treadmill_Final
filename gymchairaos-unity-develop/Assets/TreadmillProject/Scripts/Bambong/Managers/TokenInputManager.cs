@@ -64,7 +64,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
     [Header("Input 으로 판단할 token 수 ")]
     [SerializeField]
-    private int inputNeedCount = 5;
+    private int inputNeedCount = 1;
 
 
     // 왼쪽 바퀴 입력 텀    
@@ -111,7 +111,11 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             Destroy(gameObject);
             return;
         }
+#if UNITY_EDITOR
+        _connect = true;
+#else
         ConnectToDevice();
+#endif
         Debug.Log("토큰 매니저 시작!");
 
     }
@@ -303,16 +307,19 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             Destroy(_popup.gameObject);
         }
     private void OnEnable()
-    {
+    { 
+#if !UNITY_EDITOR
         if (BluetoothMgr.Instance)
         {
             BluetoothMgr.Instance._actionConnect += OnConnected;
             BluetoothMgr.Instance._actionReceivedMessage += OnReceivedMessage;
             BluetoothMgr.Instance._actionDisconnect += OnDisconnect;
         }
+#endif
     }
     private void OnDisable()
     {
+#if !UNITY_EDITOR
         if (BluetoothMgr.Instance)
         {
             BluetoothMgr.Instance._actionConnect -= OnConnected;
@@ -324,6 +331,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         _connect = false;
         Debug.Log("OnDisable");
         BluetoothMgr.Instance.Disconnect();
+#endif
     }
 }
 

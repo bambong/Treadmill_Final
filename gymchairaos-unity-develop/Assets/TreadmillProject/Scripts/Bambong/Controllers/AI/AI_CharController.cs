@@ -19,7 +19,7 @@ namespace bambong
         private SpeedRevisionData speedRevisionData;
         private Color color;
         private float moveSpeed =1f;
-        private float curMoveSpeed =1f;
+        protected float curMoveSpeed =1f;
         public AI_StateController StateController { get => stateController; }
         private Coroutine speedChangeCo;
         public void Init(Color color, SpeedRevisionData revisionData)
@@ -41,7 +41,6 @@ namespace bambong
         }
         private void Awake()
         {
-        
             animateController = new WheelChairAnimateController(animator);
             stateController = new AI_StateController(this);
         }
@@ -54,7 +53,7 @@ namespace bambong
             ChangeSpeed();
         }
   
-        private void ChangeSpeed() 
+        protected virtual void ChangeSpeed() 
         {
             var speedData = speedRevisionData.GetCollectAreaData(GameSceneManager.Instance.GetCurDistanceRatio(transform));
             if(moveSpeed != speedData.speed)

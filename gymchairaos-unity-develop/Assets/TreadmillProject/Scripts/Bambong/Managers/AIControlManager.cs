@@ -7,13 +7,15 @@ namespace bambong
 {
     public class AIControlManager : GameObjectSingletonDestroy<AIControlManager>, IInit
     {
-
         [SerializeField]
         private GameObject aiCharPrefab;
 
         [SerializeField]
-        private int aiInstanceCount = 4;
-
+        private GameObject aiRivalPrefab;
+        [SerializeField]
+        private int aiInstanceCount = 3;
+        [SerializeField]
+        private int airivalCount = 1;
         [SerializeField]
         private List<Color> colors;
 
@@ -26,7 +28,7 @@ namespace bambong
             {
                 return;
             }
-            aiInstanceCount = GameSceneManager.Instance.GetCurLevelInfo().AI_Dtatas.Count;
+            aiInstanceCount = GameSceneManager.Instance.GetCurLevelInfo().AI_Dtatas.Count - airivalCount;
             
             isInit = true;
             GenerateAI();
@@ -37,10 +39,24 @@ namespace bambong
         }
         public void GenerateAI() 
         {
-            List<int> pickColor = Enumerable.Range(0,aiInstanceCount).ToList();
+            List<int> pickColor = Enumerable.Range(0,aiInstanceCount+airivalCount).ToList();
             var rot = GameSceneManager.Instance.Player.transform.rotation;
             var pos = GameSceneManager.Instance.Player.transform.position;
-            for(int i = 0; i < aiInstanceCount; ++i) 
+           
+            for (int i = 0; i < airivalCount; ++i)
+            {
+                pos.x -= CharSpaceX;
+
+                var pickColorIndex = Random.Range(0, pickColor.Count);
+                var colorIndex = pickColor[pickColorIndex];
+                pickColor.RemoveAt(pickColorIndex);
+
+                var aiController = Instantiate(aiRivalPrefab, pos, rot, null).GetComponent<AI_Rival>();
+                aiController.Init(colors[colorIndex], GameSceneManager.Instance.GetCurLevelInfo().AI_Dtatas[i]);
+                characterAIs.Add(aiController);
+            }
+
+            for (int i = 0; i < aiInstanceCount; ++i) 
             {
                 pos.x -= CharSpaceX;
 

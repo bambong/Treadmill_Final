@@ -35,4 +35,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Gymchair/Scenes/Modify.unity
     guid: 586274364d67145dcbbc18de02866c96
+  - enabled: 1
+    path: Assets/TreadmillProject/Scenes/Jiho/SelectGame.unity
+    guid: 8d2b5da889ee74748b0d747c70a38c2b
+  - enabled: 1
+    path: Assets/TreadmillProject/Scenes/Bambong/Speed_GameScene.unity
+    guid: 7bbad31e589f02e428a0521cd0b163d9
+  - enabled: 1
+    path: Assets/TreadmillProject/Scenes/Bambong/Speed_MenuScene.unity
+    guid: dbe228d56ad8d20439bcca5c5834568f
+  - enabled: 1
+    path: Assets/TreadmillProject/Scenes/Jiho/Obstacle_GameScene.unity
+    guid: b59502b8b33261d4c90bc00f95ac3863
   m_configObjects: {}

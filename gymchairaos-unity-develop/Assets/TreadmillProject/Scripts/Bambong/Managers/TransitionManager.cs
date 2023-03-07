@@ -32,7 +32,8 @@ namespace bambong
             {
                 animator.SetBool(AnimTrigger, false);
                 SceneMgr.Instance.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-               
+                
+
             });
             curScenename = sceneName;
             //if (isTranstionOn)
