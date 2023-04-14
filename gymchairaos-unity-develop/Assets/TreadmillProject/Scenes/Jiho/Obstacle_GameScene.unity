@@ -7728,7 +7728,7 @@ MonoBehaviour:
   moveSpeed: 0.5
   rotateSpeed: 20
   decreaseGauageAmount: 0.7
-  increaseGauageAmount: 2
+  increaseGauageAmount: 1
   speedRatio: 1
   speedGauageImage: {fileID: 1592978918}
   maximumGauage: 100

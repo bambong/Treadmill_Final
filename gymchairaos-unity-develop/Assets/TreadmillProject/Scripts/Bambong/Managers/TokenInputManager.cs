@@ -74,7 +74,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
     [Obsolete("미터 기준")]
     public float CurSpeed { get => CurRpm * 240.0f / 60000.0f; }
-    public float CurRpm { get { return _save_left_rpm + _save_right_rpm * 0.5f; } }
+    public float CurRpm { get { return (_save_left_rpm + _save_right_rpm) * 0.5f; } }
     public float Bpm { get => _save_bpm; }
     public bool IsConnect { get => _connect; } 
 
@@ -95,8 +95,8 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         get { return Math.Min(leftToken.LastEventTime, rightToken.LastEventTime); }
     }
 
-    public float Save_left_rpm { get => _save_left_rpm;  }
-    public float Save_right_rpm { get => _save_right_rpm; }
+    public float Save_left_rpm { get => _save_left_rpm; set => _save_left_rpm = value; }
+    public float Save_right_rpm { get => _save_right_rpm; set => _save_right_rpm = value; }
 
     public void Init()
     {

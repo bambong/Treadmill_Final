@@ -16,8 +16,8 @@ MonoBehaviour:
   - AI_Dtatas:
     - {fileID: 11400000, guid: 7a464ac9754f0824b907df06fe7b8eea, type: 2}
     - {fileID: 11400000, guid: d1a0eaf7cc17fd3479c5cc0e18835a07, type: 2}
-    - {fileID: 11400000, guid: c8eafa280812541489c3a1eaff8c9808, type: 2}
     - {fileID: 11400000, guid: ff9d2f26be3e1f44bbb43f21b77d2ba5, type: 2}
+    - {fileID: 11400000, guid: 37496225cc0bb7b45ba53068812fd022, type: 2}
     distance: 50
   - AI_Dtatas:
     - {fileID: 11400000, guid: 8cd481db3622d6a42a2948b9f2abef6a, type: 2}

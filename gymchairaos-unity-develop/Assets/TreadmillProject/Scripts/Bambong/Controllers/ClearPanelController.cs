@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,10 +11,18 @@ namespace bambong
     {
         [SerializeField]
         private TextMeshProUGUI timeText;
-       
+        [SerializeField]
+        private CanvasGroup canvasGroup;
+        private readonly float FADE_TIME = 1f;
         public void SetTimeText(string text) 
         {
-           timeText.text = "½Ã°£ :  " + text;
+           timeText.text = text;
+        }
+        public override void Open()
+        {
+            canvasGroup.alpha = 0;
+            base.Open();
+            canvasGroup.DOFade(1, FADE_TIME);
         }
         public void OnClickMenuButton() 
         {

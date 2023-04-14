@@ -33,7 +33,9 @@ namespace Gymchair.Core.Mgr
 
             if (scene != null && !scene.name.Equals(eScene.Init.ToString()))
             {
+#if !UNITY_EDITOR
                 SceneManager.LoadScene(eScene.Init.ToString());
+#endif
             }
         }
 

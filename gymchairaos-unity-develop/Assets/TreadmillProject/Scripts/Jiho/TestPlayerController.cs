@@ -45,7 +45,7 @@ namespace jiho
         private bool isMoving = false;
 
         // left right 의 차를 저장할 변수
-        private int tokenDiff;
+        private float tokenDiff;
 
         private float curRotateProcessTime;
         private readonly float CLOSE_ZERO_GAUAGE = 1f;
@@ -85,7 +85,7 @@ namespace jiho
                 {
                     return;
                 }
-                tokenDiff = (int)(TokenInputManager.Instance.Save_left_rpm - TokenInputManager.Instance.Save_right_rpm);
+                tokenDiff = (TokenInputManager.Instance.Save_left_rpm - TokenInputManager.Instance.Save_right_rpm);
                 RotateMoveUpdate();
             };
         }
@@ -148,8 +148,8 @@ namespace jiho
             }
             var curRotateAngle = Quaternion.Angle(Quaternion.Euler(fixedDir), transform.rotation);
             var rotateDir = Vector3.Dot(Vector3.right, transform.forward) < 0 ? -1 : 1;
-            desireRotateAngle = Mathf.Clamp(curRotateAngle * rotateDir + (rotateAmount * tokenDiff * 0.005f), -ROTATE_LIMIT, ROTATE_LIMIT);
-
+            //desireRotateAngle = Mathf.Clamp(curRotateAngle * rotateDir + (rotateAmount * tokenDiff *  0.003f), -ROTATE_LIMIT, ROTATE_LIMIT);
+            desireRotateAngle = Mathf.Clamp(tokenDiff * 0.3f, -ROTATE_LIMIT, ROTATE_LIMIT);
             var desireRotate = Quaternion.Euler(new Vector3(0, desireRotateAngle, 0));
             transform.rotation = desireRotate;
             tokenDiff = 0;
