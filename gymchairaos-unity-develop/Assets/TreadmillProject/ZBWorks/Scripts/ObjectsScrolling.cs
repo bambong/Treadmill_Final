@@ -70,7 +70,8 @@ namespace ZB
             for (int i = 0; i < flexibleObjs.Count; i++)
             {
                 flexibleObjs[i].transform.parent = flexiblesOriginalParent;
-                flexibleObjs[i].DelayNUnActive();
+                flexibleObjs[i].StopAllCoroutines();
+                flexibleObjs[i].gameObject.SetActive(false);
             }
             flexibleObjs.Clear();
         }

@@ -95,8 +95,8 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         get { return Math.Min(leftToken.LastEventTime, rightToken.LastEventTime); }
     }
 
-    public float Save_left_rpm { get => _save_left_rpm;  }
-    public float Save_right_rpm { get => _save_right_rpm; }
+    public float Save_left_rpm { get => _save_left_rpm; set => _save_left_rpm = value;  }
+    public float Save_right_rpm { get => _save_right_rpm; set => _save_right_rpm = value; }
 
     public void Init()
     {

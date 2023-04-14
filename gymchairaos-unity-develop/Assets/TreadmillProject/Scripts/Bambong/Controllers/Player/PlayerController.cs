@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,9 @@ namespace bambong
         [SerializeField]
         private float speedRatio = 1f;
 
-        
+        [SerializeField]
+        private Transform arrowTrs;
+
         #endregion SerializeField
         
         #region NonSerializeField
@@ -44,6 +47,9 @@ namespace bambong
         {
             stateController = new PlayerStateController(this);
             animateController = new WheelChairAnimateController(playerAnimator);
+            var startY = arrowTrs.transform.localPosition.y;
+            arrowTrs.DOLocalMoveY(startY + 0.5f, 0.7f).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.OutQuad);
+            arrowTrs.DORotate(new Vector3(0, 360, 0),3f, RotateMode.LocalAxisAdd).SetLoops(-1,LoopType.Restart).SetEase(Ease.Linear);
         }
       
         void Update()

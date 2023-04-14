@@ -47,4 +47,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/TreadmillProject/Scenes/Jiho/Obstacle_GameScene.unity
     guid: b59502b8b33261d4c90bc00f95ac3863
+  - enabled: 1
+    path: Assets/TreadmillProject/ZBWorks/Scenes/Obstacle_GameScene_ZB.unity
+    guid: 07f79e2b8dad78d44bb86f8f66182d2c
+  - enabled: 1
+    path: Assets/TreadmillProject/ZBWorks/Scenes/Obstacle_GameScene_ZB_V2.unity
+    guid: b632a68990b11ee49b13f1066c02a0b9
   m_configObjects: {}

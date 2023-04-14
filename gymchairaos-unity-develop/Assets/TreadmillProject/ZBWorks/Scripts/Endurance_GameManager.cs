@@ -61,6 +61,7 @@ namespace ZB
         public void GameStart()
         {
             playerHP.PlusHP(3);
+            playerHP.StartAutoHpUByDistance();
             scroll.ScrollStart();
             timeCounter.CountStart();
             player.CheckActive(true);

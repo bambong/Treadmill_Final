@@ -46,6 +46,20 @@ namespace Gymchair.Core.Mgr
             _dictAudioClips.Add("count", Resources.Load<AudioClip>("count"));
             _dictAudioClips.Add("back", Resources.Load<AudioClip>("back"));
             _dictAudioClips.Add("touch", Resources.Load<AudioClip>("touch"));
+
+            //배경음
+            _dictAudioClips.Add("bgm_Speed",    Resources.Load<AudioClip>("BGM_Speed_11._Future_Tech_420"));
+            _dictAudioClips.Add("bgm_Obstacle", Resources.Load<AudioClip>("BGM_Obstacle_17._Technically_Accurate_353"));
+
+            //효과음
+            _dictAudioClips.Add("sfx_CarCrash", Resources.Load<AudioClip>("SFX_CarCrash_Car_Impact_Concrete"));
+            _dictAudioClips.Add("sfx_Die",      Resources.Load<AudioClip>("SFX_DieCar_Explosion_7"));
+            _dictAudioClips.Add("sfx_Engine",   Resources.Load<AudioClip>("SFX_Engine_SUV_Engine_Loop_8"));
+            _dictAudioClips.Add("sfx_Heal",     Resources.Load<AudioClip>("SFX_Heal_21_ui_casual_click15"));
+            _dictAudioClips.Add("sfx_Pause",    Resources.Load<AudioClip>("SFX_PauseTrue_28_ui_casual_pause"));
+            _dictAudioClips.Add("sfx_Play",     Resources.Load<AudioClip>("SFX_Play_27_ui_casual_play"));
+            _dictAudioClips.Add("sfx_BtnClick", Resources.Load<AudioClip>("SFX_UIClick_22_ui_casual_click16"));
+
         }
 
         public void PlayBGM(string name)
