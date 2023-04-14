@@ -25,17 +25,23 @@ namespace bambong
         private float curTransitionTime = 0f;
         private bool isTranstionOn = false;
         private string curScenename = E_SceneName.SelectGame.ToString();
+
+        public void OnSceneLoadSuccsess()
+        {
+            
+        }
         public void SceneTransition(string sceneName)
         {
+            //StartCoroutine(Transition(sceneName));
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName("Init"));
             animator.SetBool(AnimTrigger, true);
             SceneMgr.Instance.UnLoadSceneAsync(curScenename, () =>
             {
                 animator.SetBool(AnimTrigger, false);
                 SceneMgr.Instance.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-                
-
             });
             curScenename = sceneName;
+
             //if (isTranstionOn)
             //{
             //    return;
@@ -73,7 +79,7 @@ namespace bambong
 
         public void TransitionToSelectScene() 
         {
-            Transition(E_SceneName.SelectGame.ToString());
+            StartCoroutine(Transition(E_SceneName.SelectGame.ToString()));
         }
         public void Init()
         {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace bambong 
@@ -70,6 +71,7 @@ namespace bambong
             {
                 return;
             }
+            Application.targetFrameRate = 60;
             isInit = true;
             curRoadDistance = GetCurLevelInfo().distance * LEVEL_DISTANCE_RATIO;
             gameStateController = new GameStateController(this);
@@ -159,6 +161,7 @@ namespace bambong
 #region SetState
         public void SetStateGameStart() 
         {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(E_SceneName.Speed_GameScene.ToString()));
             gameStateController.ChangeState(GameStart.Instance);
             SetDestination();
             UISceneManager.Instance.WaitPanelOpen(OnStart);
