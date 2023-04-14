@@ -61,7 +61,9 @@ namespace bambong
         private string GetTimeText()
         {
             float curTime = GameSceneManager.Instance.CurTime;
-            return curTime.ToString("00.00").Replace('.', ':');
+            string curMin = ((int)curTime / 60).ToString("00");
+            curTime %= 60;
+            return curMin + ":" + curTime.ToString("00.00").Replace('.', ':');
         }
         private string GetSpeedText()
         {

@@ -1,10 +1,11 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
 namespace bambong 
 {
     public class GameSceneManager : GameObjectSingletonDestroy<GameSceneManager>, IInit
@@ -46,6 +47,8 @@ namespace bambong
         private float curDistance = 0;
         private float curTime = 0;
         private bool isInit;
+        private Action onGameStart;
+        private Action onGameClear;
         #endregion NonSerializeField
 
         #region Property
@@ -57,7 +60,8 @@ namespace bambong
 
         public DestinationController DestinationController { get => destinationController; }
         public float CurTime { get => curTime; }
-
+        public Action OnGameClear { get => onGameClear; set => onGameClear = value; }
+        public Action OnGameStart { get => onGameStart; set => onGameStart = value; }
         #endregion Property
 
         #region ReadOnly
@@ -70,6 +74,7 @@ namespace bambong
             {
                 return;
             }
+            Application.targetFrameRate = 60;
             isInit = true;
             curRoadDistance = GetCurLevelInfo().distance * LEVEL_DISTANCE_RATIO;
             gameStateController = new GameStateController(this);
@@ -159,12 +164,14 @@ namespace bambong
 #region SetState
         public void SetStateGameStart() 
         {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(E_SceneName.Speed_GameScene.ToString()));
             gameStateController.ChangeState(GameStart.Instance);
             SetDestination();
             UISceneManager.Instance.WaitPanelOpen(OnStart);
         }
         public void SetStateGamePlay()
         {
+            OnGameStart?.Invoke();
             gameStateController.ChangeState(GamePlay.Instance);
             AIControlManager.Instance.SetStateAIsRun();
         }
@@ -175,6 +182,7 @@ namespace bambong
         }
         public void SetStateGameClear() 
         {
+            OnGameClear?.Invoke();
             gameStateController.ChangeState(GameClear.Instance);
             player.SetStateNone();
             GameManager.Instance.ClearLevel(GameManager.Instance.CurrentLevel);
@@ -183,6 +191,7 @@ namespace bambong
         }
         public void SetStateGameOver()
         {
+            OnGameClear?.Invoke();
             gameStateController.ChangeState(GameOver.Instance);
             player.SetStateNone();
             AIControlManager.Instance.SetStateAIsStop();
