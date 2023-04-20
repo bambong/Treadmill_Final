@@ -23,7 +23,7 @@ namespace bambong
         }
         public void OnObstacleGameStartButtonDown()
         {
-            TransitionManager.Instance.SceneTransition(E_SceneName.Obstacle_GameScene.ToString());
+            TransitionManager.Instance.SceneTransition(E_SceneName.Obstacle_GameScene_ZB_V2.ToString());
         }
 
     }

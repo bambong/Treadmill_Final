@@ -11,12 +11,14 @@ namespace ZB
     {
         [SerializeField] UnityEvent dieEvent;
         [SerializeField] UnityEvent uEvent_Hit;
+        [SerializeField] UnityEvent uEvent_plusHp;
 
         [SerializeField] DistanceRecord distance;
 
         //자동체력회복 거리
         [SerializeField] float hpGainDistance;
         float currentCheckedDistance;
+        bool resetAutoGain;
 
         [Space]
         [SerializeField] HpPoint[] points;
@@ -41,7 +43,7 @@ namespace ZB
 
         //거리비례 자동 체력 획득 시작
         [ContextMenu("자동점수획득 시작")]
-        public void StartAutoHpUpByDistance()
+        public void StartAutoHpUByDistance()
         {
             if (AutoHpUpByDistance_C != null)
             {
@@ -86,6 +88,7 @@ namespace ZB
                 nowHP = nowHP - value > 0 ? nowHP - value : 0;
                 if (nowHP <= 0)
                     dieEvent.Invoke();
+                resetAutoGain = true;
             }
         }
 
@@ -100,6 +103,8 @@ namespace ZB
                         points[i].Plus();
                     }
                 }
+                if (nowHP < maxHP)
+                    uEvent_plusHp.Invoke();
                 nowHP = nowHP + value < maxHP ? nowHP + value : maxHP;
             }
         }
@@ -120,6 +125,11 @@ namespace ZB
                     PlusHP(1);
                 }
 
+                if (resetAutoGain)
+                {
+                    resetAutoGain = false;
+                    currentCheckedDistance = distance.NowRecord;
+                }
 
                 yield return null;
             }

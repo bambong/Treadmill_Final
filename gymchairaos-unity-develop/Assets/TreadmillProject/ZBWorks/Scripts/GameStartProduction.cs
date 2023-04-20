@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using DG.Tweening;
-using bambong;
-using UnityEngine.SceneManagement;
 
 public class GameStartProduction : MonoBehaviour
 {
@@ -44,15 +42,6 @@ public class GameStartProduction : MonoBehaviour
     IEnumerator production_C;
     IEnumerator productionC()
     {
-
-#if !UNITY_EDITOR
-        while (!TokenInputManager.Instance.IsConnect) 
-        {
-            yield return null;
-        }
-#endif
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(E_SceneName.Obstacle_GameScene_ZB_V2.ToString()));
-
         //±×¸²ÀÚ ÄÑÁü
         uiShadow.Active(true);
         pauseController.PauseBtnInteractBlockActive(true);

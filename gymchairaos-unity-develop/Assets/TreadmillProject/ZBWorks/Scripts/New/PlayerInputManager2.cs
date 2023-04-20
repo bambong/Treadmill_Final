@@ -22,8 +22,6 @@ namespace ZB
 
         [SerializeField] bool checking;
 
-        private readonly float MINIMUM_RPM = 200f;
-        private readonly float MOVEDIFF_RPM = 200f;
         public void ResetState()
         {
             playerBody.transform.DOMoveX(-0.6f, 1).SetEase(Ease.OutQuart).SetDelay(1.5f);
@@ -77,7 +75,7 @@ namespace ZB
             {
                 leftRpm = TokenInputManager.Instance.Save_left_rpm;
                 rightRpm = TokenInputManager.Instance.Save_right_rpm;
-                if (leftRpm - rightRpm >= MOVEDIFF_RPM && !leftReceived)
+                if (leftRpm > 800 && leftRpm > rightRpm && !leftReceived)
                 {
                     Debug.Log("LEFTMOVE");
                     playerBody.DOKill();
@@ -88,7 +86,7 @@ namespace ZB
                     leftReceived = true;
                     rightReceived = false;
                 }
-                if (rightRpm - leftRpm >= MOVEDIFF_RPM && !rightReceived)
+                if (rightRpm > 800 && rightRpm > leftRpm && !rightReceived)
                 {
                     Debug.Log("RightMove");
                     playerBody.DOKill();

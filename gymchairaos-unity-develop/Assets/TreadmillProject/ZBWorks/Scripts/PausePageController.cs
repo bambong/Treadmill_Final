@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using DG.Tweening;
 
@@ -18,6 +19,8 @@ public class PausePageController : MonoBehaviour
     [SerializeField] bool pauseBlockActive;
     [SerializeField] float pauseBlockDuration;
     WaitForSecondsRealtime pauseBlockDuration_WFS;
+
+    [SerializeField] UnityEvent uEvent_GoMain;
 
     public void OnBtnClicked_Pause()
     {
@@ -38,10 +41,6 @@ public class PausePageController : MonoBehaviour
             StopCoroutine(Unactive_C);
         Unactive_C = UnactiveC();
         StartCoroutine(Unactive_C);
-    }
-    public void OnBtnClicked_Exit()
-    {
-
     }
 
     public void PauseBtnInteractBlockActive(bool active)
