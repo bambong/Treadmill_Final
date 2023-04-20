@@ -40,6 +40,7 @@ namespace bambong
 
         IEnumerator ProcessWait(Action callOnClose) 
         {
+            yield return new WaitForSeconds(2f);
             while (true) 
             {
                 waitText.transform.localScale = Vector3.zero;
