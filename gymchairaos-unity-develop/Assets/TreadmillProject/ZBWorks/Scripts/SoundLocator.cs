@@ -9,23 +9,39 @@ namespace ZB
     {
         public void PlayBgm(string id)
         {
-            SoundMgr.Instance.PlayBGM(id);
+            //try
+            //{
+                SoundMgr.Instance.PlayBGM(id);
+            //}
+            //catch { }
         }
 
         public void StopBgm()
         {
-            SoundMgr.Instance.StopBGM();
+           // try
+           // {
+                SoundMgr.Instance.StopBGM();
+           // }
+           // catch { }
         }
 
         public void PlaySfx(string id)
         {
-            SoundMgr.Instance.PlayEffect(id);
+          //  try
+       //     {
+                SoundMgr.Instance.PlayEffect(id);
+       //     }
+          //  catch { }
         }
 
         void Start()
         {
             //게임실행 음악
-            SoundMgr.Instance.PlayBGM("bgm_Obstacle");
+          //  try
+           // {
+                SoundMgr.Instance.PlayBGM("bgm_Obstacle");
+         //   }
+         //   catch { }
         }
     }
 }
