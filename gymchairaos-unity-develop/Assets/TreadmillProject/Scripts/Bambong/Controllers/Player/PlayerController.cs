@@ -28,14 +28,14 @@ namespace bambong
         private PlayerStateController stateController;
        
         private WheelChairAnimateController animateController;
-
+        private float arrowStartY;
         #endregion NonSerializeField
         
         #region Proprtty
         public PlayerStateController PlayerStateController { get => stateController; }
         public float MoveSpeed { get => moveSpeed; }
         public float SpeedRatio { get => speedRatio; }
-    
+        
         #endregion Property
         
         #region ReadOnly
@@ -47,11 +47,14 @@ namespace bambong
         {
             stateController = new PlayerStateController(this);
             animateController = new WheelChairAnimateController(playerAnimator);
-            var startY = arrowTrs.transform.localPosition.y;
-            arrowTrs.DOLocalMoveY(startY + 0.5f, 0.7f).SetLoops(-1,LoopType.Yoyo).SetEase(Ease.OutQuad);
-            arrowTrs.DORotate(new Vector3(0, 360, 0),3f, RotateMode.LocalAxisAdd).SetLoops(-1,LoopType.Restart).SetEase(Ease.Linear);
+            arrowStartY = arrowTrs.transform.localPosition.y;
+
         }
-      
+        public void ArrowAnimStart()
+        {
+            arrowTrs.DOLocalMoveY(arrowStartY + 0.5f, 0.7f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.OutQuad);
+            arrowTrs.DORotate(new Vector3(0, 360, 0), 3f, RotateMode.LocalAxisAdd).SetLoops(-1, LoopType.Restart).SetEase(Ease.Linear);
+        }
         void Update()
         {
             stateController.Update();

@@ -6,6 +6,9 @@ using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using DG.Tweening;
+using Gymchair.Core.Mgr;
+
 namespace bambong 
 {
     public class GameSceneManager : GameObjectSingletonDestroy<GameSceneManager>, IInit
@@ -37,6 +40,16 @@ namespace bambong
 
         [SerializeField]
         private LevelData levelData;
+
+        [Header("Effect FX")]
+        [SerializeField]
+        private GameObject directionFx;
+        [SerializeField]
+        private GameObject clearFx;
+        [SerializeField]
+        private GameObject failFx;
+        [SerializeField]
+        private GameObject playerArrowFx;
 
         #endregion SerializeField
 
@@ -89,6 +102,9 @@ namespace bambong
 #else
             TokenInputManager.Instance.ReceivedEvent += IncreaseGauage;
 #endif
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.PlayBGM("bgm_Speed");
+#endif
         }
 
         public void IncreaseGauage()
@@ -127,6 +143,14 @@ namespace bambong
         {
             UISceneManager.Instance.CommonPanelOpen();
             player.SetStateIdle();
+
+            directionFx.SetActive(true);
+            Sequence sequence = DOTween.Sequence();
+            sequence.AppendInterval(3f);
+            sequence.AppendCallback(() => { directionFx.SetActive(false); });
+            sequence.Play();
+            playerArrowFx.SetActive(true);
+            player.ArrowAnimStart();
 
             SetStateGamePlay();
         }
@@ -168,6 +192,8 @@ namespace bambong
             gameStateController.ChangeState(GameStart.Instance);
             SetDestination();
             UISceneManager.Instance.WaitPanelOpen(OnStart);
+            
+      
         }
         public void SetStateGamePlay()
         {
@@ -184,17 +210,30 @@ namespace bambong
         {
             OnGameClear?.Invoke();
             gameStateController.ChangeState(GameClear.Instance);
-            player.SetStateNone();
+            //player.SetStateNone();
             GameManager.Instance.ClearLevel(GameManager.Instance.CurrentLevel);
-            AIControlManager.Instance.SetStateAIsStop();
+           // AIControlManager.Instance.SetStateAIsStop();
             UISceneManager.Instance.EndPanelOpen();
+
+            clearFx.SetActive(true);
+#if !UNITY_EDITOR || SOUND_TEST
+           SoundMgr.Instance.StopBGM();
+           SoundMgr.Instance.PlayEffect("sfx_Speed_Clear");
+#endif
         }
         public void SetStateGameOver()
         {
             OnGameClear?.Invoke();
             gameStateController.ChangeState(GameOver.Instance);
-            player.SetStateNone();
-            AIControlManager.Instance.SetStateAIsStop();
+            //player.SetStateNone();
+            playerArrowFx.SetActive(false);
+            failFx.SetActive(true);
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.StopBGM();
+            SoundMgr.Instance.PlayEffect("sfx_Speed_GameOver");
+#endif
+            //AIControlManager.Instance.SetStateAIsStop();
+
             UISceneManager.Instance.EndPanelOpen();
         }
 #endregion SetState

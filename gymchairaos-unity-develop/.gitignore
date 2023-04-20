@@ -76,7 +76,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
-
+/[Rr]esources/[Ff]ont/*
 !nanoapps.keystore
 
 # End of https://www.toptal.com/developers/gitignore/api/unity

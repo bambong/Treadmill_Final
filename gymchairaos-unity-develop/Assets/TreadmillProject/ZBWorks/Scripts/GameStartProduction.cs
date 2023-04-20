@@ -22,11 +22,6 @@ public class GameStartProduction : MonoBehaviour
         countSize = Count_3_Tf.localScale;
     }
 
-    void Start()
-    {
-        ProudctionStart();
-    }
-
     public void ProudctionStart()
     {
         if (production_C != null)

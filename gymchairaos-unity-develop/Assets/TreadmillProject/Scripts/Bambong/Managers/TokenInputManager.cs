@@ -111,7 +111,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             Destroy(gameObject);
             return;
         }
-#if UNITY_EDITOR
+#if UNITY_EDITOR || NO_BLUETOOTH
         _connect = true;
 #else
         ConnectToDevice();
@@ -154,7 +154,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
     }
     void Update()
     {
-#if UNITY_EDITOR
+#if UNITY_EDITOR || NO_BLUETOOTH
         leftToken.InputUpdate();
         rightToken.InputUpdate();
 #endif
@@ -307,8 +307,8 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             Destroy(_popup.gameObject);
         }
     private void OnEnable()
-    { 
-#if !UNITY_EDITOR
+    {
+#if !UNITY_EDITOR && !NO_BLUETOOTH
         if (BluetoothMgr.Instance)
         {
             BluetoothMgr.Instance._actionConnect += OnConnected;
@@ -319,7 +319,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
     }
     private void OnDisable()
     {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR && !NO_BLUETOOTH
         if (BluetoothMgr.Instance)
         {
             BluetoothMgr.Instance._actionConnect -= OnConnected;

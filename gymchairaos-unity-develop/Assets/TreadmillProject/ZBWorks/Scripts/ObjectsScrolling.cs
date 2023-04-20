@@ -27,6 +27,10 @@ namespace ZB
         [ContextMenu("스크롤시작")]
         public void ScrollStart()
         {
+            if(ScrollUpdate_C != null) 
+            {
+                StopCoroutine(ScrollUpdate_C);
+            }
             ScrollUpdate_C = ScrollUpdate();
             StartCoroutine(ScrollUpdate_C);
         }

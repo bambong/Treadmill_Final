@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Gymchair.Core.Mgr;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -37,10 +38,17 @@ namespace bambong
         {
             waitText.text = curWaitTime.ToString();
         }
-
+        private IEnumerator PlayReadytSoundEffect() 
+        {
+            yield return new WaitForSeconds(1f);
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.PlayEffect("sfx_Speed_Ready");
+#endif
+        }
         IEnumerator ProcessWait(Action callOnClose) 
         {
             yield return new WaitForSeconds(2f);
+            StartCoroutine(PlayReadytSoundEffect());
             while (true) 
             {
                 waitText.transform.localScale = Vector3.zero;

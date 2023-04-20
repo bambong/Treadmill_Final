@@ -1,6 +1,8 @@
+using bambong;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using ZB;
 
 namespace ZB
@@ -28,8 +30,19 @@ namespace ZB
         }
         void Start()
         {
+            StartCoroutine(BloothConnectWait());
+        }
+
+        IEnumerator BloothConnectWait() 
+        {
+            while(!TokenInputManager.Instance.IsConnect)
+            {
+                yield return null;
+            }
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(E_SceneName.Obstacle_GameScene_ZB_V2.ToString()));
             GameStartProduction_Start();
         }
+
         IEnumerator GameStart_C;
         IEnumerator GameStartC()
         {
@@ -65,6 +78,7 @@ namespace ZB
             scroll.ScrollStart();
             timeCounter.CountStart();
             player.CheckActive(true);
+            player.EnableWheelEffect(true);
             distance.RecordStart();
             obstacle.CheckActive(true);
         }
@@ -82,6 +96,7 @@ namespace ZB
             timeCounter.CountStop();
             player.ResetState();
             player.CheckActive(false);
+            player.EnableWheelEffect(false);
             distance.RecordStop();
             scroll.ResetFlexible();
             obstacle.CheckActive(false);

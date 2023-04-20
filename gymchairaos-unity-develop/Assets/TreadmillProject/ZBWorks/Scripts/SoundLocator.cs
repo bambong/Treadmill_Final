@@ -9,39 +9,29 @@ namespace ZB
     {
         public void PlayBgm(string id)
         {
-            //try
-            //{
-                SoundMgr.Instance.PlayBGM(id);
-            //}
-            //catch { }
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.PlayBGM(id);
+#endif
         }
 
         public void StopBgm()
         {
-           // try
-           // {
-                SoundMgr.Instance.StopBGM();
-           // }
-           // catch { }
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.StopBGM();
+#endif
         }
 
         public void PlaySfx(string id)
         {
-          //  try
-       //     {
-                SoundMgr.Instance.PlayEffect(id);
-       //     }
-          //  catch { }
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.PlayEffect(id);
+#endif
         }
-
         void Start()
         {
-            //게임실행 음악
-          //  try
-           // {
-                SoundMgr.Instance.PlayBGM("bgm_Obstacle");
-         //   }
-         //   catch { }
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.PlayBGM("bgm_Obstacle");
+#endif
         }
     }
 }

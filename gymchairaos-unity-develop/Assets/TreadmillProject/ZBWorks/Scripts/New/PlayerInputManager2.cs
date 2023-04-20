@@ -21,7 +21,7 @@ namespace ZB
         [SerializeField] Vector3 resetPos;
 
         [SerializeField] bool checking;
-
+        [SerializeField] List<ParticleSystem> wheelEffects;
         public void ResetState()
         {
             playerBody.transform.DOMoveX(-0.6f, 1).SetEase(Ease.OutQuart).SetDelay(1.5f);
@@ -39,6 +39,20 @@ namespace ZB
         public void CheckActive(bool active)
         {
             checking = active;
+        }
+        public void EnableWheelEffect(bool acitve) 
+        {
+            for(int i = 0; i < wheelEffects.Count; ++i) 
+            {
+                if (acitve) 
+                {
+                    wheelEffects[i].Play();
+                }
+                else 
+                {
+                    wheelEffects[i].Stop();
+                }
+            }
         }
 
         public IEnumerator DecreaseToken()
