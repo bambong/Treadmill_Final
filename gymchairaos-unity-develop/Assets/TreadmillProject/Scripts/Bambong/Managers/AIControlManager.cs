@@ -17,7 +17,7 @@ namespace bambong
         [SerializeField]
         private int airivalCount = 1;
         [SerializeField]
-        private List<Color> colors;
+        private List<Material> mats;
 
         private List<AI_CharController> characterAIs = new List<AI_CharController>();
         private bool isInit;
@@ -52,7 +52,7 @@ namespace bambong
                 pickColor.RemoveAt(pickColorIndex);
 
                 var aiController = Instantiate(aiRivalPrefab, pos, rot, null).GetComponent<AI_Rival>();
-                aiController.Init(colors[colorIndex], GameSceneManager.Instance.GetCurLevelInfo().AI_Dtatas[i]);
+                aiController.Init(mats[colorIndex], GameSceneManager.Instance.GetCurLevelInfo().AI_Dtatas[i]);
                 characterAIs.Add(aiController);
             }
 
@@ -65,7 +65,7 @@ namespace bambong
                 pickColor.RemoveAt(pickColorIndex);
                 
                 var aiController = Instantiate(aiCharPrefab,pos,rot,null).GetComponent<AI_CharController>();
-                aiController.Init(colors[colorIndex],GameSceneManager.Instance.GetCurLevelInfo().AI_Dtatas[i]);
+                aiController.Init(mats[colorIndex],GameSceneManager.Instance.GetCurLevelInfo().AI_Dtatas[i]);
                 characterAIs.Add(aiController);
             }
         }

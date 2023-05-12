@@ -12,6 +12,9 @@ namespace bambong
         [SerializeField]
         private Animator animator;
 
+        [SerializeField]
+        private SkinnedMeshRenderer skinnedMeshRenderer;
+
 
         private WheelChairAnimateController animateController;
         private AI_StateController stateController;
@@ -22,23 +25,20 @@ namespace bambong
         protected float curMoveSpeed =1f;
         public AI_StateController StateController { get => stateController; }
         private Coroutine speedChangeCo;
-        public void Init(Color color, SpeedRevisionData revisionData)
+        public void Init(Material mat, SpeedRevisionData revisionData)
         {
-            this.color = color;
             speedRevisionData = revisionData;
-            SetMeshMat();
-
-
+            skinnedMeshRenderer.material = mat;
         }
-        private void SetMeshMat() 
-        {
-            var meshs = transform.GetComponentsInChildren<MeshRenderer>();
+        //private void SetMeshMat(Texture texture) 
+        //{
+        //    var meshs = transform.GetComponentsInChildren<MeshRenderer>();
 
-            foreach(var mesh in meshs)
-            {
-                mesh.material.color = color;
-            }
-        }
+        //    foreach(var mesh in meshs)
+        //    {
+        //        mesh.material.mainTexture = color;
+        //    }
+        //}
         private void Awake()
         {
             animateController = new WheelChairAnimateController(animator);

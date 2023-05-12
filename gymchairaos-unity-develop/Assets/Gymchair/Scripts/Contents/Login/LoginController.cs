@@ -7,6 +7,7 @@ using TMPro;
 using System;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using bambong;
 
 namespace Gymchair.Contents.Login
 {
@@ -46,7 +47,7 @@ namespace Gymchair.Contents.Login
 
         private void Awake()
         {
-            StartCoroutine(onBlack(true, 0.5f, () =>
+            StartCoroutine(onBlack(true, 2f, () =>
             {
                 WarnningPopup.Create();
             }));
@@ -104,15 +105,20 @@ namespace Gymchair.Contents.Login
                     {
                         DataMgr.Instance.UserName = name;
 
-                        StartCoroutine(onBlack(false, 0.5f, () =>
+                        TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString(), () =>
                         {
                             SoundMgr.Instance.StopBGM();
+                        });
+                        //StartCoroutine(onBlack(false, 0.5f, () =>
+                        //{
+                        //    SoundMgr.Instance.StopBGM();
 
-                            SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
-                            {
-                                SceneMgr.Instance.LoadSceneAsync("SelectGame", LoadSceneMode.Additive);
-                            });
-                        }));
+                     
+                        //    SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
+                        //    {
+                        //        SceneMgr.Instance.LoadSceneAsync("SelectGame", LoadSceneMode.Additive);
+                        //    });
+                        //}));
 
                         login = true;
                         return;

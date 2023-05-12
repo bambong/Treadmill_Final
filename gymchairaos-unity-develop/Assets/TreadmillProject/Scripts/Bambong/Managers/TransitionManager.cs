@@ -5,11 +5,13 @@ using UnityEngine.Animations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Gymchair.Core.Mgr;
+using System;
 
 namespace bambong 
 {
     public enum E_SceneName 
     {
+        Login,
         SelectGame,
         Speed_GameScene,
         Speed_MenuScene,
@@ -25,23 +27,24 @@ namespace bambong
         private readonly string AnimTrigger = "IsFadeOut";
         private float curTransitionTime = 0f;
         private bool isTranstionOn = false;
-        private string curScenename = E_SceneName.SelectGame.ToString();
+        private string curScenename = E_SceneName.Login.ToString();
 
         public void OnSceneLoadSuccsess()
         {
             
         }
-        public void SceneTransition(string sceneName)
+        public void SceneTransition(string sceneName, Action onAnimEnd = null)
         {
             //StartCoroutine(Transition(sceneName));
             SceneManager.SetActiveScene(SceneManager.GetSceneByName("Init"));
-            animator.SetBool(AnimTrigger, true);
-            SceneMgr.Instance.UnLoadSceneAsync(curScenename, () =>
-            {
-                animator.SetBool(AnimTrigger, false);
-                SceneMgr.Instance.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            });
-            curScenename = sceneName;
+            
+            StartCoroutine(UnLoad(sceneName, onAnimEnd));
+            //SceneMgr.Instance.UnLoadSceneAsync(curScenename, () =>
+            //{
+            //    Transitioner.Instance.TransitionInWithoutChangingScene();
+            //    SceneMgr.Instance.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            //});
+            //curScenename = sceneName;
 
             //if (isTranstionOn)
             //{
@@ -49,16 +52,29 @@ namespace bambong
             //}
             //StartCoroutine(Transition(sceneName));
         }
-
-
+        IEnumerator UnLoad(string sceneName, Action action = null)
+        {
+            Transitioner.Instance.TransitionOutWithoutChangingScene();
+            yield return new WaitForSeconds(1f);
+            action?.Invoke();
+            var cur = curScenename;
+            SceneMgr.Instance.UnLoadSceneAsync(cur, () =>
+            {
+                //Transitioner.Instance.TransitionInWithoutChangingScene();
+                SceneMgr.Instance.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+                  //, () => { Transitioner.Instance.TransitionInWithoutChangingScene(); });
+            });
+            curScenename = sceneName;
+        }
         IEnumerator Transition(string sceneName)
         {
 
             var sceneLoad = SceneManager.LoadSceneAsync(sceneName,LoadSceneMode.Additive);
             sceneLoad.allowSceneActivation = false;
             isTranstionOn = true;
-            animator.SetBool(AnimTrigger,true);
-            while(sceneLoad.progress < 0.9f || curTransitionTime < MinimumTime)
+            //animator.SetBool(AnimTrigger,true);
+            Transitioner.Instance.TransitionOutWithoutChangingScene();
+            while (sceneLoad.progress < 0.9f || curTransitionTime < MinimumTime)
             {
                 curTransitionTime += Time.deltaTime;
                 yield return null;
@@ -71,7 +87,8 @@ namespace bambong
                 yield return null;
             }
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
-            animator.SetBool(AnimTrigger,false);
+            Transitioner.Instance.TransitionInWithoutChangingScene();
+            //animator.SetBool(AnimTrigger,false);
             curTransitionTime = 0f;
             isTranstionOn = false;
             curScenename = sceneName;

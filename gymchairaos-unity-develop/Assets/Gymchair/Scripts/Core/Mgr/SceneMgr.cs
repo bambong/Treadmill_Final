@@ -75,6 +75,7 @@ namespace Gymchair.Core.Mgr
         IEnumerator OnUnLoadScene(string name, Action success)
         {
             this._scenes.Remove(name);
+            Debug.Log($"Unload {name}");
             yield return SceneManager.UnloadSceneAsync(name);
             success?.Invoke();
         }
