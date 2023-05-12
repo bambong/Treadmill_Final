@@ -19,7 +19,7 @@ namespace ZB
             if (!spawning)
             {
                 spawning = true;
-                SpawnRandomObstacleSet(this.gameObject);
+                SpawnRandomObstacleSet();
             }
         }
         [ContextMenu("스폰정지")]
@@ -32,10 +32,8 @@ namespace ZB
             }
         }
 
-        public void SpawnRandomObstacleSet(GameObject asdf)
+        public void SpawnRandomObstacleSet()
         {
-            Debug.Log(asdf.name);
-            Debug.Log("AAAAAAAAAAAAAAAAAAA");
             ObstacleSet targetSet = obstacleSet[Random.Range(0, obstacleSet.Length)];
             Transform[] spawnedObjs;
             spawnedObjs = targetSet.Spawn();

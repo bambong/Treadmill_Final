@@ -10,27 +10,31 @@ namespace ZB
         public void PlayBgm(string id)
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayBGM(id);
+            if (SoundMgr.Instance != null) 
+                SoundMgr.Instance.PlayBGM(id);
 #endif
         }
 
         public void StopBgm()
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.StopBGM();
+            if (SoundMgr.Instance != null)
+                SoundMgr.Instance.StopBGM();
 #endif
         }
 
         public void PlaySfx(string id)
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayEffect(id);
+            if (SoundMgr.Instance != null)
+                SoundMgr.Instance.PlayEffect(id);
 #endif
         }
         void Start()
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayBGM("bgm_Obstacle");
+            if (SoundMgr.Instance != null)
+                SoundMgr.Instance.PlayBGM("bgm_Obstacle");
 #endif
         }
     }
