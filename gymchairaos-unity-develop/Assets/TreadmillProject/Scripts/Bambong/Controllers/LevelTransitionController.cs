@@ -11,6 +11,9 @@ namespace bambong
         private LevelButtonController[] levelButtonControllers;
         [SerializeField]
         private LevelData levelData;
+        [SerializeField]
+        private SpeedMenuStartPanelController speedMenuStartPanelController;
+
 
         [Header("FOR DEBUGGER")]
         [SerializeField]
@@ -31,18 +34,16 @@ namespace bambong
             {
                 GameManager.Instance.InitLevel(i);
                 var text = levelData.levelInfos[i].distance.ToString() + " M";
-                levelButtonControllers[i].SetButton(LevleTransition,i,text);
+                levelButtonControllers[i].SetButton((int level)=>
+                {
+                    speedMenuStartPanelController.SetButton(level);
+                },i,text);
+                
             }
         }
         public void MenuTransition() 
         {
             TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString());
-        }
-
-        public void LevleTransition(int level) 
-        {
-            GameManager.Instance.SetLevel(level);
-            TransitionManager.Instance.SceneTransition(E_SceneName.Speed_GameScene.ToString());
         }
     }
 }

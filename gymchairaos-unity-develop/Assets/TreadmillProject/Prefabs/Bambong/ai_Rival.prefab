@@ -838,6 +838,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   destination: {fileID: 0}
   animator: {fileID: 6562495674000352675}
+  skinnedMeshRenderer: {fileID: 8683643641517997892}
 --- !u!1 &5041864740879680952
 GameObject:
   m_ObjectHideFlags: 0

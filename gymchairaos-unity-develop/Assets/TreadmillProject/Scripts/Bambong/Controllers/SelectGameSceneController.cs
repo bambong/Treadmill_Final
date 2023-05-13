@@ -11,10 +11,11 @@ namespace bambong
     {
         public void OnLobbyButtonDown()
         {
-            SceneMgr.Instance.UnLoadSceneAsync(E_SceneName.SelectGame.ToString(), () =>
-            {
-                SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive);
-            });
+            //SceneMgr.Instance.UnLoadSceneAsync(E_SceneName.SelectGame.ToString(), () =>
+            //{
+            //    SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive);
+            //});
+            TransitionManager.Instance.SceneTransition("Login");
             //TransitionManager.Instance.SceneTransition();
         }
         public void OnSpeedGameStartButtonDown()
