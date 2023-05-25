@@ -70,7 +70,7 @@ namespace ZB.Balance
                         unBalanceTime = 0;
                         int slantDir = m_leftRpm > m_rightRpm ? -1 : 1;
                         m_playerSlant.Slant(slantDir);
-                        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect(slantDir == -1 ?
+                        SoundLocator.Instance.PlaySfx(slantDir == -1 ?
                             "sfx_to_the_right" : "sfx_to_the_left");
                     }
                 }
@@ -97,7 +97,7 @@ namespace ZB.Balance
                         {
                             //패배판정
                             m_defeatChecker.Defeat();
-                            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("sfx_oops");
+                            SoundLocator.Instance.PlaySfx("sfx_oops");
                         }
                     }
                 }

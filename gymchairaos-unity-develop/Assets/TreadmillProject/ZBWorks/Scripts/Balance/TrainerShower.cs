@@ -61,7 +61,7 @@ namespace ZB.Balance
                     if (waitT == 0)
                     {
                         TrainerUp();
-                        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect(Random.Range(0, 2) == 0 ?
+                        SoundLocator.Instance.PlaySfx(Random.Range(0, 2) == 0 ?
                             "sfx_whistle1" : "sfx_whistle2");
                     }
 
@@ -69,7 +69,7 @@ namespace ZB.Balance
                     if (!sfxPlayed && waitT > 2)
                     {
                         sfxPlayed = false;
-                        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect(Random.Range(0, 2) == 0 ?
+                        SoundLocator.Instance.PlaySfx(Random.Range(0, 2) == 0 ?
                             "sfx_whistle1" : "sfx_whistle2");
                     }
                 }
@@ -87,7 +87,7 @@ namespace ZB.Balance
                 //게임오버 판정
                 if (waitT >= 3)
                 {
-                    Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("sfx_stop");
+                    SoundLocator.Instance.PlaySfx("sfx_stop");
                     m_defeatChecker.Defeat();
                 }
 

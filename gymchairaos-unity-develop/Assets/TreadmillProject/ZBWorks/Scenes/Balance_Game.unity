@@ -5134,6 +5134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a074685a78d70e4419910dea85764906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_bgmID: bgm_Balance
 --- !u!4 &1857134919
 Transform:
   m_ObjectHideFlags: 0

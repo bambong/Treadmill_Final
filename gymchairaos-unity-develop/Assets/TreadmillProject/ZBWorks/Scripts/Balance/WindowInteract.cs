@@ -28,7 +28,7 @@ namespace ZB.Balance
             //일시정지 시작
             if (!m_pausing)
             {
-                Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+                SoundLocator.Instance.PlaySfx("touch");
 
                 m_uiShadow.Active(true);
                 m_obj_interactBlock_Pause.SetActive(false);
@@ -45,7 +45,7 @@ namespace ZB.Balance
             //일시정지 해제
             else
             {
-                Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+                SoundLocator.Instance.PlaySfx("touch");
 
                 m_uiShadow.Active(false);
 
@@ -63,7 +63,7 @@ namespace ZB.Balance
 
         public void OnBtnClicked_Main()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            SoundLocator.Instance.PlaySfx("touch");
 
             m_uiShadow.Active(false);
 
@@ -75,7 +75,7 @@ namespace ZB.Balance
 
         public void OnBtnClicked_Retry()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            SoundLocator.Instance.PlaySfx("touch");
 
             m_uiShadow.Active(false);
 

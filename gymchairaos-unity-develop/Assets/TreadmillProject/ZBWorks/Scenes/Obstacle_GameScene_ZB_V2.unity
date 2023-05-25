@@ -6242,7 +6242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -33.3
+      value: -33.300003
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10453,7 +10453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -33.3
+      value: -33.300003
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -12261,6 +12261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a074685a78d70e4419910dea85764906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_bgmID: bgm_Obstacle
 --- !u!1 &1722382190
 GameObject:
   m_ObjectHideFlags: 0
@@ -13511,7 +13512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -33.3
+      value: -33.300003
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
