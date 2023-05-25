@@ -26,7 +26,7 @@ namespace ZB
         {
             playerBody.transform.DOMoveX(-0.6f, 1).SetEase(Ease.OutQuart).SetDelay(1.5f);
             leftReceived = false;
-            rightReceived = false;
+            rightReceived = true;
         }
         public void AddLeftToken()
         {
@@ -89,18 +89,7 @@ namespace ZB
             {
                 leftRpm = TokenInputManager.Instance.Save_left_rpm;
                 rightRpm = TokenInputManager.Instance.Save_right_rpm;
-                if (leftRpm > 800 && leftRpm > rightRpm && !leftReceived)
-                {
-                    Debug.Log("LEFTMOVE");
-                    playerBody.DOKill();
-                    playerBody.DOMoveX(leftPos, sideMoveDuration).SetEase(Ease.InQuart);
-                    playerBody.DORotate(new Vector3(0, -15, 0), 0.75f).SetEase(Ease.OutQuart);
-                    playerBody.DORotate(new Vector3(0, 0, 0), 0.5f).SetEase(Ease.InOutBack).SetDelay(0.75f);
-
-                    leftReceived = true;
-                    rightReceived = false;
-                }
-                if (rightRpm > 800 && rightRpm > leftRpm && !rightReceived)
+                if (leftRpm > 700 && leftRpm > rightRpm && !rightReceived)
                 {
                     Debug.Log("RightMove");
                     playerBody.DOKill();
@@ -110,6 +99,17 @@ namespace ZB
 
                     rightReceived = true;
                     leftReceived = false;
+                }
+                if (rightRpm > 700 && rightRpm > leftRpm && !leftReceived)
+                {
+                    Debug.Log("LEFTMOVE");
+                    playerBody.DOKill();
+                    playerBody.DOMoveX(leftPos, sideMoveDuration).SetEase(Ease.InQuart);
+                    playerBody.DORotate(new Vector3(0, -15, 0), 0.75f).SetEase(Ease.OutQuart);
+                    playerBody.DORotate(new Vector3(0, 0, 0), 0.5f).SetEase(Ease.InOutBack).SetDelay(0.75f);
+
+                    leftReceived = true;
+                    rightReceived = false;
                 }
             }
         }
