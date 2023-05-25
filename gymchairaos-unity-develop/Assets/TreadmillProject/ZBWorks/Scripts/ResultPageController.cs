@@ -25,7 +25,7 @@ public class ResultPageController : MonoBehaviour
 
     [SerializeField] bool active;
 
-    Vector2 originalSize;
+    Vector3 originalSize;
     WaitForSeconds Unactive_WFS;
 
     private void Awake()
