@@ -72,6 +72,7 @@ namespace ZB.Balance
                         m_playerSlant.Slant(slantDir);
                         SoundLocator.Instance.PlaySfx(slantDir == -1 ?
                             "sfx_to_the_right" : "sfx_to_the_left");
+                        Debug.LogError("???");
                     }
                 }
                 if (unBalance)
@@ -83,7 +84,7 @@ namespace ZB.Balance
                         unBalanceTime = 0;
                         unBalance = false;
                         m_playerSlant.Slant(0);
-                        Debug.LogError("!@#");
+                        Debug.LogError("!!!");
                     }
 
                     if (unBalanceTime >= 5)
@@ -96,7 +97,7 @@ namespace ZB.Balance
                         m_uiGuage_hp.ChangeRatioWithTweening(m_hp / 100);
                         if (m_hp <= 0)
                         {
-                            m_playerSlant.Slant(0);
+                            m_playerSlant.SlantReset();
                             //패배판정
                             m_defeatChecker.Defeat();
                             SoundLocator.Instance.PlaySfx("sfx_oops");

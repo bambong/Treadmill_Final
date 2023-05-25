@@ -15,7 +15,7 @@ public class GameStartProduction : MonoBehaviour
     [SerializeField] Transform Count_1_Tf;
     [SerializeField] PausePageController pauseController;
 
-    [SerializeField] Vector2 countSize;
+    [SerializeField] Vector3 countSize;
 
     void Awake()
     {

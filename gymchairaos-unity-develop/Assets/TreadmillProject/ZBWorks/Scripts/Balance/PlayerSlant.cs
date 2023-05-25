@@ -19,6 +19,10 @@ namespace ZB.Balance
 
         int m_nowSlantDir = 0;
 
+        public void SlantReset()
+        {
+            m_body.parent.DORotate(new Vector3(0, 0, 0), 1).SetEase(Ease.OutQuart).SetUpdate(true);
+        }
         public void Slant(int dir)
         {
             if (m_rotating)
