@@ -9,6 +9,7 @@ namespace ZB.Balance
 {
     public class WindowInteract : MonoBehaviour
     {
+        [SerializeField] UiShadow m_uiShadow;
         [SerializeField] CountDown m_countDown;
         [SerializeField] TimeCount m_timeCount;
         [SerializeField] DistanceCount m_distCount;
@@ -27,6 +28,9 @@ namespace ZB.Balance
             //일시정지 시작
             if (!m_pausing)
             {
+                m_uiShadow.Active(true);
+                m_obj_interactBlock_Pause.SetActive(false);
+
                 m_pausing = true;
                 m_rtf_body_Pause.transform.DOKill();
                 m_rtf_body_Pause.transform.DOScale(Vector2.one, 0.5f).SetEase(Ease.OutQuart).SetUpdate(true);
@@ -39,6 +43,8 @@ namespace ZB.Balance
             //일시정지 해제
             else
             {
+                m_uiShadow.Active(false);
+
                 m_pausing = false;
                 m_rtf_body_Pause.transform.DOKill();
                 m_obj_interactBlock_Pause.SetActive(true);
@@ -53,6 +59,8 @@ namespace ZB.Balance
 
         public void OnBtnClicked_Main()
         {
+            m_uiShadow.Active(false);
+
             Time.timeScale = 1;
             bambong.TransitionManager.Instance.SceneTransition(bambong.E_SceneName.SelectGame.ToString());
             m_obj_interactBlock_Pause.SetActive(true);
@@ -61,6 +69,8 @@ namespace ZB.Balance
 
         public void OnBtnClicked_Retry()
         {
+            m_uiShadow.Active(false);
+
             m_obj_interactBlock_Result.SetActive(true);
             m_rtf_body_Result.transform.DOKill();
             m_rtf_body_Result.transform.DOScale(Vector2.zero, 0.5f).SetEase(Ease.InQuart).SetUpdate(true).OnComplete(() =>
@@ -76,6 +86,8 @@ namespace ZB.Balance
 
         public void WindowAppear_Result()
         {
+            m_uiShadow.Active(true);
+
             m_tmp_time.text = (m_timeCount.m_EarnedObjects * 30).ToString();
             m_tmp_dist.text = ((int)m_distCount.m_NowDistance).ToString();
 

@@ -6,6 +6,8 @@ namespace ZB.Balance
 {
     public class WheelChairGuage : MonoBehaviour
     {
+        [SerializeField] PlayerSlant m_playerSlant;
+        [SerializeField] Animation m_ani;
         [SerializeField] private DefeatConditionChecker m_defeatChecker;
         [SerializeField] private UIGauge m_uiGuage_left;
         [SerializeField] private UIGauge m_uiGuage_Right;
@@ -24,11 +26,15 @@ namespace ZB.Balance
             TokenInputManager.Instance.Save_left_rpm = 0;
             TokenInputManager.Instance.Save_right_rpm = 0;
 
+            m_ani.Play();
+
             FocusCycle_C = FocusCycle();
             StartCoroutine(FocusCycle_C);
         }
         public void FocusStop()
         {
+            m_ani.Stop();
+
             StopCoroutine(FocusCycle_C);
         }
         public void GuageReset()
@@ -43,6 +49,7 @@ namespace ZB.Balance
         {
             bool unBalance = false;
             float unBalanceTime = 0;
+            int unBalanceValue = 240;
             m_hp = 100;
 
             m_uiGuage_left.ChangeRatioWithTweening(0);
@@ -57,15 +64,24 @@ namespace ZB.Balance
                 if (!unBalance)
                 {
                     //¿ÀÂ÷
-                    if (Mathf.Abs(m_leftRpm - m_rightRpm) > 240)
+                    if (Mathf.Abs(m_leftRpm - m_rightRpm) > unBalanceValue)
                     {
                         unBalance = true;
                         unBalanceTime = 0;
+                        m_playerSlant.Slant(m_leftRpm > m_rightRpm ? -1 : 1);
                     }
                 }
                 if (unBalance)
                 {
                     unBalanceTime += Time.deltaTime;
+
+                    if(Mathf.Abs(m_leftRpm - m_rightRpm) <= unBalanceValue)
+                    {
+                        unBalanceTime = 0;
+                        unBalance = false;
+                        m_playerSlant.Slant(0);
+                    }
+
                     if (unBalanceTime >= 5)
                     {
                         unBalanceTime = 0;

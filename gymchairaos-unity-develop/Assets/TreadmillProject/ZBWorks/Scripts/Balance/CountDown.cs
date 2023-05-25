@@ -10,6 +10,7 @@ namespace ZB.Balance
 {
     public class CountDown : MonoBehaviour
     {
+        [SerializeField] UiShadow m_uiShadow;
         [SerializeField] UnityEvent m_uEvent_OnCountStart;
         [SerializeField] UnityEvent m_uEvent_OnCountEnd;
         [SerializeField] TextMeshProUGUI m_tmp_countText;
@@ -39,6 +40,8 @@ namespace ZB.Balance
         IEnumerator Count_C;
         IEnumerator Count(int countTime)
         {
+            m_uiShadow.Active(true);
+
             m_uEvent_OnCountStart.Invoke();
 
             m_tmp_countText.transform.localScale = Vector2.zero;
@@ -54,6 +57,8 @@ namespace ZB.Balance
                 yield return Count_WFS_Duration_FadeDown;
                 countTime -= 1;
             }
+
+            m_uiShadow.Active(false);
 
             m_tmp_countText.gameObject.SetActive(false);
             m_uEvent_OnCountEnd.Invoke();
