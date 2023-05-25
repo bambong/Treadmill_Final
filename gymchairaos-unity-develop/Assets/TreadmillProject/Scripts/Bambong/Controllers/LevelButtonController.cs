@@ -1,6 +1,5 @@
+using Gymchair.Core.Mgr;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -25,7 +24,12 @@ namespace bambong
             label.text = text;
             if(GameManager.Instance.IsOpenLevel(level))
             { 
-                button.onClick.AddListener(()=> action?.Invoke(level));
+                button.onClick.AddListener(()
+                    =>
+                {
+                    SoundMgr.Instance.PlayEffect("touch");
+                    action?.Invoke(level); 
+                });
             }
             else 
             {

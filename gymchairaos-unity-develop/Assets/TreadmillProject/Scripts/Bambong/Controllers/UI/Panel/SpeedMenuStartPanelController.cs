@@ -1,5 +1,6 @@
 using bambong;
 using DG.Tweening;
+using Gymchair.Core.Mgr;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ public class SpeedMenuStartPanelController : PanelController
 
     private void Start()
     {
+        SoundMgr.Instance.PlayBGM("bgm_SpeedMenu");
         rectTransform.anchoredPosition = startPos;
     }
     public override void Open()
@@ -58,7 +60,11 @@ public class SpeedMenuStartPanelController : PanelController
     public void SetButton(int level)
     {
         Open();
-        but.onClick.AddListener( ()=>LevleTransition(level));
+        but.onClick.AddListener( 
+            ()=> {
+                SoundMgr.Instance.PlayEffect("touch");
+                LevleTransition(level);
+            });
     }
     public void LevleTransition(int level)
     {

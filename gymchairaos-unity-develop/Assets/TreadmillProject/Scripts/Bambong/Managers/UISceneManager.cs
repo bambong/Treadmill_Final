@@ -1,3 +1,4 @@
+using Gymchair.Core.Mgr;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -49,6 +50,9 @@ namespace bambong
         }
         public void OnClickExitbutton()
         {
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.PlayEffect("touch");
+#endif
             GameSceneManager.Instance.SetStateGamePause();
             pausePanel.Open();
             exitPanel.Open();
