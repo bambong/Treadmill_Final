@@ -18,7 +18,7 @@ RenderSettings:
   m_FogColor: {r: 0.73333335, g: 1, b: 0.98823535, a: 0.634}
   m_FogMode: 1
   m_FogDensity: 0.05
-  m_LinearFogStart: 8.7
+  m_LinearFogStart: 3.6
   m_LinearFogEnd: 35.9
   m_AmbientSkyColor: {r: 0.9191176, g: 0.9191176, b: 0.9191176, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
@@ -6242,7 +6242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -33.300003
+      value: -33.3
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6703,7 +6703,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1737490073441509093, guid: bc8597b321b818a419c8b95444ccded6, type: 3}
       propertyPath: enterEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1737490073441509093, guid: bc8597b321b818a419c8b95444ccded6, type: 3}
       propertyPath: enterEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
@@ -6739,7 +6739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1737490073441509093, guid: bc8597b321b818a419c8b95444ccded6, type: 3}
       propertyPath: enterEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: ZB.ObstacleSpawnController, Assembly-CSharp
+      value: ObstacleSpawnController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1737490073441509093, guid: bc8597b321b818a419c8b95444ccded6, type: 3}
       propertyPath: enterEvent.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
@@ -6751,7 +6751,7 @@ PrefabInstance:
       objectReference: {fileID: 1652675507}
     - target: {fileID: 1737490073441509093, guid: bc8597b321b818a419c8b95444ccded6, type: 3}
       propertyPath: enterEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1737490073441509093, guid: bc8597b321b818a419c8b95444ccded6, type: 3}
       propertyPath: enterEvent.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -6804,10 +6804,6 @@ PrefabInstance:
     - target: {fileID: 6662290975455804366, guid: bc8597b321b818a419c8b95444ccded6, type: 3}
       propertyPath: m_Name
       value: CheckLayer
-      objectReference: {fileID: 0}
-    - target: {fileID: 6662290975455804366, guid: bc8597b321b818a419c8b95444ccded6, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc8597b321b818a419c8b95444ccded6, type: 3}
@@ -10457,7 +10453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -33.300003
+      value: -33.3
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -11375,7 +11371,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -12445,7 +12441,7 @@ GameObject:
   - component: {fileID: 1753721783}
   - component: {fileID: 1753721785}
   m_Layer: 0
-  m_Name: Main Camera
+  m_Name: Main Camera (1)
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12479,7 +12475,7 @@ Camera:
   field of view: 45.1
   orthographic: 0
   orthographic size: 5
-  m_Depth: 1
+  m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -12504,7 +12500,7 @@ Transform:
   m_LocalRotation: {x: 0.13052616, y: -0, z: -0, w: 0.9914449}
   m_LocalPosition: {x: 0.031079352, y: 1.8366874, z: -8.869}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 14
@@ -13515,7 +13511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -33.300003
+      value: -33.3
       objectReference: {fileID: 0}
     - target: {fileID: 5460890796805424815, guid: fd5cd3ebc94b42f43a2de4cd81a8d20e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

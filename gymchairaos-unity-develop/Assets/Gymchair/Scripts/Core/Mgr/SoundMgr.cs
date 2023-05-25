@@ -45,11 +45,14 @@ namespace Gymchair.Core.Mgr
             _dictAudioClips.Add("play", Resources.Load<AudioClip>("play"));
             _dictAudioClips.Add("count", Resources.Load<AudioClip>("count"));
             _dictAudioClips.Add("back", Resources.Load<AudioClip>("back"));
-            _dictAudioClips.Add("touch", Resources.Load<AudioClip>("touch"));
+            //_dictAudioClips.Add("touch", Resources.Load<AudioClip>("touch"));
+            _dictAudioClips.Add("touch", Resources.Load<AudioClip>("Sounds/SFX_Button_Click"));
 
             //배경음
             _dictAudioClips.Add("bgm_Speed",    Resources.Load<AudioClip>("Sounds/speed-bgm"));
             _dictAudioClips.Add("bgm_Obstacle", Resources.Load<AudioClip>("Sounds/BGM_Obstacle_17._Technically_Accurate_353"));
+            _dictAudioClips.Add("bgm_GameSelect", Resources.Load<AudioClip>("Sounds/BGM_GameSelect"));
+            _dictAudioClips.Add("bgm_SpeedMenu", Resources.Load<AudioClip>("Sounds/bgm_SpeedMenu"));
 
             //효과음
             _dictAudioClips.Add("sfx_CarCrash", Resources.Load<AudioClip>("Sounds/SFX_CarCrash_Car_Impact_Concrete"));

@@ -1,3 +1,4 @@
+using Gymchair.Core.Mgr;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,6 +44,7 @@ namespace bambong
         }
         public void MenuTransition() 
         {
+            SoundMgr.Instance.PlayEffect("touch");
             TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString());
         }
     }

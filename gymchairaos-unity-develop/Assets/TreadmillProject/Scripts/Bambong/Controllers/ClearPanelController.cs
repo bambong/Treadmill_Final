@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Gymchair.Core.Mgr;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -26,14 +27,23 @@ namespace bambong
         }
         public void OnClickMenuButton() 
         {
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.PlayEffect("touch");
+#endif
             TransitionManager.Instance.SceneTransition(E_SceneName.Speed_MenuScene.ToString());
         }
         public void OnClickRetryButton() 
         {
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.PlayEffect("touch");
+#endif
             TransitionManager.Instance.SceneTransition(E_SceneName.Speed_GameScene.ToString());
         }
         public void OnClickExitButton()
         {
+#if !UNITY_EDITOR || SOUND_TEST
+            SoundMgr.Instance.PlayEffect("touch");
+#endif
             TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString());
         }
 
