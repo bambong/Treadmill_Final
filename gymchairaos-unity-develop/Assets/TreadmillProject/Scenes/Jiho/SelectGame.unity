@@ -177,15 +177,31 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: e1e3acf939403ea40a5f035b9a254c88, type: 3}
     - target: {fileID: 3972521224217383997, guid: dc74459fa3967c345bc2cc1775bbbaf4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3972521224217383997, guid: dc74459fa3967c345bc2cc1775bbbaf4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 413477849}
     - target: {fileID: 3972521224217383997, guid: dc74459fa3967c345bc2cc1775bbbaf4, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnBalanceGameStartButtonDown
+      objectReference: {fileID: 0}
+    - target: {fileID: 3972521224217383997, guid: dc74459fa3967c345bc2cc1775bbbaf4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: bambong.SelectGameSceneController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3972521224217383997, guid: dc74459fa3967c345bc2cc1775bbbaf4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3972521224217383997, guid: dc74459fa3967c345bc2cc1775bbbaf4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3972521224217383997, guid: dc74459fa3967c345bc2cc1775bbbaf4, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3972521225125857633, guid: dc74459fa3967c345bc2cc1775bbbaf4, type: 3}
       propertyPath: m_Color.a

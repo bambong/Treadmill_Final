@@ -35,6 +35,7 @@ namespace ZB.Balance
             StartCoroutine(Count_C);
         }
 
+        WaitForSeconds Count_WFS_Duration_Ready = new WaitForSeconds(2.25f);
         WaitForSeconds Count_WFS_Duration_FadeUp = new WaitForSeconds(0.5f);
         WaitForSeconds Count_WFS_Duration_FadeDown = new WaitForSeconds(0.5f);
         IEnumerator Count_C;
@@ -46,8 +47,9 @@ namespace ZB.Balance
 
             m_tmp_countText.transform.localScale = Vector2.zero;
 
+            yield return null;
             SoundLocator.Instance.PlaySfx("sfx_are_you_ready");
-            yield return Count_WFS_Duration_FadeUp;
+            yield return Count_WFS_Duration_Ready;
             while (countTime > 0)
             {
                 switch (countTime)

@@ -32,7 +32,7 @@ namespace ZB.Balance
             m_nowDistance = 0;
             while (true)
             {
-                m_nowDistance += m_wheelChairGuage.m_NowSpeed;
+                m_nowDistance += m_wheelChairGuage.m_NowSpeed * Time.deltaTime;
                 m_tmp_distanceShow.text = ((int)m_nowDistance).ToString();
                 yield return null;
             }

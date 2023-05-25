@@ -68,7 +68,7 @@ namespace ZB.Balance
                     waitT += Time.deltaTime;
                     if (!sfxPlayed && waitT > 2)
                     {
-                        sfxPlayed = false;
+                        sfxPlayed = true;
                         SoundLocator.Instance.PlaySfx(Random.Range(0, 2) == 0 ?
                             "sfx_whistle1" : "sfx_whistle2");
                     }

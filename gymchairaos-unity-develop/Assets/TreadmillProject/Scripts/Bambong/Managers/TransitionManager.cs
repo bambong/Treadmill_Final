@@ -16,7 +16,8 @@ namespace bambong
         Speed_GameScene,
         Speed_MenuScene,
         Obstacle_GameScene,
-        Obstacle_GameScene_ZB_V2
+        Obstacle_GameScene_ZB_V2,
+        Balance_Game
     }
     public class TransitionManager : GameObjectSingleton<TransitionManager>, IInit
     {
