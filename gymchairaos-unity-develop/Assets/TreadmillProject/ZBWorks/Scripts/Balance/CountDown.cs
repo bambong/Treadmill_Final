@@ -11,12 +11,19 @@ namespace ZB.Balance
     public class CountDown : MonoBehaviour
     {
         [SerializeField] UnityEvent m_uEvent_OnCountStart;
+        [SerializeField] UnityEvent m_uEvent_OnCountEnd;
         [SerializeField] TextMeshProUGUI m_tmp_countText;
 
         /// <summary>
         /// 카운트 시작, 끝난 후 들어가있는 이벤트 Invoke
         /// </summary>
         /// <param name="time"></param>
+        [ContextMenu("Start")]
+        public void TestCountStart()
+        {
+            CountStart(3);
+        }
+
         public void CountStart(int time)
         {
             m_tmp_countText.gameObject.SetActive(true);
@@ -32,6 +39,8 @@ namespace ZB.Balance
         IEnumerator Count_C;
         IEnumerator Count(int countTime)
         {
+            m_uEvent_OnCountStart.Invoke();
+
             m_tmp_countText.transform.localScale = Vector2.zero;
             while (countTime > 0)
             {
@@ -47,7 +56,7 @@ namespace ZB.Balance
             }
 
             m_tmp_countText.gameObject.SetActive(false);
-            m_uEvent_OnCountStart.Invoke();
+            m_uEvent_OnCountEnd.Invoke();
         }
 
         private void Start()

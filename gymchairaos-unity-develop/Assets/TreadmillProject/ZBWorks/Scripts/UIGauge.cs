@@ -12,6 +12,7 @@ namespace ZB
         [SerializeField] RectTransform mask;
         [SerializeField] RectTransform body;
 
+        [SerializeField] bool startAtZero;
         [SerializeField] float duration;
         [SerializeField] Ease ease;
 
@@ -38,20 +39,15 @@ namespace ZB
 
             body.DOKill();
             body.DOAnchorPos(new Vector2(0, (ratio - 1) * length), duration).SetEase(ease);
-            Debug.Log(new Vector2(0, (ratio - 1) * length));
         }
 
-        [ContextMenu("TestChangeRatio")]
-        public void TestChangeRatio()
+        void OnEnable()
         {
-            ChangeRatio(testRatio);
+            if (startAtZero)
+            {
+                body.anchoredPosition = new Vector2(0, -length);
+            }
         }
-        [ContextMenu("TestChangeRatioWithTweening")]
-        public void TestChangeRatioWithTweening()
-        {
-            ChangeRatioWithTweening(testRatio);
-        }
-
         void Awake()
         {
             length = mask.sizeDelta.y;
