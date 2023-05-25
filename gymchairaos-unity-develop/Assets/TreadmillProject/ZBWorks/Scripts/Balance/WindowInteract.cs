@@ -28,6 +28,8 @@ namespace ZB.Balance
             //일시정지 시작
             if (!m_pausing)
             {
+                SoundLocator.Instance.PlaySfx("touch");
+
                 m_uiShadow.Active(true);
                 m_obj_interactBlock_Pause.SetActive(false);
 
@@ -43,6 +45,8 @@ namespace ZB.Balance
             //일시정지 해제
             else
             {
+                SoundLocator.Instance.PlaySfx("touch");
+
                 m_uiShadow.Active(false);
 
                 m_pausing = false;
@@ -59,6 +63,8 @@ namespace ZB.Balance
 
         public void OnBtnClicked_Main()
         {
+            SoundLocator.Instance.PlaySfx("touch");
+
             m_uiShadow.Active(false);
 
             Time.timeScale = 1;
@@ -69,6 +75,8 @@ namespace ZB.Balance
 
         public void OnBtnClicked_Retry()
         {
+            SoundLocator.Instance.PlaySfx("touch");
+
             m_uiShadow.Active(false);
 
             m_obj_interactBlock_Result.SetActive(true);

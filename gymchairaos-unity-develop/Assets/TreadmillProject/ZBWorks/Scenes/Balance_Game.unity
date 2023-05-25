@@ -5105,7 +5105,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823458173}
   m_CullTransparentMesh: 1
---- !u!1 &1829980645
+--- !u!1 &1857134917
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5113,38 +5113,36 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1829980647}
-  - component: {fileID: 1829980646}
+  - component: {fileID: 1857134919}
+  - component: {fileID: 1857134918}
   m_Layer: 0
-  m_Name: IdToLayerReader
+  m_Name: Sound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1829980646
+--- !u!114 &1857134918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1829980645}
+  m_GameObject: {fileID: 1857134917}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9854c0ae3ad8f99428c4fb15fe132184, type: 3}
+  m_Script: {fileID: 11500000, guid: a074685a78d70e4419910dea85764906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sets:
-  - ID: Player
-    Layer: 0
---- !u!4 &1829980647
+  m_bgmID: bgm_Balance
+--- !u!4 &1857134919
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1829980645}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 1857134917}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.0252597, y: 2.665675, z: -1.7792234}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

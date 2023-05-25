@@ -35,6 +35,7 @@ namespace ZB.Balance
             StartCoroutine(Count_C);
         }
 
+        WaitForSeconds Count_WFS_Duration_Ready = new WaitForSeconds(2.25f);
         WaitForSeconds Count_WFS_Duration_FadeUp = new WaitForSeconds(0.5f);
         WaitForSeconds Count_WFS_Duration_FadeDown = new WaitForSeconds(0.5f);
         IEnumerator Count_C;
@@ -45,8 +46,25 @@ namespace ZB.Balance
             m_uEvent_OnCountStart.Invoke();
 
             m_tmp_countText.transform.localScale = Vector2.zero;
+
+            yield return null;
+            SoundLocator.Instance.PlaySfx("sfx_are_you_ready");
+            yield return Count_WFS_Duration_Ready;
             while (countTime > 0)
             {
+                switch (countTime)
+                {
+                    case 3:
+                        SoundLocator.Instance.PlaySfx("sfx_three");
+                        break;
+                    case 2:
+                        SoundLocator.Instance.PlaySfx("sfx_two");
+                        break;
+                    case 1:
+                        SoundLocator.Instance.PlaySfx("sfx_one");
+                        break;
+                }
+
                 //여기서 보여주는 연출
                 m_tmp_countText.text = countTime.ToString();
 

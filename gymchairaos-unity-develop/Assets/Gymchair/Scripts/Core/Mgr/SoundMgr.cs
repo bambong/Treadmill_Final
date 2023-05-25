@@ -53,6 +53,7 @@ namespace Gymchair.Core.Mgr
             _dictAudioClips.Add("bgm_Obstacle", Resources.Load<AudioClip>("Sounds/BGM_Obstacle_17._Technically_Accurate_353"));
             _dictAudioClips.Add("bgm_GameSelect", Resources.Load<AudioClip>("Sounds/BGM_GameSelect"));
             _dictAudioClips.Add("bgm_SpeedMenu", Resources.Load<AudioClip>("Sounds/bgm_SpeedMenu"));
+            _dictAudioClips.Add("bgm_Balance", Resources.Load<AudioClip>("Sounds/13. Track 13"));
 
             //효과음
             _dictAudioClips.Add("sfx_CarCrash", Resources.Load<AudioClip>("Sounds/SFX_CarCrash_Car_Impact_Concrete"));
@@ -65,6 +66,16 @@ namespace Gymchair.Core.Mgr
             _dictAudioClips.Add("sfx_Speed_Clear", Resources.Load<AudioClip>("Sounds/speed-win"));
             _dictAudioClips.Add("sfx_Speed_GameOver", Resources.Load<AudioClip>("Sounds/speed-game-over"));
             _dictAudioClips.Add("sfx_Speed_Ready", Resources.Load<AudioClip>("Sounds/speed-ready-go"));
+            _dictAudioClips.Add("sfx_one", Resources.Load<AudioClip>("Sounds/1!"));
+            _dictAudioClips.Add("sfx_two", Resources.Load<AudioClip>("Sounds/2!"));
+            _dictAudioClips.Add("sfx_three", Resources.Load<AudioClip>("Sounds/3!"));
+            _dictAudioClips.Add("sfx_are_you_ready", Resources.Load<AudioClip>("Sounds/Are You Ready"));
+            _dictAudioClips.Add("sfx_oops", Resources.Load<AudioClip>("Sounds/oops"));
+            _dictAudioClips.Add("sfx_stop", Resources.Load<AudioClip>("Sounds/stop!"));
+            _dictAudioClips.Add("sfx_to_the_left", Resources.Load<AudioClip>("Sounds/To the left"));
+            _dictAudioClips.Add("sfx_to_the_right", Resources.Load<AudioClip>("Sounds/To the right"));
+            _dictAudioClips.Add("sfx_whistle1", Resources.Load<AudioClip>("Sounds/Whistle1"));
+            _dictAudioClips.Add("sfx_whistle2", Resources.Load<AudioClip>("Sounds/Whistle2"));
         }
 
         public void PlayBGM(string name)

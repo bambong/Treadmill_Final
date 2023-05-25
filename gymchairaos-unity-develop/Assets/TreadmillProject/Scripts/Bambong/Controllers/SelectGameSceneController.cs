@@ -33,6 +33,11 @@ namespace bambong
             SoundMgr.Instance.PlayEffect("touch");
             TransitionManager.Instance.SceneTransition(E_SceneName.Obstacle_GameScene_ZB_V2.ToString());
         }
+        public void OnBalanceGameStartButtonDown()
+        {
+            SoundMgr.Instance.PlayEffect("touch");
+            TransitionManager.Instance.SceneTransition(E_SceneName.Balance_Game.ToString());
+        }
 
     }
 

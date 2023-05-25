@@ -7,6 +7,10 @@ namespace ZB
 {
     public class SoundLocator : MonoBehaviour
     {
+        public static SoundLocator Instance;
+
+        [SerializeField] string m_bgmID;
+
         public void PlayBgm(string id)
         {
 #if !UNITY_EDITOR || SOUND_TEST
@@ -32,9 +36,11 @@ namespace ZB
         }
         void Start()
         {
+            Instance = this;
+
 #if !UNITY_EDITOR || SOUND_TEST
             if (SoundMgr.Instance != null)
-                SoundMgr.Instance.PlayBGM("bgm_Obstacle");
+                SoundMgr.Instance.PlayBGM(m_bgmID);
 #endif
         }
     }
