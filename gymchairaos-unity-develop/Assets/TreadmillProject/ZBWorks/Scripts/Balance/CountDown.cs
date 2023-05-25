@@ -45,8 +45,24 @@ namespace ZB.Balance
             m_uEvent_OnCountStart.Invoke();
 
             m_tmp_countText.transform.localScale = Vector2.zero;
+
+            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("sfx_are_you_ready");
+            yield return Count_WFS_Duration_FadeUp;
             while (countTime > 0)
             {
+                switch (countTime)
+                {
+                    case 3:
+                        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("sfx_three");
+                        break;
+                    case 2:
+                        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("sfx_two");
+                        break;
+                    case 1:
+                        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("sfx_one");
+                        break;
+                }
+
                 //여기서 보여주는 연출
                 m_tmp_countText.text = countTime.ToString();
 
@@ -66,6 +82,8 @@ namespace ZB.Balance
 
         private void Start()
         {
+            Gymchair.Core.Mgr.SoundMgr.Instance.PlayBGM("bgm_Balance");
+
             m_tmp_countText.transform.localScale = Vector2.zero;
             m_tmp_countText.gameObject.SetActive(false);
 

@@ -48,6 +48,7 @@ namespace ZB.Balance
         {
             TrainerDown();
             float waitT = 0;
+            bool sfxPlayed = false;
 
             yield return CheckCycle_WFS;
 
@@ -60,15 +61,24 @@ namespace ZB.Balance
                     if (waitT == 0)
                     {
                         TrainerUp();
+                        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect(Random.Range(0, 2) == 0 ?
+                            "sfx_whistle1" : "sfx_whistle2");
                     }
 
                     waitT += Time.deltaTime;
+                    if (!sfxPlayed && waitT > 2)
+                    {
+                        sfxPlayed = false;
+                        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect(Random.Range(0, 2) == 0 ?
+                            "sfx_whistle1" : "sfx_whistle2");
+                    }
                 }
                 else
                 {
                     //따라가기 종료
                     if (waitT > 0)
                     {
+                        sfxPlayed = false;
                         waitT = 0;
                         TrainerDown();
                     }
@@ -77,6 +87,7 @@ namespace ZB.Balance
                 //게임오버 판정
                 if (waitT >= 3)
                 {
+                    Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("sfx_stop");
                     m_defeatChecker.Defeat();
                 }
 

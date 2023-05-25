@@ -68,7 +68,10 @@ namespace ZB.Balance
                     {
                         unBalance = true;
                         unBalanceTime = 0;
-                        m_playerSlant.Slant(m_leftRpm > m_rightRpm ? -1 : 1);
+                        int slantDir = m_leftRpm > m_rightRpm ? -1 : 1;
+                        m_playerSlant.Slant(slantDir);
+                        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect(slantDir == -1 ?
+                            "sfx_to_the_right" : "sfx_to_the_left");
                     }
                 }
                 if (unBalance)
@@ -94,6 +97,7 @@ namespace ZB.Balance
                         {
                             //패배판정
                             m_defeatChecker.Defeat();
+                            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("sfx_oops");
                         }
                     }
                 }
