@@ -58,7 +58,7 @@ public class ResultPageController : MonoBehaviour
             body.transform.localScale = Vector2.zero;
             body.transform.DOScale(originalSize, duration).SetEase(Ease.OutQuart);
 
-            tmp_Distance.text = ((int)distanceRecord.CurrentDistanceRecord).ToString();
+            tmp_Distance.text = ((int)distanceRecord.CurrentDistanceRecord).ToString()+"M";
             tmp_Time.text = TimeCounter.FormatTime(timeCounter.CurrentTimeScore);
         }
         //비활성화

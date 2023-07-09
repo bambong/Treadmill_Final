@@ -60,6 +60,8 @@ public class SpeedMenuStartPanelController : PanelController
     public void SetButton(int level)
     {
         Open();
+        //하단 내용 수정하였습니다. 누르는만큼 씬 여러개 로드되는 버그 -06.23
+        but.onClick.RemoveAllListeners();
         but.onClick.AddListener( 
             ()=> {
                 SoundMgr.Instance.PlayEffect("touch");

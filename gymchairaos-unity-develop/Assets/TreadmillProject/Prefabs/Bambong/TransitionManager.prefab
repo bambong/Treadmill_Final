@@ -137,13 +137,33 @@ PrefabInstance:
     - target: {fileID: 8350116221823867065, guid: a4df479fd051f65458c37de69b0f06f6, type: 3}
       propertyPath: _transitionBlockPrefab
       value: 
-      objectReference: {fileID: 142902, guid: 71cbfac10db8b174e8e88000a012b192, type: 3}
+      objectReference: {fileID: 151930, guid: ac465f36cf2018f4cbcf687426c5aef8, type: 3}
+    - target: {fileID: 8350116221823867065, guid: a4df479fd051f65458c37de69b0f06f6, type: 3}
+      propertyPath: _transitionBlockSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 14ee1489f85c53b4fba5328cd2889502, type: 3}
     - target: {fileID: 8350116221823867065, guid: a4df479fd051f65458c37de69b0f06f6, type: 3}
       propertyPath: _transitionOrderPrefab
       value: 
-      objectReference: {fileID: 194382, guid: 0d665b4a79b245547a3b950228417d8c, type: 3}
+      objectReference: {fileID: 114910, guid: 599e449315a2e0146a063b3a49d2b3ce, type: 3}
+    - target: {fileID: 8350116221823867065, guid: a4df479fd051f65458c37de69b0f06f6, type: 3}
+      propertyPath: _transitionBlockColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8350116221823867065, guid: a4df479fd051f65458c37de69b0f06f6, type: 3}
+      propertyPath: _transitionBlockColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8350116221823867065, guid: a4df479fd051f65458c37de69b0f06f6, type: 3}
+      propertyPath: _transitionBlockColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8350116221823867065, guid: a4df479fd051f65458c37de69b0f06f6, type: 3}
       propertyPath: _automaticallyTransitionIn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8350116221823867065, guid: a4df479fd051f65458c37de69b0f06f6, type: 3}
+      propertyPath: _widthOfTransitionInBlocks
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8350116221823867065, guid: a4df479fd051f65458c37de69b0f06f6, type: 3}
