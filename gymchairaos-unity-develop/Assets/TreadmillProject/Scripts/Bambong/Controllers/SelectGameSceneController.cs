@@ -20,9 +20,10 @@ namespace bambong
             //    SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive);
             //});
             SoundMgr.Instance.PlayEffect("touch");
-            TransitionManager.Instance.SceneTransition("Login");
-            //TransitionManager.Instance.SceneTransition();
+            TransitionManager.Instance.SceneTransition(E_SceneName.SelectMenu.ToString());
         }
+        //TransitionManager.Instance.SceneTransition();
+
         public void OnSpeedGameStartButtonDown()
         {
             SoundMgr.Instance.PlayEffect("touch");

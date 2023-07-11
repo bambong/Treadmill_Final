@@ -105,7 +105,7 @@ namespace Gymchair.Contents.Login
                     {
                         DataMgr.Instance.UserName = name;
 
-                        TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString(), () =>
+                        TransitionManager.Instance.SceneTransition(E_SceneName.SelectMenu.ToString(), () =>
                         {
                             SoundMgr.Instance.StopBGM();
                         });
