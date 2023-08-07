@@ -66,6 +66,7 @@ public class SpeedMenuStartPanelController : PanelController
             ()=> {
                 SoundMgr.Instance.PlayEffect("touch");
                 LevleTransition(level);
+                but.interactable = false;
             });
     }
     public void LevleTransition(int level)

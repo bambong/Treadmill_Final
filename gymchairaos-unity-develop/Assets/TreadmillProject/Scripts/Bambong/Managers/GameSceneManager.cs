@@ -96,12 +96,10 @@ namespace bambong
         {
             Init();
             //TokenInputManager.Instance.ConnectToDevice();
-#if UNITY_EDITOR
+
             TokenInputManager.Instance.AddRightTokenEvent(IncreaseGauage);
             TokenInputManager.Instance.AddLeftTokenEvent(IncreaseGauage);
-#else
-            TokenInputManager.Instance.ReceivedEvent += IncreaseGauage;
-#endif
+
 #if !UNITY_EDITOR || SOUND_TEST
             SoundMgr.Instance.PlayBGM("bgm_Speed");
 #endif
@@ -115,9 +113,10 @@ namespace bambong
             }
             float factor = 1;
 #if !UNITY_EDITOR
-            factor = 0.005f * TokenInputManager.Instance.CurRpm ;
+            factor = TokenInputManager.Instance.CurRpm ;
 #endif
-            curGauage = Mathf.Min(curGauage +  increaseGauageAmount * factor, maximumGauage);
+            Debug.Log($"°ÔÀÌÁö »ó½Â + {increaseGauageAmount * factor}");
+            curGauage = Mathf.Clamp(curGauage +  increaseGauageAmount * factor, 0 , maximumGauage);
         }
         public bool CheckSpeedGageOring() => curGauage <= 0;
         private void Update()

@@ -4,6 +4,7 @@ using Gymchair.Core.Mgr;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class InputToken
@@ -57,6 +58,10 @@ public class InputToken
 
 public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, IInit
 {
+
+    [SerializeField]
+    private TextMeshProUGUI debugText;
+
     [SerializeField]
     private KeyCode leftKey = KeyCode.A;
     [SerializeField]
@@ -74,7 +79,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
     [Obsolete("미터 기준")]
     public float CurSpeed { get => CurRpm * 240.0f / 60000.0f; }
-    public float CurRpm { get { return _save_left_rpm + _save_right_rpm * 0.5f; } }
+    public float CurRpm { get { return _save_left_speed + _save_right_speed * 0.5f; } }
     public float Bpm { get => _save_bpm; }
     public bool IsConnect { get => _connect; } 
 
@@ -82,8 +87,8 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
     private InputToken rightToken;
 
     private float _save_bpm = 0.0f;
-    private float _save_left_rpm = 0.0f;
-    private float _save_right_rpm = 0.0f;
+    private float _save_left_speed = 0.0f;
+    private float _save_right_speed = 0.0f;
 
     private GymchairConnectPopupController _popup;
     private bool _connect = false;
@@ -95,8 +100,8 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         get { return Math.Min(leftToken.LastEventTime, rightToken.LastEventTime); }
     }
 
-    public float Save_left_rpm { get => _save_left_rpm; set => _save_left_rpm = value;  }
-    public float Save_right_rpm { get => _save_right_rpm; set => _save_right_rpm = value; }
+    public float Save_left_rpm { get => _save_left_speed; set => _save_left_speed = value;  }
+    public float Save_right_rpm { get => _save_right_speed; set => _save_right_speed = value; }
 
     public void Init()
     {
@@ -168,35 +173,41 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         }
     }
 
-    private readonly int LEFT_RPM_INDEX = 1;
-    private readonly int RIGHT_RPM_INDEX = 5;
+    private readonly int X_AXIS_SPEED_INDEX = 1;
+    private readonly int Y_AXIS_SPEED_INDEX = 2;
+    private readonly int Z_AXIS_SPEED_INDEX = 3;
     private readonly int BPM_INDEX = 9;
-    private readonly int MIN_CHECK_RPM = 0;
+    private readonly float MIN_CHECK_RPM = 0;
    
-    
+    private float GetSpeed( float y ) 
+    {
+        return y * 500f; 
+        // 각속도 -> 속도 계산법 (V = (2π X 반지름 X 각속도) / 360
+    }
     public void OnReceivedMessage(string message)
     {
         OnConnected();
         try
         {
             int count = message.Length;
+            debugText.text = message;
             Debug.Log($"메세지 받음 : {message}");
-            var splitMessage = message.Split('/');
+            var splitMessage = message.Split(',');
 
-
-            _save_left_rpm = float.Parse(splitMessage[LEFT_RPM_INDEX]);
-            Debug.Log($"LEFT_RPM : {splitMessage[LEFT_RPM_INDEX]}");
-            _save_right_rpm = float.Parse(splitMessage[RIGHT_RPM_INDEX]);
-            Debug.Log($"RIGHT_RPM : {splitMessage[RIGHT_RPM_INDEX]}");
+            _save_left_speed = GetSpeed(float.Parse(splitMessage[Y_AXIS_SPEED_INDEX]));
+            _save_right_speed = GetSpeed(float.Parse(splitMessage[Y_AXIS_SPEED_INDEX]));
+            //Debug.Log($"LEFT_RPM : {splitMessage[X_AXIS_SPEED_INDEX_L]}");
+            //Debug.Log($"RIGHT_RPM : {splitMessage[Y_AXIS_SPEED_INDEX_L]}");
             _save_bpm = float.Parse(splitMessage[BPM_INDEX]);
            
             ReceivedEvent?.Invoke();
+            Debug.Log("LEFT_RPM : " + _save_left_speed + " RIGHT_RPM : " + _save_right_speed);
 
-            if(_save_left_rpm > MIN_CHECK_RPM) 
+            if (_save_left_speed > MIN_CHECK_RPM) 
             {
                 leftToken.CallEvent();
             }
-            if(_save_right_rpm > MIN_CHECK_RPM) 
+            if(_save_right_speed > MIN_CHECK_RPM) 
             {
                 rightToken.CallEvent();
             }

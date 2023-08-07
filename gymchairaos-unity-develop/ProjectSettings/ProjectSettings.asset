@@ -250,8 +250,8 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: '{inproject}: zb.keystore'
-  AndroidKeyaliasName: zb
+  AndroidKeystoreName: '{inproject}: user.keystore'
+  AndroidKeyaliasName: asd
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 0
   AndroidIsGame: 1

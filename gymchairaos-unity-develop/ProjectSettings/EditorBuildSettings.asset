@@ -36,6 +36,9 @@ EditorBuildSettings:
     path: Assets/Gymchair/Scenes/Modify.unity
     guid: 586274364d67145dcbbc18de02866c96
   - enabled: 1
+    path: Assets/TreadmillProject/Scenes/Jiho/SelectMenu.unity
+    guid: 26c69a227da61be4f93c290999a4aeb0
+  - enabled: 1
     path: Assets/TreadmillProject/Scenes/Jiho/SelectGame.unity
     guid: 8d2b5da889ee74748b0d747c70a38c2b
   - enabled: 1
