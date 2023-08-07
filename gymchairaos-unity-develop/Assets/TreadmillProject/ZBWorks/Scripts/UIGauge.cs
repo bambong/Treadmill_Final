@@ -16,9 +16,6 @@ namespace ZB
         [SerializeField] float duration;
         [SerializeField] Ease ease;
 
-        [Space(30)]
-        [SerializeField] float testRatio;
-
         float length;
 
         public void ChangeRatio(float ratio)

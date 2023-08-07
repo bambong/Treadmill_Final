@@ -25,8 +25,10 @@ namespace ZB
         public void ResetState()
         {
             playerBody.transform.DOMoveX(-0.6f, 1).SetEase(Ease.OutQuart).SetDelay(1.5f);
-            leftReceived = false;
-            rightReceived = true;
+            leftReceived = true;
+            rightReceived = false;
+            TokenInputManager.Instance.Save_left_rpm = 0;
+            TokenInputManager.Instance.Save_right_rpm = 0;
         }
         public void AddLeftToken()
         {
