@@ -59,8 +59,6 @@ public class InputToken
 public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, IInit
 {
 
-    [SerializeField]
-    private TextMeshProUGUI debugText;
 
     [SerializeField]
     private KeyCode leftKey = KeyCode.A;
@@ -116,6 +114,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             Destroy(gameObject);
             return;
         }
+        
 #if UNITY_EDITOR || NO_BLUETOOTH
         _connect = true;
 #else
@@ -146,7 +145,8 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
     }
     public void ConnectToDevice() 
     {
-          StartCoroutine(WaitStart());
+        StartCoroutine(connectServer());
+        //StartCoroutine(WaitStart());
     }
     IEnumerator WaitStart()
     {
@@ -162,6 +162,11 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 #if UNITY_EDITOR || NO_BLUETOOTH
         leftToken.InputUpdate();
         rightToken.InputUpdate();
+#else
+        if(_connect && DataReceiver.Instance.LastMsg != string.Empty) 
+        {
+            OnReceivedMessage(DataReceiver.Instance.LastMsg);
+        }
 #endif
 
     }
@@ -181,24 +186,21 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
    
     private float GetSpeed( float y ) 
     {
-        return y * 500f; 
+        return y * DataReceiver.Instance.FactorValue; 
         // 각속도 -> 속도 계산법 (V = (2π X 반지름 X 각속도) / 360
     }
     public void OnReceivedMessage(string message)
     {
-        OnConnected();
-        try
-        {
-            int count = message.Length;
-            debugText.text = message;
+
             Debug.Log($"메세지 받음 : {message}");
+            int count = message.Length;
             var splitMessage = message.Split(',');
 
             _save_left_speed = GetSpeed(float.Parse(splitMessage[Y_AXIS_SPEED_INDEX]));
             _save_right_speed = GetSpeed(float.Parse(splitMessage[Y_AXIS_SPEED_INDEX]));
             //Debug.Log($"LEFT_RPM : {splitMessage[X_AXIS_SPEED_INDEX_L]}");
             //Debug.Log($"RIGHT_RPM : {splitMessage[Y_AXIS_SPEED_INDEX_L]}");
-            _save_bpm = float.Parse(splitMessage[BPM_INDEX]);
+           // _save_bpm = float.Parse(splitMessage[BPM_INDEX]);
            
             ReceivedEvent?.Invoke();
             Debug.Log("LEFT_RPM : " + _save_left_speed + " RIGHT_RPM : " + _save_right_speed);
@@ -211,17 +213,13 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             {
                 rightToken.CallEvent();
             }
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e.Message);
-        }
+
+            DataReceiver.Instance.ClearMsg();
+       
     }
     IEnumerator connectServer()
     {
         _popup = GymchairConnectPopupController.Create();
-        if (!BluetoothMgr.Instance.isConnect())
-            BluetoothMgr.Instance.Connect("wheelchair");
         
         int count = 0;
 
@@ -229,8 +227,11 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         {
             yield return new WaitForSeconds(1.0f);
 
-            if (this._connect)
+            if (DataReceiver.Instance.IsConect) 
+            {
+                _connect = true;
                 break;
+            }
 
             count++;
 
@@ -280,16 +281,18 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
         IEnumerator ReConnectServer()
         {
-            BluetoothMgr.Instance.Connect("wheelchair");
-
             int count = 0;
 
             while (true)
             {
                 yield return new WaitForSeconds(1.0f);
 
-                if (this._connect)
+                if (DataReceiver.Instance.IsConect)
+                {
+                    Debug.Log("연결 성공 !");
+                    _connect = true;
                     break;
+                }
 
                 count++;
 
@@ -317,32 +320,10 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             yield return new WaitForSeconds(1.0f);
             Destroy(_popup.gameObject);
         }
-    private void OnEnable()
-    {
-#if !UNITY_EDITOR && !NO_BLUETOOTH
-        if (BluetoothMgr.Instance)
-        {
-            BluetoothMgr.Instance._actionConnect += OnConnected;
-            BluetoothMgr.Instance._actionReceivedMessage += OnReceivedMessage;
-            BluetoothMgr.Instance._actionDisconnect += OnDisconnect;
-        }
-#endif
-    }
+
     private void OnDisable()
     {
-#if !UNITY_EDITOR && !NO_BLUETOOTH
-        if (BluetoothMgr.Instance)
-        {
-            BluetoothMgr.Instance._actionConnect -= OnConnected;
-            BluetoothMgr.Instance._actionReceivedMessage -= OnReceivedMessage;
-            BluetoothMgr.Instance._actionDisconnect -= OnDisconnect;
-            ReceivedEvent = null;
-        }
-
         _connect = false;
-        Debug.Log("OnDisable");
-        BluetoothMgr.Instance.Disconnect();
-#endif
     }
 }
 
