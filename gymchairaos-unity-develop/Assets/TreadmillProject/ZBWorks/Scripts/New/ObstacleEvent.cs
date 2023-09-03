@@ -38,11 +38,11 @@ namespace ZB
                         //여기서 장애물 스폰코드작성
                         obstacle.SpawnRandomObstacleSet();
 
-                    //현재속도검사, 체력감소
-                    if (TokenInputManager.Instance.CurSpeed < checkSpeed)
-                    {
-                        playerHP.MinusHP(1);
-                    }
+                    ////현재속도검사, 체력감소
+                    //if (TokenInputManager.Instance.CurSpeed < checkSpeed)
+                    //{
+                    //    playerHP.MinusHP(1);
+                    //}
                 }
             }
         }

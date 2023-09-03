@@ -89,7 +89,7 @@ namespace ZB
             {
                 leftRpm = TokenInputManager.Instance.Save_left_rpm;
                 rightRpm = TokenInputManager.Instance.Save_right_rpm;
-                if (leftRpm > 200 && leftRpm > rightRpm && !rightReceived)
+                if (leftRpm > 1 && leftRpm > rightRpm && !rightReceived)
                 {
                     Debug.Log("RightMove");
                     playerBody.DOKill();
@@ -100,7 +100,7 @@ namespace ZB
                     rightReceived = true;
                     leftReceived = false;
                 }
-                if (rightRpm > 200 && rightRpm > leftRpm && !leftReceived)
+                if (rightRpm > 1 && rightRpm > leftRpm && !leftReceived)
                 {
                     Debug.Log("LEFTMOVE");
                     playerBody.DOKill();
