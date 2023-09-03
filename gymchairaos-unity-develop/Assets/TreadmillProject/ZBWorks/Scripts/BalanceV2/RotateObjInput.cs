@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace ZB.Balance2
@@ -16,6 +17,7 @@ namespace ZB.Balance2
 
         [SerializeField] bool active;
 
+        private readonly float MIN_INPUT= 0.1f; 
         public void ResetState()
         {
             yaw = 0;
@@ -61,6 +63,56 @@ namespace ZB.Balance2
         {
             if (active)
             {
+#if !UNITY_EDITOR
+                 var left = TokenInputManager.Instance.Save_left_rpm;
+                var right = TokenInputManager.Instance.Save_right_rpm;
+                if (MIN_INPUT < Mathf.Abs(left - right)) 
+                {
+                    if(left < right)
+                    {
+                        if (yaw > -maxPow)
+                        {
+                            yaw -= Time.deltaTime * pow;
+                        }
+                    }
+                    else 
+                    {
+                        if (yaw < maxPow)
+                        {
+                            yaw += Time.deltaTime * pow;
+                        }
+                    }
+                }
+                else 
+                {
+                    yaw = Mathf.Lerp(0, yaw, Time.deltaTime);
+                }
+                var curDir = left + right;
+                if (MIN_INPUT < Mathf.Abs(curDir)) 
+                {
+
+                    if (curDir > 0)
+                    {
+                        if (roll < maxPow)
+                        {
+                            roll += Time.deltaTime * pow;
+                        }
+                    }
+                    else
+                    {
+                        if (roll > -maxPow)
+                        {
+                            roll -= Time.deltaTime * pow;
+                        }
+
+                    }
+                }
+                else
+                {
+                    roll = Mathf.Lerp(0, roll, Time.deltaTime);
+                }
+
+#else
                 if (Input.GetKey(KeyCode.D) && yaw < maxPow)
                 {
                     yaw += Time.deltaTime * pow;
@@ -94,7 +146,7 @@ namespace ZB.Balance2
                 {
                     roll += Time.deltaTime * pow;
                 }
-
+#endif
                 rotateObj.RotateInfoUpdate(yaw, roll);
             }
             else
