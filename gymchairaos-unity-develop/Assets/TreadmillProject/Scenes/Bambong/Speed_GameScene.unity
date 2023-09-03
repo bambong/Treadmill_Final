@@ -6974,6 +6974,10 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4091587907259102812, guid: 461237bc319486046b22339441b1eae5, type: 3}
+      propertyPath: rankingDataHolder
+      value: 
+      objectReference: {fileID: 1135886692}
+    - target: {fileID: 4091587907259102812, guid: 461237bc319486046b22339441b1eae5, type: 3}
       propertyPath: destinationController
       value: 
       objectReference: {fileID: 2034782782}

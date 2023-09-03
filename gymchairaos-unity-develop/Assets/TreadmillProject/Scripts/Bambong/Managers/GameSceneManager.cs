@@ -51,6 +51,10 @@ namespace bambong
         [SerializeField]
         private GameObject playerArrowFx;
 
+        [Header("Ranking")]
+        [SerializeField]
+        private RankingDataHolder rankingDataHolder;
+
         #endregion SerializeField
 
         #region NonSerializeField 
@@ -113,7 +117,7 @@ namespace bambong
             {
                 return;
             }
-            float factor = 1;
+            float factor =5;
 #if !UNITY_EDITOR
             factor = 0.005f * TokenInputManager.Instance.CurRpm ;
 #endif
@@ -220,6 +224,10 @@ namespace bambong
            SoundMgr.Instance.StopBGM();
            SoundMgr.Instance.PlayEffect("sfx_Speed_Clear");
 #endif
+
+            //∑©≈∑ ¿˙¿Â
+            rankingDataHolder.rankingData.ranking_Speed.Add(RankingData.GetUserName(), RankingData.GetDate(), curTime, (int)curDistance);
+            rankingDataHolder.Write();
         }
         public void SetStateGameOver()
         {

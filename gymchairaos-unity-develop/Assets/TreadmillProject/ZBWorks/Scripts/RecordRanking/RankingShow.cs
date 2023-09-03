@@ -1,9 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class RankingShow : MonoBehaviour
 {
+    public enum Page { speed, obstacle, balance}
+
+    [SerializeField] GameObject obj_window;
+
     [SerializeField] RankingDataHolder rankingDataHolder;
     [SerializeField] SingleBar original_singleBar;
 
@@ -11,9 +17,38 @@ public class RankingShow : MonoBehaviour
     [SerializeField] Transform fold_Speed;
     [SerializeField] Transform fold_Obstacle;
 
+    [SerializeField] RectTransform[] rtf_pages;
+    [SerializeField] RectTransform[] rtf_btns;
+    [SerializeField] Image[] img_btnsClicked;
+
     [SerializeField] Ranking_Balance sortedData_Balance;
     [SerializeField] Ranking_Speed sortedData_Speed;
     [SerializeField] Ranking_Obstacle sortedData_Obstacle;
+
+    Page nowPage;
+
+    public void OnBtnClick(int type)
+    {
+        rtf_btns[type].transform.DOKill();
+        rtf_btns[type].localScale = Vector3.one;
+        rtf_btns[type].DOShakeScale(0.2f, 0.3f);
+        if (nowPage != (Page)type)
+        {
+            rtf_pages[(int)nowPage].gameObject.SetActive(false);
+            rtf_pages[type].gameObject.SetActive(true);
+
+            img_btnsClicked[(int)nowPage].DOKill();
+            img_btnsClicked[(int)nowPage].DOColor(new Color(1, 1, 1, 0), 0.2f);
+            img_btnsClicked[type].DOKill();
+            img_btnsClicked[type].DOColor(Color.white, 0.5f);
+
+            nowPage = (Page)type;
+        }
+    }
+    public void OnBtnClick_Active(bool active)
+    {
+        obj_window.gameObject.SetActive(active);
+    }
 
     private void Start()
     {
@@ -68,6 +103,7 @@ public class RankingShow : MonoBehaviour
 
         //* 정보 보여주기
         SingleBar singleBar;
+        string[] strings = new string[4];
         //밸런스
         for (int i = 0; i < sortedData_Balance.datas.Length; i++)
         {
@@ -75,11 +111,9 @@ public class RankingShow : MonoBehaviour
             singleBar.gameObject.SetActive(true);
             singleBar.transform.parent = fold_Balance;
             singleBar.transform.localScale = Vector3.one;
-            singleBar.RTF.anchoredPosition = new Vector3(singleBar.RTF.anchoredPosition.x, singleBar.RTF.anchoredPosition.y, 0);
-            singleBar.InfoUpdate
-                (sortedData_Balance.datas[i].name,
-                sortedData_Balance.datas[i].time.ToString(),
-                sortedData_Balance.datas[i].date.ToString());
+            singleBar.RTF.localPosition = Vector3.zero;
+
+            singleBar.InfoUpdate(Ranking_Balance.RankingShowData(sortedData_Balance.datas[i]));
         }
         //스피드
         for (int i = 0; i < sortedData_Speed.datas.Length; i++)
@@ -88,11 +122,9 @@ public class RankingShow : MonoBehaviour
             singleBar.gameObject.SetActive(true);
             singleBar.transform.parent = fold_Speed;
             singleBar.transform.localScale = Vector3.one;
-            singleBar.RTF.anchoredPosition = new Vector3(singleBar.RTF.anchoredPosition.x, singleBar.RTF.anchoredPosition.y, 0);
-            singleBar.InfoUpdate
-                (sortedData_Speed.datas[i].name,
-                sortedData_Speed.datas[i].time.ToString(),
-                sortedData_Speed.datas[i].date.ToString());
+            singleBar.RTF.localPosition = Vector3.zero;
+
+            singleBar.InfoUpdate(Ranking_Speed.RankingShowData(sortedData_Speed.datas[i]));
         }
         //장애물
         for (int i = 0; i < sortedData_Obstacle.datas.Length; i++)
@@ -101,11 +133,9 @@ public class RankingShow : MonoBehaviour
             singleBar.gameObject.SetActive(true);
             singleBar.transform.parent = fold_Obstacle;
             singleBar.transform.localScale = Vector3.one;
-            singleBar.RTF.anchoredPosition = new Vector3(singleBar.RTF.anchoredPosition.x, singleBar.RTF.anchoredPosition.y, 0);
-            singleBar.InfoUpdate
-                (sortedData_Obstacle.datas[i].name,
-                sortedData_Obstacle.datas[i].time.ToString(),
-                sortedData_Obstacle.datas[i].date.ToString());
+            singleBar.RTF.localPosition = Vector3.zero;
+
+            singleBar.InfoUpdate(Ranking_Obstacle.RankingShowData(sortedData_Obstacle.datas[i]));
         }
     }
 }

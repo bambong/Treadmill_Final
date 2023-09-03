@@ -7,15 +7,14 @@ public class SingleBar : MonoBehaviour
 {
     public RectTransform RTF { get => rtf; }
 
-    [SerializeField] TextMeshProUGUI tmp_name;
-    [SerializeField] TextMeshProUGUI tmp_score;
-    [SerializeField] TextMeshProUGUI tmp_date;
+    [SerializeField] TextMeshProUGUI[] tmps;
     [SerializeField] RectTransform rtf;
 
-    public void InfoUpdate(string name, string score, string date)
+    public void InfoUpdate(string[] strings)
     {
-        tmp_name.text = name;
-        tmp_score.text = score;
-        tmp_date.text = date;
+        for (int i = 0; i < tmps.Length; i++)
+        {
+            tmps[i].text = strings[i];
+        }
     }
 }
