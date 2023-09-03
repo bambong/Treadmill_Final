@@ -15,7 +15,7 @@ public class SelectMenuSceneController : MonoBehaviour
     }
     public void OnOriginTestButtonActive()
     {
-        TransitionManager.Instance.SceneTransition(E_SceneName.Game.ToString(), () =>
+        TransitionManager.Instance.SceneTransition(E_SceneName.Balance_MenuScene.ToString(), () =>
         {
             SoundMgr.Instance.StopBGM();
         });

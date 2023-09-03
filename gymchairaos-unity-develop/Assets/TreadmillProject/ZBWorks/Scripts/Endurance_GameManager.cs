@@ -18,6 +18,7 @@ namespace ZB
         [SerializeField] ObjectsScrolling scroll;
         [SerializeField] TimeCounter timeCounter;
         [SerializeField] PlayerHP playerHP;
+        [SerializeField] BoostGuage boostGuage;
 
         [Space]
         [SerializeField] float startDelay;
@@ -81,6 +82,7 @@ namespace ZB
             player.EnableWheelEffect(true);
             distance.RecordStart();
             obstacle.CheckActive(true);
+            boostGuage.ChargeStart();
         }
 
         [ContextMenu("Pause")]
@@ -101,6 +103,7 @@ namespace ZB
             scroll.ResetFlexible();
             obstacle.CheckActive(false);
             obstacle.ResetState();
+            boostGuage.ChargeStop();
         }
     }
 }

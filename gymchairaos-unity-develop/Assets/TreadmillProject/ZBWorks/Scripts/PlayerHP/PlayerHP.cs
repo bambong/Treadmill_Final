@@ -13,7 +13,10 @@ namespace ZB
         [SerializeField] UnityEvent uEvent_Hit;
         [SerializeField] UnityEvent uEvent_plusHp;
 
+        [SerializeField] CheckLayer_Trigger checkLayer_Obstacle;
         [SerializeField] DistanceRecord distance;
+        [SerializeField] BoostGuage boostGuage;
+        [SerializeField] PoliceCarChase policeCarChase;
 
         //자동체력회복 거리
         [SerializeField] float hpGainDistance;
@@ -68,14 +71,18 @@ namespace ZB
             if (MinusHP_N_tempInvincibility_C != null)
                 StopCoroutine(MinusHP_N_tempInvincibility_C);
 
-            MinusHP_N_tempInvincibility_C = MinusHP_N_tempInvincibilityC();
-            StartCoroutine(MinusHP_N_tempInvincibility_C);
+            SingleObstacle targetObstacle;
+            Debug.LogError("#DmgCol");
+            if (checkLayer_Obstacle.LastTouchedTransform.parent.TryGetComponent(out targetObstacle))
+            {
+                MinusHP_N_tempInvincibility_C = MinusHP_N_tempInvincibilityC(targetObstacle.IsDynamic ? 3 : 1);
+                StartCoroutine(MinusHP_N_tempInvincibility_C);
+            }
         }
-
 
         public void MinusHP(int value)
         {
-            if (checking && !invincibility) 
+            if (checking && !invincibility && boostGuage.NowState != BoostGuage.State.Boost) 
             {
                 uEvent_Hit.Invoke();
                 for (int i = nowHP - 1; i > nowHP - value - 1; i--)
@@ -86,9 +93,12 @@ namespace ZB
                     }
                 }
                 nowHP = nowHP - value > 0 ? nowHP - value : 0;
+                resetAutoGain = true;
+
+                policeCarChase.Move(nowHP);
+
                 if (nowHP <= 0)
                     dieEvent.Invoke();
-                resetAutoGain = true;
             }
         }
 
@@ -106,6 +116,7 @@ namespace ZB
                 if (nowHP < maxHP)
                     uEvent_plusHp.Invoke();
                 nowHP = nowHP + value < maxHP ? nowHP + value : maxHP;
+                policeCarChase.Move(nowHP);
             }
         }
 
@@ -135,9 +146,9 @@ namespace ZB
             }
         }
         IEnumerator MinusHP_N_tempInvincibility_C;
-        IEnumerator MinusHP_N_tempInvincibilityC()
+        IEnumerator MinusHP_N_tempInvincibilityC(int dmgValue)
         {
-            MinusHP(1);
+            MinusHP(dmgValue);
             invincibility = true;
             yield return new WaitForSeconds(0.7f);
             invincibility = false;

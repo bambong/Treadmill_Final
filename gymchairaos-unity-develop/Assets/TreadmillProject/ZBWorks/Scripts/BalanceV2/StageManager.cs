@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
@@ -22,6 +23,9 @@ namespace ZB.Balance2
         [SerializeField] Image img_Shadow;
         [SerializeField] Color color_littleShow;
 
+        [SerializeField] RankingDataHolder rankingDataHolder;
+        [SerializeField] int stage;
+
         public void GameStart()
         {
             StartCoroutine(StartCycle());
@@ -31,6 +35,10 @@ namespace ZB.Balance2
         {
             uiControll.PageActive_Result(true);
             timeCounter.CountPause();
+
+            //클리어판정
+            rankingDataHolder.rankingData.ranking_Balance.Add(RankingData.GetUserName(), RankingData.GetDate(), timeCounter.NowTime, stage);
+            rankingDataHolder.Write();
         }
 
         public void GameOver()
@@ -45,6 +53,8 @@ namespace ZB.Balance2
         public void Pause(bool active)
         {
             Time.timeScale = active ? 0 : 1;
+            if (active) timeCounter.CountPause();
+            else timeCounter.CountStart();
         }
 
         private void PlayerReset()
@@ -56,9 +66,8 @@ namespace ZB.Balance2
 
         private void Start()
         {
-            tmp_Ready.gameObject.SetActive(true);
-            img_Shadow.gameObject.SetActive(true);
             img_Shadow.color = Color.black;
+
             GameStart();
         }
 
@@ -77,7 +86,7 @@ namespace ZB.Balance2
             img_Shadow.DOColor(color_littleShow, 0.75f);
             yield return new WaitForSeconds(1);
 
-
+            tmp_Ready.gameObject.SetActive(true);
             tmp_Ready.text = "READY";
             tmp_Ready.transform.DOScale(Vector3.one, 0.6f).SetEase(Ease.OutQuart).OnComplete(()=>
             {

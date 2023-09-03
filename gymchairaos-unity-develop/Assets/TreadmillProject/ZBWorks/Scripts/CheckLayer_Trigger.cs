@@ -12,6 +12,8 @@ namespace ZB
 
         public bool Touching { get { return touching; } }
 
+        public Transform LastTouchedTransform { get => lastTouchedTransform; }
+
         [SerializeField] CheckLayerBy checkLayerBy;
 
         [SerializeField] UnityEvent enterEvent;
@@ -21,6 +23,8 @@ namespace ZB
         [SerializeField] string targetID;
         [SerializeField] int targetLayer;
         [SerializeField] bool touching;
+
+        [SerializeField] Transform lastTouchedTransform;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -32,6 +36,7 @@ namespace ZB
 
             if (other.gameObject.layer == target)
             {
+                lastTouchedTransform = other.transform;
                 touching = true;
                 enterEvent.Invoke();
             }

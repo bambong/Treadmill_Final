@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using bambong;
 using DG.Tweening;
 using TMPro;
 
@@ -38,6 +39,13 @@ public class UIControll : MonoBehaviour
     {
         ui_Pause.DOKill();
         ui_Pause.localScale = active ? Vector3.one : Vector3.zero;
+    }
+
+    public void GoMain()
+    {
+        Debug.LogError("!");
+        Time.timeScale = 1;
+        TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString());
     }
 
     private void Awake()

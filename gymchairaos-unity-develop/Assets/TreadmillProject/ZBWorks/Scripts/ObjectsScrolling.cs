@@ -43,12 +43,21 @@ namespace ZB
             {
                 StopCoroutine(ScrollUpdate_C);
             }
+            if (ScrollSpeedChangeLinearCycle_C != null)
+                StopCoroutine(ScrollSpeedChangeLinearCycle_C);
         }
 
         //스크롤 속도 변경
         public void ScrollSpeedChange(float value)
         {
             scrollSpeed = value;
+        }
+        public void ScrollSpeedChangeLinear(float value, float duration)
+        {
+            if (ScrollSpeedChangeLinearCycle_C != null)
+                StopCoroutine(ScrollSpeedChangeLinearCycle_C);
+            ScrollSpeedChangeLinearCycle_C = ScrollSpeedChangeLinearCycle(value, duration);
+            StartCoroutine(ScrollSpeedChangeLinearCycle_C);
         }
 
         public void InsertObj(Transform target)
@@ -110,6 +119,19 @@ namespace ZB
 
                 yield return null;
             }
+        }
+        IEnumerator ScrollSpeedChangeLinearCycle_C;
+        IEnumerator ScrollSpeedChangeLinearCycle(float goalSpeed, float duration)
+        {
+            float gap = goalSpeed - scrollSpeed;
+            gap *= 1 / duration;
+            while (duration > 0) 
+            {
+                scrollSpeed += gap * Time.deltaTime;
+                duration -= Time.deltaTime;
+                yield return null;
+            }
+            scrollSpeed = goalSpeed;
         }
 
         [System.Serializable]

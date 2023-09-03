@@ -12,6 +12,7 @@ public class ResultPageController : MonoBehaviour
     [SerializeField] TextMeshProUGUI tmp_Distance;
     [SerializeField] GameObject interactBlock;
     [SerializeField] PausePageController pauseController;
+    [SerializeField] RankingDataHolder rankingDataHolder;
     [Space]
 
     [SerializeField] TimeCounter timeCounter;
@@ -34,11 +35,6 @@ public class ResultPageController : MonoBehaviour
         Unactive_WFS = new WaitForSeconds(duration);
         body.gameObject.SetActive(false);
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-            Active(false);
-    }
 
     public void Active(bool active)
     {
@@ -60,6 +56,10 @@ public class ResultPageController : MonoBehaviour
 
             tmp_Distance.text = ((int)distanceRecord.CurrentDistanceRecord).ToString()+"M";
             tmp_Time.text = TimeCounter.FormatTime(timeCounter.CurrentTimeScore);
+
+            //기록저장
+            rankingDataHolder.rankingData.ranking_Obstacle.Add(RankingData.GetUserName(), RankingData.GetDate(), timeCounter.CurrentTimeScore, distanceRecord.CurrentDistanceRecord);
+            rankingDataHolder.Write();
         }
         //비활성화
         else if (this.active && !active)

@@ -37,7 +37,7 @@ namespace bambong
         public void OnBalanceGameStartButtonDown()
         {
             SoundMgr.Instance.PlayEffect("touch");
-            TransitionManager.Instance.SceneTransition(E_SceneName.Balance_Game.ToString());
+            TransitionManager.Instance.SceneTransition(E_SceneName.Balance_MenuScene.ToString());
         }
 
     }
