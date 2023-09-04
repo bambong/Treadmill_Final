@@ -23,12 +23,12 @@ public class UiShadow2 : MonoBehaviour
         if (tween)
         {
             if (onTweenEnded == null) 
-                image.DOColor(targetColor, duration);
+                image.DOColor(targetColor, duration).SetUpdate(true);
             else
             {
                 UnityEvent unityEvent = new UnityEvent();
                 unityEvent.AddListener(onTweenEnded);
-                image.DOColor(targetColor, duration).OnComplete(unityEvent.Invoke);
+                image.DOColor(targetColor, duration).SetUpdate(true).OnComplete(unityEvent.Invoke);
             }
         }
         else
