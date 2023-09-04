@@ -22,7 +22,10 @@ namespace bambong
         Balance_GameScene_1,
         Balance_GameScene_1_WithTutorial,
         Balance_GameScene_2,
-        Balance_GameScene_3
+        Balance_GameScene_3,
+        Balance_GameScene_4,
+        Balance_GameScene_5,
+        Balance_GameScene_6
     }
     public class TransitionManager : GameObjectSingleton<TransitionManager>, IInit
     {
