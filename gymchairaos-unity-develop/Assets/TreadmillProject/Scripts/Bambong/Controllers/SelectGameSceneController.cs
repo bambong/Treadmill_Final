@@ -11,33 +11,27 @@ namespace bambong
     {
         private void Start()
         {
-            SoundMgr.Instance.PlayBGM("bgm_GameSelect");
+            Managers.Sound.PlayBGM("bgm_GameSelect");
         }
         public void OnLobbyButtonDown()
         {
-            //SceneMgr.Instance.UnLoadSceneAsync(E_SceneName.SelectGame.ToString(), () =>
-            //{
-            //    SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive);
-            //});
-            SoundMgr.Instance.PlayEffect("touch");
-            TransitionManager.Instance.SceneTransition(E_SceneName.SelectMenu.ToString());
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.SelectMenu);
         }
-        //TransitionManager.Instance.SceneTransition();
-
         public void OnSpeedGameStartButtonDown()
         {
-            SoundMgr.Instance.PlayEffect("touch");
-            TransitionManager.Instance.SceneTransition(E_SceneName.Speed_MenuScene.ToString());
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.Speed_MenuScene);
         }
         public void OnObstacleGameStartButtonDown()
         {
-            SoundMgr.Instance.PlayEffect("touch");
-            TransitionManager.Instance.SceneTransition(E_SceneName.Obstacle_GameScene_ZB_V2.ToString());
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.Obstacle_GameScene_ZB_V2);
         }
         public void OnBalanceGameStartButtonDown()
         {
-            SoundMgr.Instance.PlayEffect("touch");
-            TransitionManager.Instance.SceneTransition(E_SceneName.Balance_MenuScene.ToString());
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.Balance_MenuScene);
         }
 
     }

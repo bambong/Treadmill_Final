@@ -52,13 +52,12 @@ namespace Gymchair.Core
         {
             if (this._objMgrPool)
             {
-                this._objMgrPool.AddComponent<Mgr.SceneMgr>();
+    
                 this._objMgrPool.AddComponent<Mgr.NetworkMgr>();
                 this._objMgrPool.AddComponent<Mgr.ResourceMgr>();
                 this._objMgrPool.AddComponent<Mgr.UIMgr>();
-                this._objMgrPool.AddComponent<Mgr.DataMgr>();
                 this._objMgrPool.AddComponent<Mgr.BluetoothMgr>();
-                this._objMgrPool.AddComponent<Mgr.SoundMgr>();
+        
             }
         }
 

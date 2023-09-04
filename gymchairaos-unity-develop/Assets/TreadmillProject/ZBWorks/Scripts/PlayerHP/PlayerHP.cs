@@ -72,7 +72,7 @@ namespace ZB
                 StopCoroutine(MinusHP_N_tempInvincibility_C);
 
             SingleObstacle targetObstacle;
-            Debug.LogError("#DmgCol");
+          
             if (checkLayer_Obstacle.LastTouchedTransform.parent.TryGetComponent(out targetObstacle))
             {
                 MinusHP_N_tempInvincibility_C = MinusHP_N_tempInvincibilityC(targetObstacle.IsDynamic ? 3 : 1);

@@ -8,20 +8,14 @@ public class SelectMenuSceneController : MonoBehaviour
 {
     public void OnGameSelectButtonActive() 
     {
-        TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString(), () =>
-        {
-            SoundMgr.Instance.StopBGM();
-        });
+        Managers.Scene.LoadScene(E_SceneName.SelectGame);
     }
     public void OnOriginTestButtonActive()
     {
-        TransitionManager.Instance.SceneTransition(E_SceneName.Balance_MenuScene.ToString(), () =>
-        {
-            SoundMgr.Instance.StopBGM();
-        });
+        Managers.Scene.LoadScene(E_SceneName.Balance_MenuScene);
     }
     public void OnLobbyButtonActive()
     {
-        TransitionManager.Instance.SceneTransition(E_SceneName.Login.ToString());
+        Managers.Scene.LoadScene(E_SceneName.Login);
     }
 }

@@ -50,8 +50,7 @@ namespace Gymchair.Contents.Popup
 
         public void onOkButtonHide()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+            Managers.Sound.PlayTouchEffect();
             int cm = getCMNumber();
             int kg = getKGNumber();
             _actionButton?.Invoke(cm, kg, float.Parse(_textBmi.text));
@@ -60,8 +59,7 @@ namespace Gymchair.Contents.Popup
 
         public void OnCancelButtonHide()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+            Managers.Sound.PlayTouchEffect();
             _actionCancel?.Invoke();
             Destroy(this.gameObject);
         }
@@ -225,7 +223,7 @@ namespace Gymchair.Contents.Popup
         public void OnSetBmi()
         {
             if (_textBmi.text.Length != 0)
-                Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+                Managers.Sound.PlayTouchEffect();
 
             int cm = getCMNumber();
             int kg = getKGNumber();

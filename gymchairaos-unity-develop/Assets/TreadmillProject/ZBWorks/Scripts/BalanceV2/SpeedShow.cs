@@ -9,6 +9,6 @@ public class SpeedShow : MonoBehaviour
 
     private void Update()
     {
-        tmp.text = ((int)TokenInputManager.Instance.CurSpeed).ToString();
+        tmp.text = ((int)Managers.Token.CurSpeed).ToString();
     }
 }

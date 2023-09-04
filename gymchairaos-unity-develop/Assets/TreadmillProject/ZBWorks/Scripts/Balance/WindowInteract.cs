@@ -68,7 +68,8 @@ namespace ZB.Balance
             m_uiShadow.Active(false);
 
             Time.timeScale = 1;
-            bambong.TransitionManager.Instance.SceneTransition(bambong.E_SceneName.SelectGame.ToString());
+            Managers.Scene.LoadScene(E_SceneName.SelectGame);
+     
             m_obj_interactBlock_Pause.SetActive(true);
             m_obj_interactBlock_Result.SetActive(true);
         }

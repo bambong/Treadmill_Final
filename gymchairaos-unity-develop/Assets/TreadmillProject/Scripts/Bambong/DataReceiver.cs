@@ -15,9 +15,6 @@ public class DataReceiver : MonoBehaviour
     private float factorValue = 0.5f;
     private string lastMsg = "";
 
-    private static DataReceiver instance;
-    public static DataReceiver Instance { get { return instance; } }
-
     private bool isConect;
     public string LastMsg { get => lastMsg; }
     public bool IsConect { get => isConect;  }
@@ -25,22 +22,30 @@ public class DataReceiver : MonoBehaviour
 
     private void Awake()
     {
-        if(instance != null && instance != this) 
-        {
-            Destroy(gameObject);
-            return;
-        }
-        instance = this;
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
         UpdateValue();
-
     }
 
     public void AddValue(float value) 
     {
         factorValue += value;
         UpdateValue();
+    }
+    private void Update()
+    {
+
+#if UNITY_EDITOR || NO_BLUETOOTH
+        Managers.Token.LeftToken.InputUpdate();
+        Managers.Token.RightToken.InputUpdate();
+
+#else
+         if (isConect && LastMsg != string.Empty)
+        { 
+            Managers.Token.OnReceivedMessage(LastMsg);
+        }
+#endif
+
     }
     private void UpdateValue() 
     {
@@ -62,7 +67,6 @@ public class DataReceiver : MonoBehaviour
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         lastMsg = string.Empty;
-        isConect = false;
     }
 
 

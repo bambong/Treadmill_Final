@@ -19,26 +19,26 @@ namespace ZB
         void Awake()
         {
 #if UNITY_EDITOR
-            TokenInputManager.Instance.AddLeftTokenEvent(AddLeftToken);
-            TokenInputManager.Instance.AddRightTokenEvent(AddRightToken);
+            Managers.Token.AddLeftTokenEvent(AddLeftToken);
+            Managers.Token.AddRightTokenEvent(AddRightToken);
             StartCoroutine(DecreaseToken());
 #endif
-            TokenInputManager.Instance.ReceivedEvent += SideMove;
+            Managers.Token.ReceivedEvent += SideMove;
         }
         public void AddLeftToken()
         {
-            TokenInputManager.Instance.Save_left_rpm += 10;
+            Managers.Token.Save_left_rpm += 10;
         }
         public void AddRightToken()
         {
-            TokenInputManager.Instance.Save_right_rpm += 10;
+            Managers.Token.Save_right_rpm += 10;
         }
         public IEnumerator DecreaseToken()
         {
             while (gameObject != null)
             { 
-                TokenInputManager.Instance.Save_left_rpm = Mathf.Max(0, TokenInputManager.Instance.Save_left_rpm - 1);
-                TokenInputManager.Instance.Save_right_rpm = Mathf.Max(0, TokenInputManager.Instance.Save_right_rpm - 1);
+                Managers.Token.Save_left_rpm = Mathf.Max(0, Managers.Token.Save_left_rpm - 1);
+                Managers.Token.Save_right_rpm = Mathf.Max(0, Managers.Token.Save_right_rpm - 1);
                 yield return new WaitForSeconds(0.2f);
             }
         }
@@ -51,21 +51,19 @@ namespace ZB
 
             //회전속도에 따른 스크롤속도 조정
 
-            if (TokenInputManager.Instance != null)
-            {
-                Debug.Log("token Is On");
-                scroll.ScrollSpeedChange(TokenInputManager.Instance.CurSpeed);
-            }
+            Debug.Log("token Is On");
+            scroll.ScrollSpeedChange(Managers.Token.CurSpeed);
+        
         }
 
         void SideMove()
         {
-            Debug.Log("!@#!@#!@$!@$$#@ " + TokenInputManager.Instance.Save_left_rpm + " " +TokenInputManager.Instance.Save_right_rpm);
+            Debug.Log("!@#!@#!@$!@$$#@ " + Managers.Token.Save_left_rpm + " " +Managers.Token.Save_right_rpm);
 
 
 
             var speed = 240f;
-            var dis = TokenInputManager.Instance.Save_right_rpm - TokenInputManager.Instance.Save_left_rpm;
+            var dis = Managers.Token.Save_right_rpm - Managers.Token.Save_left_rpm;
 
             if (Mathf.Abs(dis) < 100)
             {

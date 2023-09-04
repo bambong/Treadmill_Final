@@ -43,9 +43,8 @@ public class UIControll : MonoBehaviour
 
     public void GoMain()
     {
-        Debug.LogError("!");
         Time.timeScale = 1;
-        TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString());
+        Managers.Scene.LoadScene(E_SceneName.SelectGame);
     }
 
     private void Awake()

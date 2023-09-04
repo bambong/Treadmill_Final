@@ -241,7 +241,7 @@ public class IllnessPopup : MonoBehaviour
 
     public void OnNoneButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
 
         this._actionNone?.Invoke();
         Destroy(gameObject);
@@ -249,7 +249,7 @@ public class IllnessPopup : MonoBehaviour
 
     public void OnOkButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
 
         string info = "없음";
 
@@ -264,7 +264,7 @@ public class IllnessPopup : MonoBehaviour
 
     public void OnCancelButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
 
         this._actionCancel?.Invoke();
         Destroy(gameObject);

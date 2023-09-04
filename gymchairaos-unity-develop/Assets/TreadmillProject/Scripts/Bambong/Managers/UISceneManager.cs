@@ -51,7 +51,7 @@ namespace bambong
         public void OnClickExitbutton()
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 #endif
             GameSceneManager.Instance.SetStateGamePause();
             pausePanel.Open();
@@ -71,7 +71,7 @@ namespace bambong
         }
         private string GetSpeedText()
         {
-            var curGuage = TokenInputManager.Instance.CurSpeed;
+            var curGuage = Managers.Token.CurSpeed;
           
             return curGuage.ToString("00") + " m/s";
         }

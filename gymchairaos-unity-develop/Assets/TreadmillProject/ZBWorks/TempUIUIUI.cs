@@ -12,13 +12,13 @@ public class TempUIUIUI : MonoBehaviour
 
     void Awake()
     {
-        TokenInputManager.Instance.ReceivedEvent += temp;
+        Managers.Token.ReceivedEvent += temp;
     }
 
     void Update()
     {
-        left.text = TokenInputManager.Instance.Save_left_rpm.ToString();
-        right.text = TokenInputManager.Instance.Save_right_rpm.ToString();
+        left.text = Managers.Token.Save_left_rpm.ToString();
+        right.text = Managers.Token.Save_right_rpm.ToString();
         tempt += Time.deltaTime;
     }
 

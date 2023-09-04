@@ -14,24 +14,21 @@ namespace ZB
         public void PlayBgm(string id)
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            if (SoundMgr.Instance != null) 
-                SoundMgr.Instance.PlayBGM(id);
+            Managers.Sound.PlayBGM(id);
 #endif
         }
 
         public void StopBgm()
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            if (SoundMgr.Instance != null)
-                SoundMgr.Instance.StopBGM();
+            Managers.Sound.StopBGM();
 #endif
         }
 
         public void PlaySfx(string id)
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            if (SoundMgr.Instance != null)
-                SoundMgr.Instance.PlayEffect(id);
+            Managers.Sound.PlayEffect(id);
 #endif
         }
         void Start()
@@ -39,8 +36,7 @@ namespace ZB
             Instance = this;
 
 #if !UNITY_EDITOR || SOUND_TEST
-            if (SoundMgr.Instance != null)
-                SoundMgr.Instance.PlayBGM(m_bgmID);
+            Managers.Sound.PlayBGM(m_bgmID);
 #endif
         }
     }

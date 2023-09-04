@@ -1,13 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Gymchair.Core.Mgr;
 using Gymchair.Contents.Popup;
 using TMPro;
 using System;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using bambong;
 
 namespace Gymchair.Contents.Login
 {
@@ -45,9 +42,10 @@ namespace Gymchair.Contents.Login
             success?.Invoke();
         }
 
-        private void Awake()
+        private void Start()
         {
-            StartCoroutine(onBlack(true, 2f, () =>
+            Managers.Sound.PlayBGM("back");
+            StartCoroutine(onBlack(true, 1f, () =>
             {
                 WarnningPopup.Create();
             }));
@@ -56,28 +54,19 @@ namespace Gymchair.Contents.Login
 
         public void showWarnningPopup()
         {
-            SoundMgr.Instance.PlayEffect("touch");
-
+            Managers.Sound.PlayEffect("touch");
             WarnningPopup.Create();
         }
 
         public void showJoinScene()
         {
-            SoundMgr.Instance.PlayEffect("touch");
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Join", LoadSceneMode.Additive);
-                });
-            }));
+            Managers.Sound.PlayEffect("touch");
+            Managers.Scene.LoadScene(E_SceneName.Join); ;
         }
 
         public void showGameScene()
         {
-            SoundMgr.Instance.PlayEffect("touch");
-
+            Managers.Sound.PlayEffect("touch");
             string name = _inputNickName.text;
 
             UserData.UserList userList = null;
@@ -103,22 +92,9 @@ namespace Gymchair.Contents.Login
                 {
                     if (userList.users[num] == name)
                     {
-                        DataMgr.Instance.UserName = name;
+                        Managers.Data.UserName = name;
 
-                        TransitionManager.Instance.SceneTransition(E_SceneName.SelectMenu.ToString(), () =>
-                        {
-                            SoundMgr.Instance.StopBGM();
-                        });
-                        //StartCoroutine(onBlack(false, 0.5f, () =>
-                        //{
-                        //    SoundMgr.Instance.StopBGM();
-
-                     
-                        //    SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
-                        //    {
-                        //        SceneMgr.Instance.LoadSceneAsync("SelectGame", LoadSceneMode.Additive);
-                        //    });
-                        //}));
+                        Managers.Scene.LoadScene(E_SceneName.SelectMenu);
 
                         login = true;
                         return;
@@ -133,14 +109,7 @@ namespace Gymchair.Contents.Login
                         .SetOKAction((popup) =>
                         {
                             Destroy(popup.gameObject);
-
-                            StartCoroutine(onBlack(false, 0.5f, () =>
-                            {
-                                SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
-                                {
-                                    SceneMgr.Instance.LoadSceneAsync("Join", LoadSceneMode.Additive);
-                                });
-                            }));
+                            Managers.Scene.LoadScene(E_SceneName.Join);
                         })
                         .SetCancelAction((popup) =>
                         {
@@ -156,14 +125,7 @@ namespace Gymchair.Contents.Login
                 .SetOKAction((popup) =>
                 {
                     Destroy(popup.gameObject);
-
-                    StartCoroutine(onBlack(false, 0.5f, () =>
-                    {
-                        SceneMgr.Instance.UnLoadSceneAsync("Login", () =>
-                        {
-                            SceneMgr.Instance.LoadSceneAsync("Join", LoadSceneMode.Additive);
-                        });
-                    }));
+                    Managers.Scene.LoadScene(E_SceneName.Join);
                 })
                 .SetCancelAction((popup) =>
                 {

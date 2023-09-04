@@ -1,10 +1,9 @@
+using Gymchair.Core.Mgr;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using Gymchair.Core.Mgr;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Gymchair.Contents.Record
 {
@@ -100,14 +99,14 @@ namespace Gymchair.Contents.Record
 
             UserData.UserData userData = null;
 
-            string text = PlayerPrefs.GetString(DataMgr.Instance.UserName);
+            string text = PlayerPrefs.GetString(Managers.Data.UserName);
             userData = JsonUtility.FromJson<UserData.UserData>(text);
 
             string birthDay = string.Format("{0:D4}-{1:D2}-{2:D2}", userData.birth_year, userData.birth_month, userData.birth_day);
             var ageDate = DateTime.Now - DateTime.ParseExact(birthDay, "yyyy-MM-dd", null);
             var iAge = (int)ageDate.TotalDays / 365;
 
-            string[] gyms = DataMgr.Instance.GetGymList();
+            string[] gyms = Managers.Data.GetGymList();
             _maxCount = gyms.Length;
 
             float gymWeekTime = 0.0f;
@@ -122,8 +121,8 @@ namespace Gymchair.Contents.Record
             for (int num = _maxCount - 1; num >= 0; num--)
             {
                 string date = gyms[num];
-                UserGymData userGymData = DataMgr.Instance.GetGymData(num);
-                var gymDateArray = userGymData.gymDate.Split(" ");
+                UserGymData userGymData = Managers.Data.GetGymData(num);
+                var gymDateArray = userGymData.gymDate.Split(" ");
 
                 DateTime gymDateTime = DateTime.ParseExact(gymDateArray[0], "yyyy-MM-dd", null);
 
@@ -151,7 +150,7 @@ namespace Gymchair.Contents.Record
                 int sec = (int)userGymData.gymTime % 60;
                 int min = (int)userGymData.gymTime / 60;
 
-                var gymDate = DateTime.ParseExact(date, "yyyy-MM-dd HH:mm:ss", null);
+                var gymDate = DateTime.ParseExact(date, "yyyy-MM-dd HH:mm:ss", null);
 
                 RecordPrefabController script = obj.GetComponent<RecordPrefabController>();
                 script._textTime.text = string.Format("{0:D2}:{1:D2}", min, sec);
@@ -164,15 +163,8 @@ namespace Gymchair.Contents.Record
                 script._keyNumber = num;
                 script._actionClick = (keyNumber) =>
                 {
-                    DataMgr.Instance.SetKeyNumber(keyNumber);
-                    
-                    StartCoroutine(onBlack(false, 0.5f, () =>
-                    {
-                        SceneMgr.Instance.UnLoadSceneAsync("Record", () =>
-                        {
-                            SceneMgr.Instance.LoadSceneAsync("TargetResult", LoadSceneMode.Additive);
-                        });
-                    }));
+                    Managers.Data.SetKeyNumber(keyNumber);
+                    Managers.Scene.LoadScene(E_SceneName.TargetResult);
                 };
             }
 
@@ -191,7 +183,7 @@ namespace Gymchair.Contents.Record
             _textGymMeter.text = $"{(int)gymMeter}";
             _textGymSpeed.text = $"{(int)gymHighSpeed}";
 
-            _textNickName.text = DataMgr.Instance.UserName;
+            _textNickName.text = Managers.Data.UserName;
             _textAge.text = $"{iAge}";
             _textHeight.text = $"{userData.height}";
             _textWeight.text = $"{userData.weight}";
@@ -223,16 +215,8 @@ namespace Gymchair.Contents.Record
 
         public void OnModifyUserName()
         {
-            SoundMgr.Instance.PlayEffect("touch");
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("Record", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Modify", LoadSceneMode.Additive);
-                });
-            }));
-
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.Modify);
 
             //Popup.MessagePopup.Create()
             //    .SetText("수정 기능을 아직 제공하지 않습니다.")
@@ -246,30 +230,15 @@ namespace Gymchair.Contents.Record
 
         public void OnGameSceneButton()
         {
-            SoundMgr.Instance.StopBGM();
-
-            SoundMgr.Instance.PlayEffect("touch");
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("Record", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Game", LoadSceneMode.Additive);
-                });
-            }));
+            Managers.Sound.StopBGM();
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.Game);
         }
 
         public void OnMainSceneButton()
         {
-            SoundMgr.Instance.PlayEffect("touch");
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("Record", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive);
-                });
-            }));
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.Login);
         }
     }
 }

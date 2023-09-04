@@ -146,20 +146,13 @@ namespace Gymchair.Contents.Join
 
         public void OnBackButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("Join", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive);
-                });
-            }));
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.Login);
         }
 
         public void OnJoinButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             UserData.UserList userList = null;
 
             if (PlayerPrefs.HasKey("users"))
@@ -257,40 +250,33 @@ namespace Gymchair.Contents.Join
             PlayerPrefs.SetString("users", JsonUtility.ToJson(userList));
             PlayerPrefs.SetString(name, JsonUtility.ToJson(userData));
             PlayerPrefs.Save();
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("Join", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive);
-                });
-            }));
+            Managers.Scene.LoadScene(E_SceneName.Login);
+         
         }
 
         public void OnNickClear()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             _inputNick.text = "";
         }
 
         public void OnMaleButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             SetSelectButton(_objMale);
             SetNormalButton(_objFemale);
         }
 
         public void OnFemaleButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             SetSelectButton(_objFemale);
             SetNormalButton(_objMale);
         }
 
         public void ShowPersonalInformationPopup()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+            Managers.Sound.PlayTouchEffect();
             float fCm = float.Parse(_textCm.text);
             float fKg = float.Parse(_textKg.text);
             
@@ -312,8 +298,7 @@ namespace Gymchair.Contents.Join
 
         public void ShowGymInfo()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+            Managers.Sound.PlayTouchEffect();
             GymInfoPopup.Create(_strGymNames, () => 
             {
                 _strGymNames = "";
@@ -340,8 +325,7 @@ namespace Gymchair.Contents.Join
 
         public void ShowIllness()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+            Managers.Sound.PlayTouchEffect();
             IllnessPopup.Create(_strIllness, ()=> {
                 _textIllness.text = "없음";
                 _strIllness = "";
@@ -364,8 +348,7 @@ namespace Gymchair.Contents.Join
 
         public void ShowObstaclePopup()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+            Managers.Sound.PlayTouchEffect();
             ObstaclePopup.Create((kind, text) => {
                 if (kind == 0)
                 {
@@ -433,8 +416,7 @@ namespace Gymchair.Contents.Join
 
         public void OnObstacleDeleteItem()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+            Managers.Sound.PlayTouchEffect();
             int childCount = _objScrollObstacleContent.transform.childCount;
 
             for (int iNum = 0; iNum < childCount; iNum++)

@@ -36,7 +36,8 @@ public class SpeedMenuStartPanelController : PanelController
 
     private void Start()
     {
-        SoundMgr.Instance.PlayBGM("bgm_SpeedMenu");
+        Managers.Sound.PlayBGM("bgm_SpeedMenu");
+
         rectTransform.anchoredPosition = startPos;
     }
     public override void Open()
@@ -64,7 +65,7 @@ public class SpeedMenuStartPanelController : PanelController
         but.onClick.RemoveAllListeners();
         but.onClick.AddListener( 
             ()=> {
-                SoundMgr.Instance.PlayEffect("touch");
+                Managers.Sound.PlayTouchEffect();
                 LevleTransition(level);
                 but.interactable = false;
             });
@@ -72,7 +73,7 @@ public class SpeedMenuStartPanelController : PanelController
     public void LevleTransition(int level)
     {
         GameManager.Instance.SetLevel(level);
-        TransitionManager.Instance.SceneTransition(E_SceneName.Speed_GameScene.ToString());
+        Managers.Scene.LoadScene(E_SceneName.Speed_GameScene);
     }
 
 }

@@ -99,13 +99,13 @@ namespace bambong
         private void Awake()
         {
             Init();
-            //TokenInputManager.Instance.ConnectToDevice();
+            //Managers.Token.ConnectToDevice();
 
-            TokenInputManager.Instance.AddRightTokenEvent(IncreaseGauage);
-            TokenInputManager.Instance.AddLeftTokenEvent(IncreaseGauage);
+            Managers.Token.AddRightTokenEvent(IncreaseGauage);
+            Managers.Token.AddLeftTokenEvent(IncreaseGauage);
 
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayBGM("bgm_Speed");
+            Managers.Sound.PlayBGM("bgm_Speed");
 #endif
         }
 
@@ -117,7 +117,7 @@ namespace bambong
             }
             float factor =5;
 #if !UNITY_EDITOR
-            factor = TokenInputManager.Instance.CurRpm ;
+            factor = Managers.Token.CurRpm ;
 #endif
             Debug.Log($"∞‘¿Ã¡ˆ ªÛΩ¬ + {increaseGauageAmount * factor}");
             curGauage = Mathf.Clamp(curGauage +  increaseGauageAmount * factor, 0 , maximumGauage);
@@ -220,8 +220,8 @@ namespace bambong
 
             clearFx.SetActive(true);
 #if !UNITY_EDITOR || SOUND_TEST
-           SoundMgr.Instance.StopBGM();
-           SoundMgr.Instance.PlayEffect("sfx_Speed_Clear");
+            Managers.Sound.StopBGM();
+            Managers.Sound.PlayEffect("sfx_Speed_Clear");
 #endif
 
             //∑©≈∑ ¿˙¿Â
@@ -236,8 +236,8 @@ namespace bambong
             playerArrowFx.SetActive(false);
             failFx.SetActive(true);
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.StopBGM();
-            SoundMgr.Instance.PlayEffect("sfx_Speed_GameOver");
+            Managers.Sound.StopBGM();
+            Managers.Sound.PlayEffect("sfx_Speed_GameOver");
 #endif
             //AIControlManager.Instance.SetStateAIsStop();
 

@@ -21,7 +21,7 @@ public class RankingData
 
     public static string GetUserName()
     {
-        return ManagerBehaviour<DataMgr>.Instance.UserName;
+        return Managers.Data.UserName;
     }
 
     public static string GetDate()

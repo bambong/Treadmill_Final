@@ -21,12 +21,12 @@ namespace jiho
         public void OnRestartButtonDown() 
         {
             uiManager.GameOverActive(false);
-            TransitionManager.Instance.SceneTransition(E_SceneName.Obstacle_GameScene.ToString());
+            Managers.Scene.LoadScene(E_SceneName.Obstacle_GameScene);
         }
         public void OnExitButtonDown()
         {
             uiManager.GameOverActive(false);
-            TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString());
+            Managers.Scene.LoadScene(E_SceneName.SelectGame);
         }
     }
 }

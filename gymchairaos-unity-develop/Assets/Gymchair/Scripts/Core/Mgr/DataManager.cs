@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 
 namespace Gymchair.Core.Mgr
 {
-    public class DataMgr : Behaviour.ManagerBehaviour<DataMgr>
-    {
+    public class DataManager 
+    { 
         // 로그인한 유저 이름
         private string _userName;
         public string UserName
@@ -156,8 +156,5 @@ namespace Gymchair.Core.Mgr
             return gyms;
         }
 
-        public override void OnCoreMessage(object msg)
-        {
-        }
     }
 }

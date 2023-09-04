@@ -20,7 +20,7 @@ public class Information01Popup : MonoBehaviour
 
     public void OnOkButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
 
         this._actionOk?.Invoke();
         Destroy(this.gameObject);
@@ -28,7 +28,7 @@ public class Information01Popup : MonoBehaviour
 
     public void OnCancelButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
 
         this._actionCancel?.Invoke();
         Destroy(this.gameObject);

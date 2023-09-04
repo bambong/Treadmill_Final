@@ -95,7 +95,7 @@ namespace Gymchair.Contents.Modify
 
         void loadData()
         {
-            string text = PlayerPrefs.GetString(DataMgr.Instance.UserName);
+            string text = PlayerPrefs.GetString(Managers.Data.UserName);
             UserData.UserData userData = JsonUtility.FromJson<UserData.UserData>(text);
 
             _inputNick.text = userData.nick;
@@ -243,20 +243,14 @@ namespace Gymchair.Contents.Modify
 
         public void OnBackButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("Modify", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Record", LoadSceneMode.Additive);
-                });
-            }));
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.Record);
+         
         }
 
         public void OnJoinButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 
             string nick = _inputNick.text;
             string name = _inputName.text;
@@ -331,14 +325,8 @@ namespace Gymchair.Contents.Modify
 
             PlayerPrefs.SetString(name, JsonUtility.ToJson(userData));
             PlayerPrefs.Save();
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("Modify", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Record", LoadSceneMode.Additive);
-                });
-            }));
+            Managers.Scene.LoadScene(E_SceneName.Record);
+         
         }
 
         public void OnDeleteUser()
@@ -370,14 +358,8 @@ namespace Gymchair.Contents.Modify
                     PlayerPrefs.DeleteKey(name);
                     PlayerPrefs.Save();
                 }
-
-                StartCoroutine(onBlack(false, 0.5f, () =>
-                {
-                    SceneMgr.Instance.UnLoadSceneAsync("Modify", () =>
-                    {
-                        SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive);
-                    });
-                }));
+                Managers.Scene.LoadScene(E_SceneName.Login);
+              
             }, () =>
             {
 
@@ -386,27 +368,27 @@ namespace Gymchair.Contents.Modify
 
         public void OnNickClear()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             _inputNick.text = "";
         }
 
         public void OnMaleButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             SetSelectButton(_objMale);
             SetNormalButton(_objFemale);
         }
 
         public void OnFemaleButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             SetSelectButton(_objFemale);
             SetNormalButton(_objMale);
         }
 
         public void ShowPersonalInformationPopup()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 
             float fCm = float.Parse(_textCm.text);
             float fKg = float.Parse(_textKg.text);
@@ -429,7 +411,7 @@ namespace Gymchair.Contents.Modify
 
         public void ShowGymInfo()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 
             GymInfoPopup.Create(_strGymNames, () =>
             {
@@ -457,7 +439,7 @@ namespace Gymchair.Contents.Modify
 
         public void ShowIllness()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 
             IllnessPopup.Create(_strIllness, () => {
                 _textIllness.text = "없음";
@@ -481,7 +463,7 @@ namespace Gymchair.Contents.Modify
 
         public void ShowObstaclePopup()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 
             ObstaclePopup.Create((kind, text) => {
                 if (kind == 0)
@@ -550,7 +532,7 @@ namespace Gymchair.Contents.Modify
 
         public void OnObstacleDeleteItem()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 
             int childCount = _objScrollObstacleContent.transform.childCount;
 

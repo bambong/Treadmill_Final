@@ -9,7 +9,7 @@ namespace ZB
         public void OnBtnClikced_SelectGame()
         {
             Time.timeScale = 1;
-            bambong.TransitionManager.Instance.SceneTransition(bambong.E_SceneName.SelectGame.ToString());
+            Managers.Scene.LoadScene(E_SceneName.SelectGame);
         }
     }
 }

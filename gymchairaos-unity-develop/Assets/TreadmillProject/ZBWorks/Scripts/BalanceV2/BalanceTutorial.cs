@@ -88,7 +88,7 @@ namespace ZB.Balance2
 
         public void SceneMove_Tutorial_1Stage()
         {
-            TransitionManager.Instance.SceneTransition(E_SceneName.Balance_GameScene_1_WithTutorial.ToString());
+            Managers.Scene.LoadScene(E_SceneName.Balance_GameScene_1_WithTutorial);
         }
 
         private void Awake()
@@ -168,7 +168,7 @@ namespace ZB.Balance2
         }
         private void SceneMove_NoTutorial_1Stage()
         {
-            TransitionManager.Instance.SceneTransition(E_SceneName.Balance_GameScene_1.ToString());
+            Managers.Scene.LoadScene(E_SceneName.Balance_GameScene_1);
         }
 
         [System.Serializable]

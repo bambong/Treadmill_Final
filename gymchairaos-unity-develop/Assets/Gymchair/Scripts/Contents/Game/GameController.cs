@@ -168,7 +168,7 @@ namespace Gymchair.Contents.Game
 
         private void Start()
         {
-            string[] gyms = DataMgr.Instance.GetGymList();
+            string[] gyms = Managers.Data.GetGymList();
 
             if (gyms == null || gyms.Length == 0)
             {
@@ -238,23 +238,13 @@ namespace Gymchair.Contents.Game
 
                 Information01Popup.Create(() =>
                 {
-                    SoundMgr.Instance.PlayEffect("touch");
+                    Managers.Sound.PlayTouchEffect();
                     _popup = GymchairConnectPopupController.Create();
                     StartCoroutine(ReConnectServer());
                 }, () => {
-                    SoundMgr.Instance.PlayEffect("touch");
+                    Managers.Sound.PlayTouchEffect();
                     Destroy(_popup.gameObject);
-
-                    StartCoroutine(onBlack(false, 0.5f, () =>
-                    {
-                        SceneMgr.Instance.UnLoadSceneAsync("Game", () =>
-                        {
-                            SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive, () =>
-                            {
-                                SoundMgr.Instance.PlayBGM("back");
-                            });
-                        });
-                    }));
+                    Managers.Scene.LoadScene(E_SceneName.Login);
                 });
             }
         }
@@ -302,12 +292,12 @@ namespace Gymchair.Contents.Game
 
         public void OnExitButton()
         {
-            SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 
             if (_gameCanvas.activeSelf)
             {
                 _isPlay = false;
-                string[] gyms = DataMgr.Instance.GetGymList();
+                string[] gyms = Managers.Data.GetGymList();
 
                 if (gyms == null || gyms.Length == 0)
                 {
@@ -319,9 +309,9 @@ namespace Gymchair.Contents.Game
 
                             WarnningSuccessPopup.Create(() =>
                             {
-                                SoundMgr.Instance.StopBGM();
-                                SoundMgr.Instance.PlayEffect("touch");
-                                OnGymEnd();
+                                Managers.Sound.StopBGM();
+                                Managers.Sound.PlayTouchEffect();
+                               OnGymEnd();
                             });
                         });
                     }, () =>
@@ -339,8 +329,8 @@ namespace Gymchair.Contents.Game
 
                             WarnningSuccessPopup.Create(() =>
                             {
-                                SoundMgr.Instance.StopBGM();
-                                SoundMgr.Instance.PlayEffect("touch");
+                                Managers.Sound.StopBGM();
+                                Managers.Sound.PlayTouchEffect();
                                 OnGymEnd();
                             });
                         });
@@ -406,7 +396,7 @@ namespace Gymchair.Contents.Game
             user.gymMeter = _meter;
 
             float ml = 5.189f + (2.768f * (_meter * 0.001f));
-            user.gymCalorie = ((ml * DataMgr.Instance.UserData.weight * (user.gymTime / 60.0f)) * 0.001f) * 5.0f;
+            user.gymCalorie = ((ml * Managers.Data.UserData.weight * (user.gymTime / 60.0f)) * 0.001f) * 5.0f;
 
             user.speed /= _listData.Count;
             user.bpm /= _listData.Count;
@@ -416,15 +406,9 @@ namespace Gymchair.Contents.Game
             user.description = _description;
             user.allow = true;
 
-            DataMgr.Instance.AddGymData(user, _listData.ToArray());
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("Game", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Result", LoadSceneMode.Additive);
-                });
-            }));
+            Managers.Data.AddGymData(user, _listData.ToArray());
+            Managers.Scene.LoadScene(E_SceneName.Result);
+          
         }
 
         public void OnAttemptConnectToServer()
@@ -433,7 +417,7 @@ namespace Gymchair.Contents.Game
             Destroy(_popup.gameObject);
             _popup = null;
 
-            if ( DataMgr.Instance.UserData.tutorial == 0 )
+            if ( Managers.Data.UserData.tutorial == 0 )
             {
                 _testMode = true;
 
@@ -441,7 +425,7 @@ namespace Gymchair.Contents.Game
                 {
                     WarnningTestPopup.Create(() =>
                     {
-                        SoundMgr.Instance.PlayEffect("touch");
+                        Managers.Sound.PlayTouchEffect();
                         OnResetData();
                     });
                 });
@@ -494,25 +478,14 @@ namespace Gymchair.Contents.Game
 
                     Information01Popup.Create(() =>
                     {
-                        SoundMgr.Instance.PlayEffect("touch");
+                        Managers.Sound.PlayTouchEffect();
                         _popup.gameObject.SetActive(true);
                         StartCoroutine(connectServer());
                     }, () => {
-                        SoundMgr.Instance.StopBGM();
-                        SoundMgr.Instance.PlayEffect("touch");
+                        Managers.Sound.StopBGM();
+                        Managers.Sound.PlayTouchEffect();
                         Destroy(_popup.gameObject);
-
-                        StartCoroutine(onBlack(false, 0.5f, () =>
-                        {
-                            SceneMgr.Instance.UnLoadSceneAsync("Game", () =>
-                            {
-                                SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive, () =>
-                                {
-                                    SoundMgr.Instance.PlayBGM("back");
-                                });
-                            });
-                        }));
-
+                        Managers.Scene.LoadScene(E_SceneName.Login);
                     });
                     yield break;
                 }
@@ -552,16 +525,7 @@ namespace Gymchair.Contents.Game
                     }, () => {
                         Destroy(_popup.gameObject);
 
-                        StartCoroutine(onBlack(false, 0.5f, () =>
-                        {
-                            SceneMgr.Instance.UnLoadSceneAsync("Game", () =>
-                            {
-                                SceneMgr.Instance.LoadSceneAsync("Login", LoadSceneMode.Additive, () =>
-                                {
-                                    SoundMgr.Instance.PlayBGM("back");
-                                });
-                            });
-                        }));
+                        Managers.Scene.LoadScene(E_SceneName.Login);
                     });
                     yield break;
                 }
@@ -571,7 +535,7 @@ namespace Gymchair.Contents.Game
             yield return new WaitForSeconds(1.0f);
             Destroy(_popup.gameObject);
 
-            string[] gyms = DataMgr.Instance.GetGymList();
+            string[] gyms = Managers.Data.GetGymList();
 
             if (gyms == null || gyms.Length == 0)
             {
@@ -622,7 +586,7 @@ namespace Gymchair.Contents.Game
 
             WarnningStartWaitPopup.Create(() =>
             {
-                SoundMgr.Instance.PlayEffect("touch");
+                Managers.Sound.PlayTouchEffect();
                 OnResetData(true);
             });
         }
@@ -631,7 +595,7 @@ namespace Gymchair.Contents.Game
         {
             CountDownController.Create(() =>
             {
-                SoundMgr.Instance.PlayBGM("play");
+                Managers.Sound.PlayTouchEffect();
                 _gameCanvas.SetActive(true);
                 StartCoroutine(OnEndResetData(test));
             });
@@ -739,7 +703,7 @@ namespace Gymchair.Contents.Game
 
                 _textTimeGage.text = string.Format("{0:D2}:{1:D2}", minute, second);
 
-                string[] gyms = DataMgr.Instance.GetGymList();
+                string[] gyms = Managers.Data.GetGymList();
 
                 if ((gyms == null || gyms.Length == 0) && minute == 6)
                 {

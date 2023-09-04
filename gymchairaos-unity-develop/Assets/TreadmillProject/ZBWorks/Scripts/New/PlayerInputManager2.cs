@@ -27,16 +27,16 @@ namespace ZB
             playerBody.transform.DOMoveX(-0.6f, 1).SetEase(Ease.OutQuart).SetDelay(1.5f);
             leftReceived = true;
             rightReceived = false;
-            TokenInputManager.Instance.Save_left_rpm = 0;
-            TokenInputManager.Instance.Save_right_rpm = 0;
+            Managers.Token.Save_left_rpm = 0;
+            Managers.Token.Save_right_rpm = 0;
         }
         public void AddLeftToken()
         {
-            TokenInputManager.Instance.Save_left_rpm += 50;
+            Managers.Token.Save_left_rpm += 50;
         }
         public void AddRightToken()
         {
-            TokenInputManager.Instance.Save_right_rpm += 50;
+            Managers.Token.Save_right_rpm += 50;
         }
         public void CheckActive(bool active)
         {
@@ -61,22 +61,22 @@ namespace ZB
         {
             while (gameObject != null)
             {
-                TokenInputManager.Instance.Save_left_rpm = Mathf.Max(0, TokenInputManager.Instance.Save_left_rpm - 1);
-                TokenInputManager.Instance.Save_right_rpm = Mathf.Max(0, TokenInputManager.Instance.Save_right_rpm - 1);
+                Managers.Token.Save_left_rpm = Mathf.Max(0, Managers.Token.Save_left_rpm - 1);
+                Managers.Token.Save_right_rpm = Mathf.Max(0, Managers.Token.Save_right_rpm - 1);
                 yield return new WaitForSeconds(0.2f);
             }
         }
 
-        void Awake()
+        void Start()
         {
             resetPos = playerBody.position;
 
 #if UNITY_EDITOR
-            TokenInputManager.Instance.AddLeftTokenEvent(AddLeftToken);
-            TokenInputManager.Instance.AddRightTokenEvent(AddRightToken);
+            Managers.Token.AddLeftTokenEvent(AddLeftToken);
+            Managers.Token.AddRightTokenEvent(AddRightToken);
             StartCoroutine(DecreaseToken());
 #endif
-            TokenInputManager.Instance.ReceivedEvent += SideMove;
+            Managers.Token.ReceivedEvent += SideMove;
         }
         private void Update()
         {
@@ -89,8 +89,8 @@ namespace ZB
         {
             if (checking)
             {
-                leftRpm = TokenInputManager.Instance.Save_left_rpm;
-                rightRpm = TokenInputManager.Instance.Save_right_rpm;
+                leftRpm = Managers.Token.Save_left_rpm;
+                rightRpm = Managers.Token.Save_right_rpm;
                 if (leftRpm > 1 && leftRpm > rightRpm && !rightReceived)
                 {
                     Debug.Log("RightMove");
