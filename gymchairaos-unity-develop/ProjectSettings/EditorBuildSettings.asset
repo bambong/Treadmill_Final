@@ -36,6 +36,9 @@ EditorBuildSettings:
     path: Assets/TreadmillProject/Scenes/Jiho/SelectMenu.unity
     guid: 26c69a227da61be4f93c290999a4aeb0
   - enabled: 1
+    path: Assets/TreadmillProject/Scenes/Jiho/SelectGame.unity
+    guid: 8d2b5da889ee74748b0d747c70a38c2b
+  - enabled: 1
     path: Assets/TreadmillProject/Scenes/Bambong/Speed_GameScene.unity
     guid: 7bbad31e589f02e428a0521cd0b163d9
   - enabled: 1

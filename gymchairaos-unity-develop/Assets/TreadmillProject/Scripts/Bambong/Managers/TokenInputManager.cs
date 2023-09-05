@@ -119,6 +119,7 @@ public class TokenInputManager
         }
         var go = Resources.Load("Prefabs/DataReceiver");
         var instanceGo = GameObject.Instantiate(go);
+        instanceGo.name = "DataReceiver";
         GameObject.DontDestroyOnLoad(instanceGo);
         dataReceiver = instanceGo.GetComponent<DataReceiver>();
     }

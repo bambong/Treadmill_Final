@@ -45,28 +45,28 @@ namespace Gymchair.Contents.Login
         private void Start()
         {
             Managers.Sound.PlayBGM("back");
-            StartCoroutine(onBlack(true, 1f, () =>
-            {
-                WarnningPopup.Create();
-            }));
+            //StartCoroutine(onBlack(true, 1f, () =>
+            //{
+            //    WarnningPopup.Create();
+            //}));
         }
 
 
         public void showWarnningPopup()
         {
-            Managers.Sound.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             WarnningPopup.Create();
         }
 
         public void showJoinScene()
         {
-            Managers.Sound.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             Managers.Scene.LoadScene(E_SceneName.Join); ;
         }
 
         public void showGameScene()
         {
-            Managers.Sound.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             string name = _inputNickName.text;
 
             UserData.UserList userList = null;

@@ -40,7 +40,7 @@ public class DataReceiver : MonoBehaviour
         Managers.Token.RightToken.InputUpdate();
 
 #else
-         if (isConect && LastMsg != string.Empty)
+        if (isConect && LastMsg != string.Empty)
         { 
             Managers.Token.OnReceivedMessage(LastMsg);
         }
