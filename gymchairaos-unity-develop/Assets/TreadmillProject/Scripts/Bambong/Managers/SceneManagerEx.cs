@@ -24,10 +24,14 @@ public enum E_SceneName
     Obstacle_GameScene,
     Obstacle_GameScene_ZB_V2,
     Balance_MenuScene,
+    Balance_GameScene_Tutorial,
+    Balance_GameScene_TutorialAsk,
     Balance_GameScene_1,
-    Balance_GameScene_1_WithTutorial,
     Balance_GameScene_2,
-    Balance_GameScene_3
+    Balance_GameScene_3,
+    Balance_GameScene_4,
+    Balance_GameScene_5,
+    Balance_GameScene_6
 }
 
 public class SceneManagerEx
