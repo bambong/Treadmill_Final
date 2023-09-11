@@ -183,7 +183,6 @@ public class TokenInputManager
     public void OnReceivedMessage(string message)
     {
 
-            Debug.Log($"메세지 받음 : {message}");
             int count = message.Length;
             var splitMessage = message.Split(',');
             
@@ -203,19 +202,18 @@ public class TokenInputManager
            // _save_bpm = float.Parse(splitMessage[BPM_INDEX]);
            
             ReceivedEvent?.Invoke();
-            Debug.Log("LEFT_RPM : " + _save_left_speed + " RIGHT_RPM : " + _save_right_speed);
+          //  Debug.Log("LEFT_RPM : " + _save_left_speed + " RIGHT_RPM : " + _save_right_speed);
 
             if (_save_left_speed > MIN_CHECK_RPM) 
             {
-                leftToken.CallEvent();
+                leftToken.CallEvent?.Invoke();
             }
             if(_save_right_speed > MIN_CHECK_RPM) 
             {
-                rightToken.CallEvent();
+                rightToken.CallEvent?.Invoke();
             }
-
+          
             dataReceiver.ClearMsg();
-       
     }
     IEnumerator connectServer()
     {

@@ -25,7 +25,19 @@ namespace Gymchair.Core.Mgr
         }
 
         private UserData.UserData _userData;
-        public UserData.UserData UserData { get => _userData; }
+        public UserData.UserData UserData
+                {
+                    get
+                    {
+                        if (_userData == null) 
+                        {
+                             string text = PlayerPrefs.GetString(_userName);
+                            _userData = JsonUtility.FromJson<UserData.UserData>(text);
+                        }
+                        return _userData;
+                    }
+                }
+
 
         int _key_number = 0;
         

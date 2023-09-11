@@ -13,7 +13,7 @@ public enum E_SceneName
     Login,
     Join,
     Modify,
-    Game,
+    Assessment,
     Record,
     Result,
     TargetResult,

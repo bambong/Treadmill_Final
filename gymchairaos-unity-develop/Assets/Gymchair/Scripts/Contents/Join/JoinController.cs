@@ -248,7 +248,7 @@ namespace Gymchair.Contents.Join
                 userData.note = _inputText.text;
 
             PlayerPrefs.SetString("users", JsonUtility.ToJson(userList));
-            PlayerPrefs.SetString(name, JsonUtility.ToJson(userData));
+            PlayerPrefs.SetString(nick, JsonUtility.ToJson(userData));
             PlayerPrefs.Save();
             Managers.Scene.LoadScene(E_SceneName.Login);
          

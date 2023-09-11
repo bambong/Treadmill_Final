@@ -232,7 +232,7 @@ namespace Gymchair.Contents.Record
         {
             Managers.Sound.StopBGM();
             Managers.Sound.PlayTouchEffect();
-            Managers.Scene.LoadScene(E_SceneName.Game);
+            Managers.Scene.LoadScene(E_SceneName.Assessment);
         }
 
         public void OnMainSceneButton()

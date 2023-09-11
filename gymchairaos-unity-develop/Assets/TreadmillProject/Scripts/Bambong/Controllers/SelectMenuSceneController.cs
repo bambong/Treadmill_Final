@@ -12,7 +12,7 @@ public class SelectMenuSceneController : MonoBehaviour
     }
     public void OnOriginTestButtonActive()
     {
-        Managers.Scene.LoadScene(E_SceneName.Balance_MenuScene);
+        Managers.Scene.LoadScene(E_SceneName.Assessment);
     }
     public void OnLobbyButtonActive()
     {

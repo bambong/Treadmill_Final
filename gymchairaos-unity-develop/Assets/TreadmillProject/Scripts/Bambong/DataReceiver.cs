@@ -43,6 +43,7 @@ public class DataReceiver : MonoBehaviour
         if (isConect && LastMsg != string.Empty)
         { 
             Managers.Token.OnReceivedMessage(LastMsg);
+            ClearMsg();
         }
 #endif
 
