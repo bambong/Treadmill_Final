@@ -157,7 +157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 450c0c67a532ef54eb80ad6c5c6dab14, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 450c0c67a532ef54eb80ad6c5c6dab14, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8250,12 +8250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c8aa1e63ad9ff4185e4a5e3aa9efb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerBody: {fileID: 293190624}
+  tf: {fileID: 293190624}
+  rb: {fileID: 293190626}
   leftReceived: 0
   rightReceived: 0
-  leftPos: -0.6
-  rightPos: 0.6
-  sideMoveDuration: 1
   leftRpm: 0
   rightRpm: 0
   resetPos: {x: 0, y: 0, z: 0}
