@@ -10,13 +10,13 @@ namespace ZB.Balance2
 {
     public class StageManager : MonoBehaviour
     {
-        [SerializeField] Rigidbody rb_player;
         [SerializeField] Transform resetPos;
 
         [SerializeField] UIControll uiControll;
 
         [SerializeField] RotateObj rotateObj;
         [SerializeField] RotateObjInput input;
+        [SerializeField] BallControl ballControl;
         [SerializeField] TimeCounter timeCounter;
 
         [SerializeField] TextMeshProUGUI tmp_Ready;
@@ -46,7 +46,7 @@ namespace ZB.Balance2
             rotateObj.ResetState();
             input.ResetState();
             input.Active(false);
-            PlayerReset();
+            ballControl.Active(false);
             timeCounter.CountPause();
         }
 
@@ -55,13 +55,6 @@ namespace ZB.Balance2
             Time.timeScale = active ? 0 : 1;
             if (active) timeCounter.CountPause();
             else timeCounter.CountStart();
-        }
-
-        private void PlayerReset()
-        {
-            rb_player.position = resetPos.position;
-            rb_player.velocity = Vector3.zero;
-            rb_player.useGravity = false;
         }
 
         private void Start()
@@ -82,8 +75,9 @@ namespace ZB.Balance2
 
             input.ResetState();
             rotateObj.ResetState();
-            PlayerReset();
             img_Shadow.DOColor(color_littleShow, 0.75f);
+            ballControl.Active(false);
+            ballControl.SetPosition(resetPos.position);
             yield return new WaitForSeconds(1);
 
             tmp_Ready.gameObject.SetActive(true);
@@ -101,7 +95,8 @@ namespace ZB.Balance2
             yield return new WaitForSeconds(1.5f);
             img_Shadow.DOColor(Color.clear, 0.5f).OnComplete(()=>img_Shadow.gameObject.SetActive(false));
             timeCounter.CountStart();
-            rb_player.useGravity = true;
+
+            ballControl.Active(true);
             input.Active(true);
         }
     }

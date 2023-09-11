@@ -2197,11 +2197,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f55e9ddbbfe6d14a9726f894d20b03c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb_player: {fileID: 6836015278256284609}
   resetPos: {fileID: 6836015279231933070}
   uiControll: {fileID: 6836015278918913011}
   rotateObj: {fileID: 6836015279116038232}
   input: {fileID: 6836015279116038233}
+  ballControl: {fileID: 7850259538330538502}
   timeCounter: {fileID: 6836015277852261684}
   tmp_Ready: {fileID: 6836015278349616835}
   img_Shadow: {fileID: 6836015278568189343}
@@ -2841,6 +2841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6836015278256284621}
+  - component: {fileID: 7850259538330538502}
   - component: {fileID: 6836015278256284622}
   - component: {fileID: 6836015278256284623}
   - component: {fileID: 6836015278256284608}
@@ -2867,6 +2868,19 @@ Transform:
   m_Father: {fileID: 6836015277852261685}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7850259538330538502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836015278256284610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d23c559a7e47a04badfa1b1275e2d09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 6836015278256284609}
 --- !u!33 &6836015278256284622
 MeshFilter:
   m_ObjectHideFlags: 0
