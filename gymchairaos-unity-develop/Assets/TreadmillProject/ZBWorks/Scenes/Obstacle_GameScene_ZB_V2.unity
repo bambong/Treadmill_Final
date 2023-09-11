@@ -8251,7 +8251,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tf: {fileID: 293190624}
-  rb: {fileID: 293190626}
   leftReceived: 0
   rightReceived: 0
   leftRpm: 0
@@ -8261,6 +8260,13 @@ MonoBehaviour:
   wheelEffects:
   - {fileID: 1575112916}
   - {fileID: 293430491}
+  minInterval: 30
+  moveMultiple: 0.005
+  maxMove: 1.5
+  move: 0
+  outPos_left: -1
+  outPos_right: 1
+  rotMultiple: 20
 --- !u!4 &948549369
 Transform:
   m_ObjectHideFlags: 0
