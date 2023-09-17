@@ -32,11 +32,6 @@ namespace ZB.Balance2
             rotateVec_Yaw = 0;
         }
 
-        public void SetVelocity(Vector2 velocity)
-        {
-            rigidbody.velocity = velocity;
-        }
-
         // Update is called once per frame
         private void FixedUpdate()
         {

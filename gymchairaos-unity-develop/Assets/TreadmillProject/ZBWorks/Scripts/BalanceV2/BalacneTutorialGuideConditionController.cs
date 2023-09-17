@@ -66,7 +66,6 @@ namespace ZB.Balance2
                     Time.timeScale = 1;
 
                     //공, 판 회전력 초기화
-                    rotateObj.SetVelocity(Vector3.zero);
 
                     UnityEvent unityEvent = new UnityEvent();
                     unityEvent.AddListener(onEndCycleEnd);
