@@ -5,7 +5,8 @@ using UnityEngine;
 public class BallControl : MonoBehaviour
 {
     [SerializeField] Rigidbody rb;
-
+    [SerializeField] float power_Y;
+    [SerializeField] float power_XZ;
     bool activing;
 
     public void Active(bool active)
@@ -26,9 +27,6 @@ public class BallControl : MonoBehaviour
     }
     public void Jump()
     {
-        float power_XZ = 10;
-        float power_Y = 14;
-
         Vector2 normalVel = new Vector2(rb.velocity.x, rb.velocity.z).normalized;
         Vector3 jumpDir = new Vector3(normalVel.x * power_XZ, power_Y, normalVel.y * power_XZ);
 
