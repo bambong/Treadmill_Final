@@ -172,7 +172,7 @@ public class TokenInputManager
     private readonly string LEFT_DEVICE_NAME = "WTwheelL";
     private readonly string RIGHT_DEVICE_NAME = "WTwheelR";
 
-    private readonly int BPM_INDEX = 9;
+    private readonly int BPM_INDEX = 11;
     private readonly float MIN_CHECK_RPM = 0;
    
     private float GetSpeed( float y ) 
@@ -182,11 +182,10 @@ public class TokenInputManager
     }
     public void OnReceivedMessage(string message)
     {
-
             int count = message.Length;
             var splitMessage = message.Split(',');
-            
-            if(splitMessage[FIRST_DEVICE_INDEX] == LEFT_DEVICE_NAME) 
+            Debug.Log($" 메세지 받음 : {message}");
+            if (splitMessage[FIRST_DEVICE_INDEX] == LEFT_DEVICE_NAME) 
             {
                 _save_left_speed = GetSpeed(float.Parse(splitMessage[FIRST_DEVICE_INDEX + 2]));
                 _save_right_speed = GetSpeed(float.Parse(splitMessage[SECOND_DEVICE_INDEX + 2]));
@@ -199,7 +198,7 @@ public class TokenInputManager
 
             //Debug.Log($"LEFT_RPM : {splitMessage[X_AXIS_SPEED_INDEX_L]}");
             //Debug.Log($"RIGHT_RPM : {splitMessage[Y_AXIS_SPEED_INDEX_L]}");
-           // _save_bpm = float.Parse(splitMessage[BPM_INDEX]);
+            _save_bpm = float.Parse(splitMessage[BPM_INDEX]);
            
             ReceivedEvent?.Invoke();
           //  Debug.Log("LEFT_RPM : " + _save_left_speed + " RIGHT_RPM : " + _save_right_speed);

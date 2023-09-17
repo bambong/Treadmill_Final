@@ -111,7 +111,7 @@ namespace Gymchair.Contents.Game
 
         bool _connect = false;
 
-        float _save_bpm = 0.0f;
+    
  
         float _save_left_count = 0.0f;
         float _save_right_count = 0.0f;
@@ -362,7 +362,7 @@ namespace Gymchair.Contents.Game
                 float rpm = Managers.Token.CurRpm;
                 float speed = rpm * 240.0f / 60000.0f;
 
-                UpdateRPM(_save_bpm, rpm, Managers.Token.CurRpm);
+                UpdateRPM(Managers.Token.Bpm, rpm, Managers.Token.CurRpm);
             }
         }
 
