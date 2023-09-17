@@ -62,11 +62,11 @@ public class TestPlayerController : MonoBehaviour
     {
         SpeedGauageFillUpdate();
         
-        TokenInputManager.Instance.AddRightTokenEvent(IncreaseGauage);
-        TokenInputManager.Instance.AddRightTokenEvent(()=>tokenDiff++);                                                                                                                           
+        Managers.Token.AddRightTokenEvent(IncreaseGauage);
+        Managers.Token.AddRightTokenEvent(()=>tokenDiff++);                                                                                                                           
         
-        TokenInputManager.Instance.AddLeftTokenEvent(IncreaseGauage);
-        TokenInputManager.Instance.AddLeftTokenEvent(()=>tokenDiff--);
+        Managers.Token.AddLeftTokenEvent(IncreaseGauage);
+        Managers.Token.AddLeftTokenEvent(()=>tokenDiff--);
     }
     private void SpeedGauageFillUpdate()
     {
@@ -96,8 +96,8 @@ public class TestPlayerController : MonoBehaviour
 
     void Update()
     {
-        Debug.Log($" Right Term : {TokenInputManager.Instance.RightTokenTerm}");
-        Debug.Log($" Left Term : {TokenInputManager.Instance.LeftTokenTerm}");
+        Debug.Log($" Right Term : {Managers.Token.RightTokenTerm}");
+        Debug.Log($" Left Term : {Managers.Token.LeftTokenTerm}");
 
         DecreaseGauage();
         PlayerMoveUpdate();
@@ -176,12 +176,12 @@ public class TestPlayerController : MonoBehaviour
 
     private void PlayerInputCheckForStop() 
     {
-        if(TokenInputManager.Instance.LastEventTime >= INPUT_ANIMATE_STOP_TIME && !playerAnimator.GetBool(NO_INPUT_CHECK_BOOL)) 
+        if(Managers.Token.LastEventTime >= INPUT_ANIMATE_STOP_TIME && !playerAnimator.GetBool(NO_INPUT_CHECK_BOOL)) 
         {
           
             playerAnimator.SetBool(NO_INPUT_CHECK_BOOL,true);
         }
-        else if(TokenInputManager.Instance.LastEventTime < INPUT_ANIMATE_STOP_TIME && playerAnimator.GetBool(NO_INPUT_CHECK_BOOL)) 
+        else if(Managers.Token.LastEventTime < INPUT_ANIMATE_STOP_TIME && playerAnimator.GetBool(NO_INPUT_CHECK_BOOL)) 
         {
             playerAnimator.SetBool(NO_INPUT_CHECK_BOOL,false);
         }

@@ -93,7 +93,7 @@ public class ObstaclePopup : MonoBehaviour
 
     public void OnFirstButton(GameObject obj)
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         if (obj == _obj_able_bodied_button)
         {
             _obj_able_bodied_button.GetComponent<Image>().sprite = _able_bodied_button_touch;
@@ -108,7 +108,7 @@ public class ObstaclePopup : MonoBehaviour
 
     public void OnFirstOkButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         if (_obj_able_bodied_button.GetComponent<Image>().sprite == _able_bodied_button_touch)
         {
             _panelNone.SetActive(true);
@@ -123,20 +123,20 @@ public class ObstaclePopup : MonoBehaviour
 
     public void OnNoneOkButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         _actionOK?.Invoke(0, _inputWhy.text);
         Destroy(gameObject);
     }
     public void OnCancelButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         _actionCancel?.Invoke();
         Destroy(gameObject);
     }
 
     public void OnSecondButton(GameObject obj)
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         if (obj == _obj_physical_disability_button)
         {
             _obj_physical_disability_button.GetComponent<Image>().sprite = _physical_disability_button_touch;
@@ -160,7 +160,7 @@ public class ObstaclePopup : MonoBehaviour
 
     public void OnSecondOkButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         if (_obj_physical_disability_button.GetComponent<Image>().sprite == _physical_disability_button_touch)
         {
             _panelThird.SetActive(true);
@@ -180,7 +180,7 @@ public class ObstaclePopup : MonoBehaviour
 
     public void OnThirdButton(GameObject obj)
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         if (obj == _obj_spinal_cord_disorder_button)
         {
             _obj_spinal_cord_disorder_button.GetComponent<Image>().sprite = _spinal_cord_disorder_button_touch;
@@ -213,7 +213,7 @@ public class ObstaclePopup : MonoBehaviour
 
     public void OnThirdOkButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         if (_obj_spinal_cord_disorder_button.GetComponent<Image>().sprite == _spinal_cord_disorder_button_touch)
         {
             _actionOK?.Invoke(1, "지체 장애/절단 장애");
@@ -238,7 +238,7 @@ public class ObstaclePopup : MonoBehaviour
 
     public void OnFourthOkButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         List<string> texts = new List<string>();
         texts.Add("지체 장애");
         texts.Add("척수 장애");
@@ -254,7 +254,7 @@ public class ObstaclePopup : MonoBehaviour
 
     public void OnChangeFourthFirstDropdown()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         _dropNumber.ClearOptions();
 
         List<string> options = new List<string>();
@@ -291,25 +291,25 @@ public class ObstaclePopup : MonoBehaviour
 
     public void OnBackNonePanel()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         _panelNone.SetActive(false);
         _panelFirst.SetActive(true);
     }
     public void OnBackSecondPanel()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         _panelSecond.SetActive(false);
         _panelFirst.SetActive(true);
     }
     public void OnBackThirdPanel()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         _panelThird.SetActive(false);
         _panelSecond.SetActive(true);
     }
     public void OnBackFourthPanel()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         _panelFourth.SetActive(false);
         _panelThird.SetActive(true);
     }

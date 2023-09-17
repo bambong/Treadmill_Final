@@ -67,25 +67,25 @@ namespace jiho
         {
             //SpeedGauageFillUpdate();
 
-            TokenInputManager.Instance.AddRightTokenEvent(IncreaseGauage);
-            //TokenInputManager.Instance.AddRightTokenEvent(() =>
+            Managers.Token.AddRightTokenEvent(IncreaseGauage);
+            //Managers.Token.AddRightTokenEvent(() =>
             //{
             //    if (!isMoving) 
             //    {
             //        return;
             //    }
-            //    tokenDiff = (int)(TokenInputManager.Instance.Save_left_rpm - TokenInputManager.Instance.Save_right_rpm); 
+            //    tokenDiff = (int)(Managers.Token.Save_left_rpm - Managers.Token.Save_right_rpm); 
             //});
 
-            TokenInputManager.Instance.AddLeftTokenEvent(IncreaseGauage);
+            Managers.Token.AddLeftTokenEvent(IncreaseGauage);
 
-            TokenInputManager.Instance.ReceivedEvent += () =>
+            Managers.Token.ReceivedEvent += () =>
             {
                 if (!isMoving)
                 {
                     return;
                 }
-                tokenDiff = (TokenInputManager.Instance.Save_left_rpm - TokenInputManager.Instance.Save_right_rpm);
+                tokenDiff = (Managers.Token.Save_left_rpm - Managers.Token.Save_right_rpm);
                 RotateMoveUpdate();
             };
         }
@@ -218,11 +218,11 @@ namespace jiho
 
         private void PlayerInputCheckForStop()
         {
-            if (TokenInputManager.Instance.LastEventTime >= INPUT_ANIMATE_STOP_TIME && !playerAnimator.GetBool(NO_INPUT_CHECK_BOOL))
+            if (Managers.Token.LastEventTime >= INPUT_ANIMATE_STOP_TIME && !playerAnimator.GetBool(NO_INPUT_CHECK_BOOL))
             {
                 playerAnimator.SetBool(NO_INPUT_CHECK_BOOL, true);
             }
-            else if (TokenInputManager.Instance.LastEventTime < INPUT_ANIMATE_STOP_TIME && playerAnimator.GetBool(NO_INPUT_CHECK_BOOL))
+            else if (Managers.Token.LastEventTime < INPUT_ANIMATE_STOP_TIME && playerAnimator.GetBool(NO_INPUT_CHECK_BOOL))
             {
                 playerAnimator.SetBool(NO_INPUT_CHECK_BOOL, false);
             }

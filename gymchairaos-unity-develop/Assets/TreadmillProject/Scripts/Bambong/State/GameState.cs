@@ -8,7 +8,7 @@ namespace bambong
     {
         public void UpdateActive(GameSceneManager gameSceneManager)
         {
-            if (TokenInputManager.Instance.IsConnect) 
+            if (Managers.Token.IsConnect) 
             {
                 Debug.Log("Check IsConnect");
                 gameSceneManager.SetStateGameStart();

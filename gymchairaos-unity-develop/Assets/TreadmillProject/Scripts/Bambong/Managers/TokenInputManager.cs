@@ -1,11 +1,10 @@
-using bambong;
+
 using Gymchair.Contents.Popup;
-using Gymchair.Core.Mgr;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InputToken
 {
@@ -56,19 +55,11 @@ public class InputToken
 }
 
 
-public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, IInit
+public class TokenInputManager 
 {
-
-
-    [SerializeField]
-    private KeyCode leftKey = KeyCode.A;
-    [SerializeField]
-    private KeyCode rightKey = KeyCode.D;
-
-    [Header("Input 으로 판단할 token 수 ")]
-    [SerializeField]
-    private int inputNeedCount = 1;
-
+    private readonly KeyCode FOR_PC_LEFT_KEY = KeyCode.A;
+    private readonly KeyCode FOR_PC_RIGHT_KEY = KeyCode.D;
+    private readonly int INPUT_NEED_COUNT = 1;
 
     // 왼쪽 바퀴 입력 텀    
     public float LeftTokenTerm { get => leftToken.TokenEventTerm; }
@@ -76,7 +67,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
     public float RightTokenTerm { get => rightToken.TokenEventTerm; }
 
     [Obsolete("미터 기준")]
-    public float CurSpeed { get => CurRpm * 240.0f / 60000.0f; }
+    public float CurSpeed { get => CurRpm; }
     public float CurRpm { get { return _save_left_speed + _save_right_speed * 0.5f; } }
     public float Bpm { get => _save_bpm; }
     public bool IsConnect { get => _connect; } 
@@ -90,6 +81,9 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
     private GymchairConnectPopupController _popup;
     private bool _connect = false;
+
+    private DataReceiver dataReceiver;
+
     public Action ReceivedEvent { get; set; }
 
     // 마지막 이벤트 입력이 들어온 이 후 시간 (두 개 중 하나라도 입력이 들어오면 더 작은쪽을 반환) 
@@ -100,28 +94,34 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
     public float Save_left_rpm { get => _save_left_speed; set => _save_left_speed = value;  }
     public float Save_right_rpm { get => _save_right_speed; set => _save_right_speed = value; }
+    public InputToken LeftToken { get => leftToken; }
+    public InputToken RightToken { get => rightToken; }
 
     public void Init()
     {
-        leftToken = new InputToken(leftKey, inputNeedCount);
-        rightToken = new InputToken(rightKey, inputNeedCount);
-    }
-    
-    private void Awake()
-    {
-        if (Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
+        leftToken = new InputToken(FOR_PC_LEFT_KEY, INPUT_NEED_COUNT);
+        rightToken = new InputToken(FOR_PC_RIGHT_KEY, INPUT_NEED_COUNT);
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
 #if UNITY_EDITOR || NO_BLUETOOTH
         _connect = true;
 #else
         ConnectToDevice();
 #endif
+        GenerateDataReceiver();
         Debug.Log("토큰 매니저 시작!");
 
+    }
+    private void GenerateDataReceiver()
+    {
+        if(dataReceiver != null) 
+        {
+            return;
+        }
+        var go = Resources.Load("Prefabs/DataReceiver");
+        var instanceGo = GameObject.Instantiate(go);
+        instanceGo.name = "DataReceiver";
+        GameObject.DontDestroyOnLoad(instanceGo);
+        dataReceiver = instanceGo.GetComponent<DataReceiver>();
     }
   
     /// <summary>
@@ -145,7 +145,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
     }
     public void ConnectToDevice() 
     {
-        StartCoroutine(connectServer());
+        Managers.MonoForCoroutine.StartCoroutine(connectServer());
         //StartCoroutine(WaitStart());
     }
     IEnumerator WaitStart()
@@ -153,23 +153,11 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         yield return new WaitForSeconds(1f);
         if (!_connect)
         {
-            StartCoroutine(connectServer());
+            Managers.MonoForCoroutine.StartCoroutine(connectServer());
         }
 
     }
-    void Update()
-    {
-#if UNITY_EDITOR || NO_BLUETOOTH
-        leftToken.InputUpdate();
-        rightToken.InputUpdate();
-#else
-        if(_connect && DataReceiver.Instance.LastMsg != string.Empty) 
-        {
-            OnReceivedMessage(DataReceiver.Instance.LastMsg);
-        }
-#endif
 
-    }
     public void OnConnected()
     {
         if (!this._connect)
@@ -184,22 +172,20 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
     private readonly string LEFT_DEVICE_NAME = "WTwheelL";
     private readonly string RIGHT_DEVICE_NAME = "WTwheelR";
 
-    private readonly int BPM_INDEX = 9;
+    private readonly int BPM_INDEX = 11;
     private readonly float MIN_CHECK_RPM = 0;
    
     private float GetSpeed( float y ) 
     {
-        return y * DataReceiver.Instance.FactorValue; 
+        return y * dataReceiver.FactorValue; 
         // 각속도 -> 속도 계산법 (V = (2π X 반지름 X 각속도) / 360
     }
     public void OnReceivedMessage(string message)
     {
-
-            Debug.Log($"메세지 받음 : {message}");
             int count = message.Length;
             var splitMessage = message.Split(',');
-            
-            if(splitMessage[FIRST_DEVICE_INDEX] == LEFT_DEVICE_NAME) 
+            Debug.Log($" 메세지 받음 : {message}");
+            if (splitMessage[FIRST_DEVICE_INDEX] == LEFT_DEVICE_NAME) 
             {
                 _save_left_speed = GetSpeed(float.Parse(splitMessage[FIRST_DEVICE_INDEX + 2]));
                 _save_right_speed = GetSpeed(float.Parse(splitMessage[SECOND_DEVICE_INDEX + 2]));
@@ -212,22 +198,21 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
             //Debug.Log($"LEFT_RPM : {splitMessage[X_AXIS_SPEED_INDEX_L]}");
             //Debug.Log($"RIGHT_RPM : {splitMessage[Y_AXIS_SPEED_INDEX_L]}");
-           // _save_bpm = float.Parse(splitMessage[BPM_INDEX]);
+            _save_bpm = float.Parse(splitMessage[BPM_INDEX]);
            
             ReceivedEvent?.Invoke();
-            Debug.Log("LEFT_RPM : " + _save_left_speed + " RIGHT_RPM : " + _save_right_speed);
+          //  Debug.Log("LEFT_RPM : " + _save_left_speed + " RIGHT_RPM : " + _save_right_speed);
 
             if (_save_left_speed > MIN_CHECK_RPM) 
             {
-                leftToken.CallEvent();
+                leftToken.CallEvent?.Invoke();
             }
             if(_save_right_speed > MIN_CHECK_RPM) 
             {
-                rightToken.CallEvent();
+                rightToken.CallEvent?.Invoke();
             }
-
-            DataReceiver.Instance.ClearMsg();
-       
+          
+            dataReceiver.ClearMsg();
     }
     IEnumerator connectServer()
     {
@@ -239,7 +224,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         {
             yield return new WaitForSeconds(1.0f);
 
-            if (DataReceiver.Instance.IsConect) 
+            if (dataReceiver.IsConect) 
             {
                 _connect = true;
                 break;
@@ -254,12 +239,12 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
                 Information01Popup.Create(() =>
                 {
                     _popup.gameObject.SetActive(true);
-                    StartCoroutine(connectServer());
+                    Managers.MonoForCoroutine.StartCoroutine(connectServer());
                 }, () =>
                 {
-                    Destroy(_popup.gameObject);
+                    GameObject.Destroy(_popup.gameObject);
 
-                    TransitionManager.Instance.TransitionToSelectScene();
+                    Managers.Scene.LoadScene(E_SceneName.SelectMenu);
                 });
 
                 yield break;
@@ -267,7 +252,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
         }
         _popup.ShowSuccess();
         yield return new WaitForSeconds(1.0f);
-        Destroy(_popup.gameObject);
+       GameObject.Destroy(_popup.gameObject);
     }
         public void OnDisconnect()
         {
@@ -278,15 +263,15 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
                 Information01Popup.Create(() =>
                 {
-                    SoundMgr.Instance.PlayEffect("touch");
+                    Managers.Sound.PlayTouchEffect();
                     _popup = GymchairConnectPopupController.Create();
-                    StartCoroutine(ReConnectServer());
+                    Managers.MonoForCoroutine.StartCoroutine(ReConnectServer());
                 }, () =>
                 {
-                    SoundMgr.Instance.PlayEffect("touch");
-                    Destroy(_popup.gameObject);
+                    Managers.Sound.PlayTouchEffect();
+                    GameObject.Destroy(_popup.gameObject);
 
-                    TransitionManager.Instance.TransitionToSelectScene();
+                    Managers.Scene.LoadScene(E_SceneName.SelectMenu);
                 });
             }
         }
@@ -299,7 +284,7 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
             {
                 yield return new WaitForSeconds(1.0f);
 
-                if (DataReceiver.Instance.IsConect)
+                if (dataReceiver.IsConect)
                 {
                     Debug.Log("연결 성공 !");
                     _connect = true;
@@ -314,15 +299,15 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
                     Information01Popup.Create(() =>
                     {
-                        SoundMgr.Instance.PlayEffect("touch");
+                        Managers.Sound.PlayTouchEffect();
                         _popup.gameObject.SetActive(true);
-                        StartCoroutine(connectServer());
+                        Managers.MonoForCoroutine.StartCoroutine(connectServer());
                     }, () =>
                     {
-                        SoundMgr.Instance.StopBGM();
-                        SoundMgr.Instance.PlayEffect("touch");
-                        Destroy(_popup.gameObject);
-                        TransitionManager.Instance.TransitionToSelectScene();
+                        Managers.Sound.StopBGM();
+                        Managers.Sound.PlayTouchEffect();
+                        GameObject.Destroy(_popup.gameObject);
+                        Managers.Scene.LoadScene(E_SceneName.SelectMenu);
                     });
                     yield break;
                 }
@@ -330,12 +315,17 @@ public class TokenInputManager : GameObjectSingletonDestroy<TokenInputManager>, 
 
             _popup.ShowSuccess();
             yield return new WaitForSeconds(1.0f);
-            Destroy(_popup.gameObject);
+            GameObject.Destroy(_popup.gameObject);
         }
-
-    private void OnDisable()
-    {
-        _connect = false;
+        void OnSceneUnloaded(Scene scene)
+        {
+            _save_bpm = 0;
+            _save_left_speed = 0;
+            _save_right_speed = 0;        
+            leftToken.CallEvent = null;
+            rightToken.CallEvent = null;
+            ReceivedEvent = null;
+    
     }
 }
 

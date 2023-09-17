@@ -64,7 +64,7 @@ namespace bambong
         {
 
             var speed = GetCurSpeed() * Time.deltaTime;
-            //var speed = TokenInputManager.Instance.CurRpm * 0.02f * Time.deltaTime;
+            //var speed = Managers.Token.CurRpm * 0.02f * Time.deltaTime;
             var pos = transform.position;
             pos += transform.forward * speed; 
             transform.position = pos;
@@ -76,11 +76,11 @@ namespace bambong
 
         public void PlayerInputCheckForStop()
         {
-            if(TokenInputManager.Instance.LastEventTime >= INPUT_ANIMATE_STOP_TIME && !animateController.GetBoolNoInput())
+            if(Managers.Token.LastEventTime >= INPUT_ANIMATE_STOP_TIME && !animateController.GetBoolNoInput())
             {
                 animateController.PlayAnimateNoInput(true);
             }
-            else if(TokenInputManager.Instance.LastEventTime < INPUT_ANIMATE_STOP_TIME && animateController.GetBoolNoInput())
+            else if(Managers.Token.LastEventTime < INPUT_ANIMATE_STOP_TIME && animateController.GetBoolNoInput())
             {
                 animateController.PlayAnimateNoInput(false);
             }

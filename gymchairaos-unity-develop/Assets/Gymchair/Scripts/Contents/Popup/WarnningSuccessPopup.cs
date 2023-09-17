@@ -49,7 +49,7 @@ namespace Gymchair.Contents.Popup
 
         public void hide()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             success?.Invoke();
             Destroy(this.gameObject);
         }

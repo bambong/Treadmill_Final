@@ -42,7 +42,7 @@ namespace bambong
         {
             yield return new WaitForSeconds(1f);
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayEffect("sfx_Speed_Ready");
+            Managers.Sound.PlayEffect("sfx_Speed_Ready");
 #endif
         }
         IEnumerator ProcessWait(Action callOnClose) 

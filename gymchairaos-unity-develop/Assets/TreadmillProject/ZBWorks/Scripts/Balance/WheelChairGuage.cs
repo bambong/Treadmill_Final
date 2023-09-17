@@ -13,9 +13,9 @@ namespace ZB.Balance
         [SerializeField] private UIGauge m_uiGuage_Right;
         [SerializeField] private UIGauge m_uiGuage_hp;
 
-        public float m_NowSpeed { get => TokenInputManager.Instance.CurSpeed; }
-        public float m_leftRpm { get => TokenInputManager.Instance.Save_left_rpm; }
-        public float m_rightRpm { get => TokenInputManager.Instance.Save_right_rpm; }
+        public float m_NowSpeed { get => Managers.Token.CurSpeed; }
+        public float m_leftRpm { get => Managers.Token.Save_left_rpm; }
+        public float m_rightRpm { get => Managers.Token.Save_right_rpm; }
 
         [SerializeField] private float m_guageMax;
         [SerializeField] private float m_hp;
@@ -23,8 +23,8 @@ namespace ZB.Balance
         [ContextMenu("Start")]
         public void FocusStart()
         {
-            TokenInputManager.Instance.Save_left_rpm = 0;
-            TokenInputManager.Instance.Save_right_rpm = 0;
+            Managers.Token.Save_left_rpm = 0;
+            Managers.Token.Save_right_rpm = 0;
 
             m_ani.Play();
 
@@ -112,41 +112,41 @@ namespace ZB.Balance
         private void Awake()
         {
 #if UNITY_EDITOR
-            TokenInputManager.Instance.AddLeftTokenEvent(()=>
+            Managers.Token.AddLeftTokenEvent(()=>
             {
                 AddLeftToken();
-                Debug.Log($"NowTokenInfo / Left : {TokenInputManager.Instance.Save_left_rpm} / Right : {TokenInputManager.Instance.Save_right_rpm}");
+                Debug.Log($"NowTokenInfo / Left : {Managers.Token.Save_left_rpm} / Right : {Managers.Token.Save_right_rpm}");
             });
-            TokenInputManager.Instance.AddRightTokenEvent(()=>
+            Managers.Token.AddRightTokenEvent(()=>
             {
                 AddRightToken();
-                Debug.Log($"NowTokenInfo / Left : {TokenInputManager.Instance.Save_left_rpm} / Right : {TokenInputManager.Instance.Save_right_rpm}");
+                Debug.Log($"NowTokenInfo / Left : {Managers.Token.Save_left_rpm} / Right : {Managers.Token.Save_right_rpm}");
             });
             StartCoroutine(DecreaseToken());
 #endif
-            TokenInputManager.Instance.ReceivedEvent += SideMove;
+            Managers.Token.ReceivedEvent += SideMove;
         }
         public void AddLeftToken()
         {
-            TokenInputManager.Instance.Save_left_rpm += 50;
+            Managers.Token.Save_left_rpm += 50;
         }
         public void AddRightToken()
         {
-            TokenInputManager.Instance.Save_right_rpm += 50;
+            Managers.Token.Save_right_rpm += 50;
         }
         public IEnumerator DecreaseToken()
         {
             while (gameObject != null)
             {
-                TokenInputManager.Instance.Save_left_rpm = Mathf.Max(0, TokenInputManager.Instance.Save_left_rpm - 10);
-                TokenInputManager.Instance.Save_right_rpm = Mathf.Max(0, TokenInputManager.Instance.Save_right_rpm - 10);
+                Managers.Token.Save_left_rpm = Mathf.Max(0, Managers.Token.Save_left_rpm - 10);
+                Managers.Token.Save_right_rpm = Mathf.Max(0, Managers.Token.Save_right_rpm - 10);
                 yield return new WaitForSeconds(0.2f);
             }
         }
         void SideMove()
         {
             var speed = 240f;
-            var dis = TokenInputManager.Instance.Save_right_rpm - TokenInputManager.Instance.Save_left_rpm;
+            var dis = Managers.Token.Save_right_rpm - Managers.Token.Save_left_rpm;
 
             if (Mathf.Abs(dis) < 100)
             {

@@ -11,15 +11,15 @@ namespace bambong
         public void OnClickYesButton()
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 #endif
             UISceneManager.Instance.RevertExit();
-            TransitionManager.Instance.SceneTransition(E_SceneName.Speed_MenuScene.ToString());
+            Managers.Scene.LoadScene(E_SceneName.Speed_MenuScene);
         }
         public void OnClickNoButton()
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 #endif
             GameSceneManager.Instance.SetStateGamePlay();
             UISceneManager.Instance.RevertExit();

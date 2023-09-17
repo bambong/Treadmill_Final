@@ -17,7 +17,7 @@ public class ObstaclePanel : MonoBehaviour
     {
         _buttonPanel.onClick.AddListener(() =>
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             _action?.Invoke(this);
         });
     }

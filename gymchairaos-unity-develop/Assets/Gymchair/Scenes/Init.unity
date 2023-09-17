@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 736024634}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -736,6 +736,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 764826301, guid: 4dbeffd658c58ff408c41d7fe580ba91, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 817646781, guid: 4dbeffd658c58ff408c41d7fe580ba91, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3098807743596403456, guid: 4dbeffd658c58ff408c41d7fe580ba91, type: 3}
       propertyPath: m_Pivot.x
       value: 0

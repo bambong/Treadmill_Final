@@ -20,13 +20,13 @@ public class StopPopup : MonoBehaviour
 
     public void OnOkButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         Destroy(this.gameObject);
         _actionOKButton?.Invoke();
     }
     public void OnCancelButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+        Managers.Sound.PlayTouchEffect();
         Destroy(this.gameObject);
         _actionCancelButton?.Invoke();
     }

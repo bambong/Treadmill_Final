@@ -1,37 +1,35 @@
-﻿using System;
-using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Gymchair.Core.Mgr
-{
-    public class SoundMgr : Behaviour.ManagerBehaviour<SoundMgr>
+    public class SoundManager 
     {
-        Dictionary<string, AudioClip> _dictAudioClips;
+        private Dictionary<string, AudioClip> _dictAudioClips;
+        private GameObject[] _audioObject;
+        private AudioSource[] _audioSource;
 
-        AudioClip[] _audioClips;
-
-        GameObject[] _audioObject;
-        AudioSource[] _audioSource;
-
-        private void Awake()
+        private GameObject rootGo;
+        public void Init()
         {
             initAudioListener();
             loadAudioClips();
-
-            PlayBGM("back");
         }
 
         public void initAudioListener()
         {
+
+            rootGo = new GameObject();
+            GameObject.DontDestroyOnLoad(rootGo);
+            rootGo.name = "Sound_Source";
+
             _audioObject = new GameObject[2];
             _audioSource = new AudioSource[2];
 
             _audioObject[0] = new GameObject("AudioBGM");
             _audioObject[1] = new GameObject("AudioEffect");
 
-            _audioObject[0].transform.parent = gameObject.transform;
-            _audioObject[1].transform.parent = gameObject.transform;
+            _audioObject[0].transform.parent = rootGo.transform;
+            _audioObject[1].transform.parent = rootGo.transform;
 
             _audioSource[0] = _audioObject[0].AddComponent<AudioSource>();
             _audioSource[1] = _audioObject[1].AddComponent<AudioSource>();
@@ -104,9 +102,8 @@ namespace Gymchair.Core.Mgr
             _audioSource[1].loop = false;
             _audioSource[1].Play();
         }
-
-        public override void OnCoreMessage(object msg)
+        public void PlayTouchEffect() 
         {
+            Managers.Sound.PlayEffect("touch");
         }
     }
-}

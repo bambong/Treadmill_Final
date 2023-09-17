@@ -44,8 +44,8 @@ namespace bambong
         }
         public void MenuTransition() 
         {
-            SoundMgr.Instance.PlayEffect("touch");
-            TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString());
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.SelectGame);
         }
     }
 }

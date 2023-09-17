@@ -84,11 +84,10 @@ namespace Gymchair.Contents.Result
         {
             StartCoroutine(onBlack(true, 0.5f));
 
-            SoundMgr.Instance.PlayBGM("back");
-
-            int keyNumber = Core.Mgr.DataMgr.Instance.GetKeyNumber();
-            _gymData = Core.Mgr.DataMgr.Instance.GetTargetGymData(keyNumber);
-            _gymTickData = Core.Mgr.DataMgr.Instance.GetTargetGymTickData(keyNumber);
+            Managers.Sound.PlayBGM("back");
+            int keyNumber = Managers.Data.GetKeyNumber();
+            _gymData = Managers.Data.GetTargetGymData(keyNumber);
+            _gymTickData = Managers.Data.GetTargetGymTickData(keyNumber);
 
             int minute = (int)_gymData.gymTime / 60;
             int second = (int)_gymData.gymTime % 60;
@@ -191,15 +190,8 @@ namespace Gymchair.Contents.Result
 
         public void OnResultExitButton()
         {
-            SoundMgr.Instance.PlayEffect("touch");
-
-            StartCoroutine(onBlack(false, 0.5f, () =>
-            {
-                SceneMgr.Instance.UnLoadSceneAsync("TargetResult", () =>
-                {
-                    SceneMgr.Instance.LoadSceneAsync("Record", LoadSceneMode.Additive);
-                });
-            }));
+            Managers.Sound.PlayTouchEffect();
+            Managers.Scene.LoadScene(E_SceneName.Record);
         }
     }
 }

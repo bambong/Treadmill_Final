@@ -27,7 +27,7 @@ namespace bambong
                 button.onClick.AddListener(()
                     =>
                 {
-                    SoundMgr.Instance.PlayEffect("touch");
+                    Managers.Sound.PlayTouchEffect();
                     action?.Invoke(level); 
                 });
             }

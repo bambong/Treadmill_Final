@@ -23,7 +23,7 @@ namespace Gymchair.Contents.Popup
 
         public void hide()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             Destroy(this.gameObject);
             _actionButton?.Invoke(_inputDescription.text);
         }

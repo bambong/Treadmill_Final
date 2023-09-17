@@ -57,7 +57,7 @@ namespace jiho
         }
         private IEnumerator GameStaartCheckConnect() 
         {
-            while (!TokenInputManager.Instance.IsConnect) 
+            while (!Managers.Token.IsConnect) 
             {
                 yield return new WaitForSeconds(1f);
             }

@@ -123,13 +123,13 @@ namespace Gymchair.Contents.Popup
 
         public void OnOkButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             _actionOK?.Invoke(this);
         }
 
         public void OnCancelButton()
         {
-            Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
             _actionCancel?.Invoke(this);
         }
     }

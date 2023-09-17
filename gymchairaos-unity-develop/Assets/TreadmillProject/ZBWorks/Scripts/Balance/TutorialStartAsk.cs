@@ -20,11 +20,12 @@ public class TutorialStartAsk : MonoBehaviour
 
         if (enter)
         {
-            TransitionManager.Instance.SceneTransition(E_SceneName.Balance_GameScene_Tutorial.ToString());
+            Managers.Scene.LoadScene(E_SceneName.Balance_GameScene_Tutorial);
+            
         }
         else
         {
-            TransitionManager.Instance.SceneTransition(E_SceneName.Balance_GameScene_1.ToString());
+            Managers.Scene.LoadScene(E_SceneName.Balance_GameScene_1);
         }
     }
 

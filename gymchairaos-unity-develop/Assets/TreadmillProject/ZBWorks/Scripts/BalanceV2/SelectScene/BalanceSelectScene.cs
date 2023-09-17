@@ -17,7 +17,13 @@ public class BalanceSelectScene : MonoBehaviour
 
     public void OnBtnClick_StageEnter()
     {
-        TransitionManager.Instance.SceneTransition(connected.ToString());
+        Managers.Sound.PlayTouchEffect();
+        Managers.Scene.LoadScene(connected);
+    }
+    public void OnBtnClick_BackButton()
+    {
+        Managers.Sound.PlayTouchEffect();
+        Managers.Scene.LoadScene(E_SceneName.SelectGame);
     }
 
     public void OnScrollInput()

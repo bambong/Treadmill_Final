@@ -36,7 +36,7 @@ namespace ZB
 
         IEnumerator BloothConnectWait() 
         {
-            while(!TokenInputManager.Instance.IsConnect)
+            while(!Managers.Token.IsConnect)
             {
                 yield return null;
             }

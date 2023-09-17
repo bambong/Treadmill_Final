@@ -38,7 +38,7 @@ namespace ZB.Balance2
 
         public void Active(int index, GuideEndCondition endCondition, UnityAction onCenterAppearEnd, UnityAction onEndCycleStart, UnityAction onEndCycleEnd)
         {
-            Debug.LogError("ACTIVE!!");
+            //Debug.LogError("ACTIVE!!");
             activing = true;
 
             uiShadow.SetActive(true);

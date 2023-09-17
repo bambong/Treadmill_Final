@@ -28,23 +28,23 @@ namespace bambong
         public void OnClickMenuButton() 
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 #endif
-            TransitionManager.Instance.SceneTransition(E_SceneName.Speed_MenuScene.ToString());
+            Managers.Scene.LoadScene(E_SceneName.Speed_MenuScene);
         }
         public void OnClickRetryButton() 
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 #endif
-            TransitionManager.Instance.SceneTransition(E_SceneName.Speed_GameScene.ToString());
+            Managers.Scene.LoadScene(E_SceneName.Speed_GameScene);
         }
         public void OnClickExitButton()
         {
 #if !UNITY_EDITOR || SOUND_TEST
-            SoundMgr.Instance.PlayEffect("touch");
+            Managers.Sound.PlayTouchEffect();
 #endif
-            TransitionManager.Instance.SceneTransition(E_SceneName.SelectGame.ToString());
+            Managers.Scene.LoadScene(E_SceneName.SelectGame);
         }
 
     }

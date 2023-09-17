@@ -33,14 +33,14 @@ public class FrameUIContorller : MonoBehaviour
 
         GUI.Label(uiPosition, SceneManager.GetActiveScene().name, style);
         uiPosition.y += fontSize;
-        GUI.Label(uiPosition, $"L RPM : {TokenInputManager.Instance.Save_left_rpm}", style);
+        GUI.Label(uiPosition, $"L RPM : {Managers.Token.Save_left_rpm}", style);
         uiPosition.y += fontSize;
-        GUI.Label(uiPosition, $"R RPM : {TokenInputManager.Instance.Save_right_rpm}", style);
+        GUI.Label(uiPosition, $"R RPM : {Managers.Token.Save_right_rpm}", style);
     }
 
     private void Start()
     {
-        TokenInputManager.Instance.ReceivedEvent += ClearTerm;
+        Managers.Token.ReceivedEvent += ClearTerm;
     }
     public void ClearTerm() 
     {

@@ -26,14 +26,14 @@ namespace jiho
         private void Awake()
         {
             startPos = player_obj.transform.position;
-            //TokenInputManager.Instance.ConnectToDevice();
+            //Managers.Token.ConnectToDevice();
             StartCoroutine(Function());
         }
 
         private void UpdateDistance()
         {
             distance = (Vector3.Distance(startPos, player_obj.transform.position)) / 3;
-            showDistance += (TokenInputManager.Instance.CurSpeed * FUNC_UPDATE_TIME);
+            showDistance += (Managers.Token.CurSpeed * FUNC_UPDATE_TIME);
         }
 
         private void UpdateHealth()

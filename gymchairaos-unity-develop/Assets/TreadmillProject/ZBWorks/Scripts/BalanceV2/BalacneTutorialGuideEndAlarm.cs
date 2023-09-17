@@ -29,7 +29,7 @@ namespace ZB.Balance2
                         {
                             tf_tmp.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutQuart).OnComplete(() =>
                             {
-                                bambong.TransitionManager.Instance.SceneTransition(bambong.E_SceneName.Balance_GameScene_1.ToString());
+                                Managers.Scene.LoadScene(E_SceneName.Balance_GameScene_1);
                             });
                         });
                     });

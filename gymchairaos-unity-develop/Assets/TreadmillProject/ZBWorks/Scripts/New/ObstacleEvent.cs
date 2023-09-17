@@ -39,7 +39,7 @@ namespace ZB
                         obstacle.SpawnRandomObstacleSet();
 
                     ////현재속도검사, 체력감소
-                    //if (TokenInputManager.Instance.CurSpeed < checkSpeed)
+                    //if (Managers.Token.CurSpeed < checkSpeed)
                     //{
                     //    playerHP.MinusHP(1);
                     //}

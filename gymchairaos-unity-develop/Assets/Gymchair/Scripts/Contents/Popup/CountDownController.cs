@@ -23,7 +23,7 @@ public class CountDownController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("count");
+        Managers.Sound.PlayEffect("count");
         StartCoroutine(onAnimation());
     }
 

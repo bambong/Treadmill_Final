@@ -61,8 +61,7 @@ public class GymInfoPopup : MonoBehaviour
 
     public void OnSelectButton(GameObject obj)
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+        Managers.Sound.PlayTouchEffect();
         if (obj.GetComponent<Image>().sprite == _spriteNormal)
         {
             obj.GetComponent<Image>().sprite = _spriteSelect;
@@ -85,16 +84,14 @@ public class GymInfoPopup : MonoBehaviour
 
     public void OnNoneButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+        Managers.Sound.PlayTouchEffect();
         _actionNone?.Invoke();
         Destroy(this.gameObject);
     }
     
     public void OnOkButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+        Managers.Sound.PlayTouchEffect();
         string gymName = "";
         
         if (_gymName.Count != 0)
@@ -106,8 +103,7 @@ public class GymInfoPopup : MonoBehaviour
 
     public void OnCancelButton()
     {
-        Gymchair.Core.Mgr.SoundMgr.Instance.PlayEffect("touch");
-
+        Managers.Sound.PlayTouchEffect();
         _actionCancel?.Invoke();
         Destroy(this.gameObject);
     }
