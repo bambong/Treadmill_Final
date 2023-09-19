@@ -38,6 +38,12 @@ namespace ZB
             body.DOAnchorPos(new Vector2(0, (ratio - 1) * length), duration).SetEase(ease);
         }
 
+        [ContextMenu("test")]
+        private void TestChangeRatio()
+        {
+            ChangeRatio(0.3f);
+        }
+
         void OnEnable()
         {
             if (startAtZero)
