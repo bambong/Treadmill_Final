@@ -46,8 +46,6 @@ namespace bambong
         }
         public void MoveUpdate() 
         {
-            //var dir = destination.transform.position - transform.position;
-            //var speed = speedRevisionData.GetCollectAreaData(GameSceneManager.Instacne.GetCurDistanceRatio(transform));
             animateController.SetMoveAnimSpeed(curMoveSpeed / GameSceneManager.Instance.GetAIAnimSpeedRevision());
             transform.position += transform.forward * curMoveSpeed * Time.deltaTime;
             ChangeSpeed();
