@@ -94,7 +94,7 @@ namespace Gymchair.Contents.Login
                     {
                         Managers.Data.UserName = name;
 
-                        Managers.Scene.LoadScene(E_SceneName.SelectMenu);
+                        Managers.Scene.LoadScene(E_SceneName.SelectMenu_ZB);
 
                         login = true;
                         return;

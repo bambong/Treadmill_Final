@@ -16,7 +16,7 @@ namespace bambong
         public void OnLobbyButtonDown()
         {
             Managers.Sound.PlayTouchEffect();
-            Managers.Scene.LoadScene(E_SceneName.SelectMenu);
+            Managers.Scene.LoadScene(E_SceneName.SelectMenu_ZB);
         }
         public void OnSpeedGameStartButtonDown()
         {

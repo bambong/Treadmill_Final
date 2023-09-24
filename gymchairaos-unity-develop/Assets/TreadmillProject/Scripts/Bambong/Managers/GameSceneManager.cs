@@ -21,6 +21,8 @@ namespace bambong
 
         [Header("Gauage")]
         [SerializeField]
+        private SpeedGuage speedGuage;
+        [SerializeField]
         private float maximumGauage = 100f;
 
         [SerializeField]
@@ -140,6 +142,8 @@ namespace bambong
         public void AddDistance() 
         {
             curDistance += curGauage * Time.deltaTime * WHEEL_PERIMETER;
+
+            speedGuage.OnPlayerMoved(GetCurDistanceRatio(player.transform));
         }
 
         public void OnStart()
@@ -195,8 +199,8 @@ namespace bambong
             gameStateController.ChangeState(GameStart.Instance);
             SetDestination();
             UISceneManager.Instance.WaitPanelOpen(OnStart);
-            
-      
+
+            speedGuage.Init();
         }
         public void SetStateGamePlay()
         {
