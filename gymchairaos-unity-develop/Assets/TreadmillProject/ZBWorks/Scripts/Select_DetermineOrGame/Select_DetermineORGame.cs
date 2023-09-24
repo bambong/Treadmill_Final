@@ -49,6 +49,14 @@ public class Select_DetermineORGame : MonoBehaviour
     {
 
     }
+    public void OnBtnClicked_SceneBtn_Left()
+    {
+        Managers.Scene.LoadScene(E_SceneName.Assessment);
+    }
+    public void OnBtnClicked_SceneBtn_Right()
+    {
+        Managers.Scene.LoadScene(E_SceneName.SelectGame);
+    }
 
     private void Enter()
     {
