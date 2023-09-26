@@ -143,7 +143,10 @@ namespace Gymchair.Contents.Record
                 if (userGymData.high_speed > gymHighSpeed)
                     gymHighSpeed = userGymData.high_speed;
 
+                Transform tf;
                 GameObject obj = Instantiate(_objRecordPrefab);
+                obj.TryGetComponent(out tf);
+                tf.position = new Vector3(tf.position.x, tf.position.y, 161.062f);
                 obj.transform.parent = _objContent.transform;
                 obj.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 

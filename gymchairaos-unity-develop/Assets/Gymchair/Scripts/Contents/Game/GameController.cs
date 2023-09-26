@@ -320,14 +320,34 @@ namespace Gymchair.Contents.Game
 
         public void OnAttemptConnectToServer()
         {
-            StartTestPopup.Create(() =>
+            //최초측정 판단
+            //bool isFirstAssessment = Managers.Data.GetLastGymData() != null;
+            bool isFirstAssessment = true;
+
+            //최초 측정일 경우
+            if (isFirstAssessment)
             {
-                WarnningTestPopup.Create(() =>
+                StartTestPopup.Create(() =>
                 {
-                    Managers.Sound.PlayTouchEffect();
-                    OnResetData();
+                    WarnningTestPopup.Create(() =>
+                    {
+                        Managers.Sound.PlayTouchEffect();
+                        OnResetData();
+                    });
                 });
-            });
+            }
+            //최초 측정 아닐경우
+            else
+            {
+                StartTestPopup_HaveRecord.Create(() =>
+                {
+                    //왼쪽버튼 클릭이벤트
+                },
+                () =>
+                {
+                    //오른쪽버튼 클릭이벤트
+                });
+            }
         }
 
 
