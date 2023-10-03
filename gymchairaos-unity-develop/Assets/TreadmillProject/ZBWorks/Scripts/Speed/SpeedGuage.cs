@@ -14,12 +14,12 @@ public class SpeedGuage : MonoBehaviour
 
     public void Init()
     {
-        guage.ChangeNotTweening(1);
+        guage.ChangeNotTweening(0);
     }
 
     public void OnPlayerMoved(float ratio)
     {
-        guage.Change(1 - ratio);
+        guage.Change(ratio);
     }
 
     private void Awake()
