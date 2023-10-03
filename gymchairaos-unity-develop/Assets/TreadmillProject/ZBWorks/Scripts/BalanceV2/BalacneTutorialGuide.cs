@@ -28,11 +28,11 @@ namespace ZB.Balance2
         int currentIndex;
         bool activing;
 
-        Vector2 pos_img_Start = new Vector2(300, 91);
-        Vector2 pos_img_End = new Vector2(752, -43);
+        Vector2 pos_img_Start = new Vector2(310, 195);
+        Vector2 pos_img_End = new Vector2(717, 195);
         Vector2 size_img_End = Vector2.one * 0.65f;
 
-        Vector2 pos_tmp_Start = Vector2.down * 262;
+        Vector2 pos_tmp_Start = Vector2.down * 400;
         Vector2 pos_tmp_End = Vector2.down * 488;
         Vector2 size_tmp_End = Vector2.one * 0.55f;
 
