@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2008566004089480750}
   - component: {fileID: 935311502188177207}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: BPM
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,6 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a77a60e557de0e14e87f90686bbacd23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tmpro: {fileID: 7456259882851551589}
 --- !u!222 &1701176383367335116
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -238,7 +239,7 @@ GameObject:
   - component: {fileID: 3421753253310131730}
   - component: {fileID: 7456259882851551589}
   m_Layer: 5
-  m_Name: Text (TMP)_1
+  m_Name: CountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
