@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Gymchair/Scenes/Assessment.unity
     guid: 8614959646b0742138be7f74bbf05f70
   - enabled: 1
-    path: Assets/Gymchair/Scenes/Record.unity
+    path: Assets/Gymchair/Scenes/Record_Old.unity
     guid: 6ab12e602307d4a3cb01d6860ac3caa7
   - enabled: 1
     path: Assets/Gymchair/Scenes/Result.unity
@@ -83,4 +83,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/TreadmillProject/ZBWorks/Scenes/SelectMenu_ZB.unity
     guid: add15774fcb65b54a8297ee241f7745f
+  - enabled: 1
+    path: Assets/Gymchair/Scenes/Record.unity
+    guid: 1a0844662d20df843ac7482e206b5cb2
   m_configObjects: {}
