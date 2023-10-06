@@ -8,7 +8,6 @@ namespace Gymchair.Contents.Record
 {
     public class RecordPrefabController : MonoBehaviour
     {
-        public Text _textCount;
         public Text _textDate;
 
         public Text _textTime;
@@ -17,9 +16,18 @@ namespace Gymchair.Contents.Record
         public Text _textBPM;
         public Text _textkcal;
 
+        [SerializeField] private Image bg;
+        [SerializeField] private Sprite green;
+        [SerializeField] private Sprite blue;
+
         public int _keyNumber;
 
         public Action<int> _actionClick;
+
+        public void SetBG_Green(bool active)
+        {
+            bg.sprite = active ? green : blue;
+        }
 
         [SerializeField] Button _buttonClick;
 

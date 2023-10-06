@@ -4,11 +4,14 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Gymchair.Contents.Record
 {
     public class RecordController : MonoBehaviour
     {
+        [SerializeField] TextMeshProUGUI tmp_cheer;
+
         [Header("기본 정보")]
         [SerializeField] Text _textNickName;
         [SerializeField] Text _textAge;
@@ -26,7 +29,7 @@ namespace Gymchair.Contents.Record
         [SerializeField] Sprite[] _spriteCO2s;
 
         [Header("운동 정보")]
-        [SerializeField] Text _textGymCount;
+        [SerializeField] TextMeshProUGUI _textGymCount;
         [SerializeField] Text _textGymTime;
         [SerializeField] Text _textGymMonthTime;
         [SerializeField] Text _textGymKcal;
@@ -162,8 +165,8 @@ namespace Gymchair.Contents.Record
                 script._textBPM.text = $"{(int)userGymData.bpm} BPM";
                 script._textkcal.text = $"{(int)userGymData.gymCalorie} kcal";
                 script._textDate.text = gymDate.ToString("yyyy년 MM월 dd일 tt hh시 mm분");
-                script._textCount.text = $"{num + 1}회";
                 script._keyNumber = num;
+                script.SetBG_Green(num % 2 == 0);
                 script._actionClick = (keyNumber) =>
                 {
                     Managers.Data.SetKeyNumber(keyNumber);
@@ -181,12 +184,13 @@ namespace Gymchair.Contents.Record
             hour = ((int)gymMonthTime / 60) / 60;
             _textGymMonthTime.text = string.Format("{0:D2}:{1:D2}:{2:D2}", hour, minute, second);
 
-            _textGymCount.text = string.Format("{0:D5}", _maxCount);
+            _textGymCount.text = $"{_maxCount.ToString()}<color=black>회!</color>";
             _textGymKcal.text = $"{(int)gymKcal}";
             _textGymMeter.text = $"{(int)gymMeter}";
             _textGymSpeed.text = $"{(int)gymHighSpeed}";
 
             _textNickName.text = Managers.Data.UserName;
+            tmp_cheer.text = $"{Managers.Data.UserName} 님 오늘도 힘내볼까요!";
             _textAge.text = $"{iAge}";
             _textHeight.text = $"{userData.height}";
             _textWeight.text = $"{userData.weight}";
