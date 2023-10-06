@@ -64,8 +64,8 @@ namespace ZB.Balance2
             if (active)
             {
 #if !UNITY_EDITOR
-                 var left = Managers.Token.Save_left_rpm;
-                var right = Managers.Token.Save_right_rpm;
+                 var left = Managers.Token.Save_left_speed;
+                var right = Managers.Token.Save_right_speed;
                 if (MIN_INPUT < Mathf.Abs(left - right)) 
                 {
                     if(left < right)

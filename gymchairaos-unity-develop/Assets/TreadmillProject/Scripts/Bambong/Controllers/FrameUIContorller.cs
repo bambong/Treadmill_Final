@@ -33,9 +33,9 @@ public class FrameUIContorller : MonoBehaviour
 
         GUI.Label(uiPosition, SceneManager.GetActiveScene().name, style);
         uiPosition.y += fontSize;
-        GUI.Label(uiPosition, $"L RPM : {Managers.Token.Save_left_rpm}", style);
+        GUI.Label(uiPosition, $"L RPM : {Managers.Token.Save_left_speed}", style);
         uiPosition.y += fontSize;
-        GUI.Label(uiPosition, $"R RPM : {Managers.Token.Save_right_rpm}", style);
+        GUI.Label(uiPosition, $"R RPM : {Managers.Token.Save_right_speed}", style);
     }
 
     private void Start()

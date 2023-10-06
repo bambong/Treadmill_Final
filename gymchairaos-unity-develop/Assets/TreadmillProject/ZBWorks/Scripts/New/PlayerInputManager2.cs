@@ -48,18 +48,18 @@ namespace ZB
             leftReceived = true;
             rightReceived = false;
 
-            Managers.Token.Save_left_rpm = 0;
-            Managers.Token.Save_right_rpm = 0;
+            Managers.Token.Save_left_speed = 0;
+            Managers.Token.Save_right_speed = 0;
             currentRotTarget = 0;
             move = 0;
         }
         public void AddLeftToken()
         {
-            Managers.Token.Save_left_rpm += 50;
+            Managers.Token.Save_left_speed += 50;
         }
         public void AddRightToken()
         {
-            Managers.Token.Save_right_rpm += 50;
+            Managers.Token.Save_right_speed += 50;
         }
         public void CheckActive(bool active)
         {
@@ -84,8 +84,8 @@ namespace ZB
         {
             while (gameObject != null)
             {
-                Managers.Token.Save_left_rpm = Mathf.Max(0, Managers.Token.Save_left_rpm - 1);
-                Managers.Token.Save_right_rpm = Mathf.Max(0, Managers.Token.Save_right_rpm - 1);
+                Managers.Token.Save_left_speed = Mathf.Max(0, Managers.Token.Save_left_speed - 1);
+                Managers.Token.Save_right_speed = Mathf.Max(0, Managers.Token.Save_right_speed - 1);
                 yield return new WaitForSeconds(0.2f);
             }
         }
@@ -108,7 +108,7 @@ namespace ZB
 #endif
 
             if (Input.GetKeyDown(KeyCode.R))
-            { token.Save_left_rpm = 0; token.Save_right_rpm = 0; }
+            { token.Save_left_speed = 0; token.Save_right_speed = 0; }
         }
 
         void SideMove()
@@ -116,8 +116,8 @@ namespace ZB
             if (checking)
             {
 
-                leftRpm = token.Save_left_rpm * token.FactorValue;
-                rightRpm = token.Save_right_rpm * token.FactorValue;
+                leftRpm = token.Save_left_speed;
+                rightRpm = token.Save_right_speed;
 
                 //프레임마다 이동할 정도 구함
                 if (intervalAbs < minInterval)

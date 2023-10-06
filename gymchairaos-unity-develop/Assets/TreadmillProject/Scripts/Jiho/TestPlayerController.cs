@@ -85,7 +85,7 @@ namespace jiho
                 {
                     return;
                 }
-                tokenDiff = (Managers.Token.Save_left_rpm - Managers.Token.Save_right_rpm);
+                tokenDiff = (Managers.Token.Save_left_speed - Managers.Token.Save_right_speed);
                 RotateMoveUpdate();
             };
         }

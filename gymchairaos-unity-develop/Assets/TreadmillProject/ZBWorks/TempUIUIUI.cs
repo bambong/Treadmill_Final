@@ -17,8 +17,8 @@ public class TempUIUIUI : MonoBehaviour
 
     void Update()
     {
-        left.text = Managers.Token.Save_left_rpm.ToString();
-        right.text = Managers.Token.Save_right_rpm.ToString();
+        left.text = Managers.Token.Save_left_speed.ToString();
+        right.text = Managers.Token.Save_right_speed.ToString();
         tempt += Time.deltaTime;
     }
 

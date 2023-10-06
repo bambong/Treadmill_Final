@@ -92,8 +92,8 @@ public class TokenInputManager
         get { return Math.Min(leftToken.LastEventTime, rightToken.LastEventTime); }
     }
 
-    public float Save_left_rpm { get => _save_left_speed; set => _save_left_speed = value;  }
-    public float Save_right_rpm { get => _save_right_speed; set => _save_right_speed = value; }
+    public float Save_left_speed { get => _save_left_speed; set => _save_left_speed = value;  }
+    public float Save_right_speed { get => _save_right_speed; set => _save_right_speed = value; }
     public InputToken LeftToken { get => leftToken; }
     public InputToken RightToken { get => rightToken; }
 
@@ -176,9 +176,9 @@ public class TokenInputManager
     private readonly int BPM_INDEX = 11;
     private readonly float MIN_CHECK_RPM = 0;
    
-    private float GetSpeed( float y ) 
+    private float GetSpeed( float v ) 
     {
-        return y * FactorValue; 
+        return v * FactorValue * -1; 
         // 각속도 -> 속도 계산법 (V = (2π X 반지름 X 각속도) / 360
     }
     public void OnReceivedMessage(string message)

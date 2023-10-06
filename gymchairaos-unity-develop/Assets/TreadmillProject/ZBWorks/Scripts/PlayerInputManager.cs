@@ -27,18 +27,18 @@ namespace ZB
         }
         public void AddLeftToken()
         {
-            Managers.Token.Save_left_rpm += 10;
+            Managers.Token.Save_left_speed += 10;
         }
         public void AddRightToken()
         {
-            Managers.Token.Save_right_rpm += 10;
+            Managers.Token.Save_right_speed += 10;
         }
         public IEnumerator DecreaseToken()
         {
             while (gameObject != null)
             { 
-                Managers.Token.Save_left_rpm = Mathf.Max(0, Managers.Token.Save_left_rpm - 1);
-                Managers.Token.Save_right_rpm = Mathf.Max(0, Managers.Token.Save_right_rpm - 1);
+                Managers.Token.Save_left_speed = Mathf.Max(0, Managers.Token.Save_left_speed - 1);
+                Managers.Token.Save_right_speed = Mathf.Max(0, Managers.Token.Save_right_speed - 1);
                 yield return new WaitForSeconds(0.2f);
             }
         }
@@ -58,12 +58,12 @@ namespace ZB
 
         void SideMove()
         {
-            Debug.Log("!@#!@#!@$!@$$#@ " + Managers.Token.Save_left_rpm + " " +Managers.Token.Save_right_rpm);
+            Debug.Log("!@#!@#!@$!@$$#@ " + Managers.Token.Save_left_speed + " " +Managers.Token.Save_right_speed);
 
 
 
             var speed = 240f;
-            var dis = Managers.Token.Save_right_rpm - Managers.Token.Save_left_rpm;
+            var dis = Managers.Token.Save_right_speed - Managers.Token.Save_left_speed;
 
             if (Mathf.Abs(dis) < 100)
             {

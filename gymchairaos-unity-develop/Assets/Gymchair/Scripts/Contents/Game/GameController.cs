@@ -458,11 +458,11 @@ namespace Gymchair.Contents.Game
 #if UNITY_EDITOR
                 if (Input.GetKeyDown(KeyCode.D))
                 {
-                    Managers.Token.Save_right_rpm += 10f;
+                    Managers.Token.Save_right_speed += 10f;
                 }
                 if (Input.GetKeyDown(KeyCode.A))
                 {
-                    Managers.Token.Save_left_rpm += 10f;
+                    Managers.Token.Save_left_speed += 10f;
                 }
                 //Managers.Token.Save_left_rpm -= Time.deltaTime;
                 //Managers.Token.Save_left_rpm = Mathf.Lerp(Managers.Token.Save_left_rpm, 0, Time.deltaTime);
@@ -523,8 +523,8 @@ namespace Gymchair.Contents.Game
             gymchairData.bpm = (bpm == 0.0f) ? 0.00001f : bpm;
             gymchairData.rpm = (rpm < 0) ? 0 : rpm;
             gymchairData.speed = (speed == 0.0f) ? 0.00001f : speed;
-            gymchairData.left_speed = Managers.Token.Save_left_rpm;
-            gymchairData.right_speed = Managers.Token.Save_right_rpm;
+            gymchairData.left_speed = Managers.Token.Save_left_speed;
+            gymchairData.right_speed = Managers.Token.Save_right_speed;
             
             /*
 
@@ -551,7 +551,7 @@ namespace Gymchair.Contents.Game
             _save_to_rotateZ = Mathf.Lerp(_save_to_rotateZ, rotateZ, 0.3f);
             _imageGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, _save_to_rotateZ);
 
-            float leftPercent = Managers.Token.Save_left_rpm;
+            float leftPercent = Managers.Token.Save_left_speed;
             leftPercent = (leftPercent > 4.8f) ? 1.0f : leftPercent / 4.8f;
             float leftRotateZ = 180 * leftPercent;
             leftRotateZ = 90 - leftRotateZ;
@@ -561,7 +561,7 @@ namespace Gymchair.Contents.Game
 
             _save_to_leftRotateZ = Mathf.Lerp(_save_to_leftRotateZ, leftRotateZ, 0.3f);
 
-            float rightPercent = Managers.Token.Save_right_rpm;
+            float rightPercent = Managers.Token.Save_right_speed;
             rightPercent = (rightPercent > 4.8f) ? 1.0f : rightPercent / 4.8f;
             float rightRotateZ = 180 * rightPercent;
             rightRotateZ = 90 - rightRotateZ;
@@ -664,11 +664,11 @@ namespace Gymchair.Contents.Game
             speedData.show = true;
 
             ChartUtil.Data leftSpeedData = new ChartUtil.Data();
-            leftSpeedData.value = (Managers.Token.Save_left_rpm <= 0.0f) ? 0.00001f : Managers.Token.Save_left_rpm;
+            leftSpeedData.value = (Managers.Token.Save_left_speed <= 0.0f) ? 0.00001f : Managers.Token.Save_left_speed;
             leftSpeedData.show = true;
 
             ChartUtil.Data rightSpeedData = new ChartUtil.Data();
-            rightSpeedData.value = (Managers.Token.Save_right_rpm <= 0.0f) ? 0.00001f : Managers.Token.Save_right_rpm;
+            rightSpeedData.value = (Managers.Token.Save_right_speed <= 0.0f) ? 0.00001f : Managers.Token.Save_right_speed;
             rightSpeedData.show = true;
 
             _charRPM.chartData.series[0].data.Add(rpmData);
@@ -709,8 +709,8 @@ namespace Gymchair.Contents.Game
             _charRightSpeed.UpdateChart();
 
 
-            _left_values.Add(Managers.Token.Save_left_rpm);
-            _right_values.Add(Managers.Token.Save_right_rpm);
+            _left_values.Add(Managers.Token.Save_left_speed);
+            _right_values.Add(Managers.Token.Save_right_speed);
 
             if (_left_values.Count > 150)
                 _left_values.RemoveAt(0);
