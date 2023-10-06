@@ -13,7 +13,7 @@ namespace ZB.Balance
         [SerializeField] private UIGauge m_uiGuage_Right;
         [SerializeField] private UIGauge m_uiGuage_hp;
 
-        public float m_NowSpeed { get => Managers.Token.CurSpeed; }
+        public float m_NowSpeed { get => Managers.Token.CurSpeedMeterPerSec; }
         public float m_leftRpm { get => Managers.Token.Save_left_speed; }
         public float m_rightRpm { get => Managers.Token.Save_right_speed; }
 

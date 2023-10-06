@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ZB;
 using DG.Tweening;
+using Unity.Mathematics;
 
 namespace ZB
 {
@@ -107,18 +108,10 @@ namespace ZB
             SideMove();
 #endif
             //이동
-            if (tf.position.x <= outPos_left && move < 0)
-            {
-                tf.position = new Vector3(outPos_left, tf.position.y, tf.position.z);
-            }
-            else if (tf.position.x >= outPos_right && move > 0)
-            {
-                tf.position = new Vector3(outPos_right, tf.position.y, tf.position.z);
-            }
-            else
-            {
-                tf.position += new Vector3(move * Time.deltaTime, 0, 0);
-            }
+            var pos = tf.position;
+            pos += new Vector3(move * Time.deltaTime, 0, 0);
+            pos.x = Mathf.Clamp(pos.x, outPos_left, outPos_right);
+            tf.position = pos;
 
             //이동 정도에 따른 차체 회전
             if (currentRotTarget != move * rotMultiple)
@@ -127,9 +120,10 @@ namespace ZB
                 tf.DOKill();
                 tf.DORotate(new Vector3(tf.eulerAngles.x, move * rotMultiple, tf.eulerAngles.z), 0.5f);
             }
-
+#if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.R))
             { token.Save_left_speed = 0; token.Save_right_speed = 0; }
+#endif
         }
 
         void SideMove()
@@ -146,12 +140,7 @@ namespace ZB
                 else
                 {
                     move = (rightRpm - leftRpm) * moveMultiple;
-
-                    if (rightRpm > leftRpm &&
-                        move > maxMove)
-                        move = maxMove;
-                    else if (move <= -maxMove)
-                        move = -maxMove;
+                    move = Mathf.Clamp(move, -maxMove, maxMove);
                 }
 
                 ////이동

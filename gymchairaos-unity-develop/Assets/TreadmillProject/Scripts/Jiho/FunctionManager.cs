@@ -33,7 +33,7 @@ namespace jiho
         private void UpdateDistance()
         {
             distance = (Vector3.Distance(startPos, player_obj.transform.position)) / 3;
-            showDistance += (Managers.Token.CurSpeed * FUNC_UPDATE_TIME);
+            showDistance += (Managers.Token.CurSpeedMeterPerSec * FUNC_UPDATE_TIME);
         }
 
         private void UpdateHealth()

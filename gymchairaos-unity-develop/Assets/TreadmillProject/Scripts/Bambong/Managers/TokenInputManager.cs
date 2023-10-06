@@ -2,6 +2,7 @@
 using Gymchair.Contents.Popup;
 using System;
 using System.Collections;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -65,10 +66,11 @@ public class TokenInputManager
     public float LeftTokenTerm { get => leftToken.TokenEventTerm; }
     // 오른쪽 바퀴 입력 텀
     public float RightTokenTerm { get => rightToken.TokenEventTerm; }
+    private const float METER_FACTOR = 0.4396f; // 2f * PI * 0.07f(반지름)
 
     [Obsolete("미터 기준")]
-    public float CurSpeed { get => CurRpm; }
-    public float CurRpm { get { return _save_left_speed + _save_right_speed * 0.5f; } }
+    public float CurSpeedMeterPerSec { get => (METER_FACTOR * CurRpm) / 360.0f; } // 
+    public float CurRpm { get { return math.abs(_save_left_speed) + math.abs(_save_right_speed) * 0.5f; } }
     public float Bpm { get => _save_bpm; }
     public bool IsConnect { get => _connect; } 
 
@@ -99,12 +101,14 @@ public class TokenInputManager
 
     public void Init()
     {
+       
         leftToken = new InputToken(FOR_PC_LEFT_KEY, INPUT_NEED_COUNT);
         rightToken = new InputToken(FOR_PC_RIGHT_KEY, INPUT_NEED_COUNT);
         SceneManager.sceneUnloaded += OnSceneUnloaded;
 #if UNITY_EDITOR || NO_BLUETOOTH
         _connect = true;
 #else
+        Application.targetFrameRate = 60;
         ConnectToDevice();
 #endif
         GenerateDataReceiver();
@@ -178,7 +182,8 @@ public class TokenInputManager
    
     private float GetSpeed( float v ) 
     {
-        return v * FactorValue * -1; 
+        return v * FactorValue * -1;
+        
         // 각속도 -> 속도 계산법 (V = (2π X 반지름 X 각속도) / 360
     }
     public void OnReceivedMessage(string message)
