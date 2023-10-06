@@ -83,7 +83,7 @@ public class TokenInputManager
     private bool _connect = false;
 
     private DataReceiver dataReceiver;
-
+    public float FactorValue { get => dataReceiver.FactorValue; }
     public Action ReceivedEvent { get; set; }
 
     // 마지막 이벤트 입력이 들어온 이 후 시간 (두 개 중 하나라도 입력이 들어오면 더 작은쪽을 반환) 
@@ -168,6 +168,7 @@ public class TokenInputManager
 
     private readonly int FIRST_DEVICE_INDEX = 0;
     private readonly int SECOND_DEVICE_INDEX = 5;
+    private readonly int AXIS_INDEX = 1;
 
     private readonly string LEFT_DEVICE_NAME = "WTwheelL";
     private readonly string RIGHT_DEVICE_NAME = "WTwheelR";
@@ -177,7 +178,7 @@ public class TokenInputManager
    
     private float GetSpeed( float y ) 
     {
-        return y * dataReceiver.FactorValue; 
+        return y * FactorValue; 
         // 각속도 -> 속도 계산법 (V = (2π X 반지름 X 각속도) / 360
     }
     public void OnReceivedMessage(string message)
@@ -187,13 +188,13 @@ public class TokenInputManager
             Debug.Log($" 메세지 받음 : {message}");
             if (splitMessage[FIRST_DEVICE_INDEX] == LEFT_DEVICE_NAME) 
             {
-                _save_left_speed = GetSpeed(float.Parse(splitMessage[FIRST_DEVICE_INDEX + 2]));
-                _save_right_speed = GetSpeed(float.Parse(splitMessage[SECOND_DEVICE_INDEX + 2]));
+                _save_left_speed = GetSpeed(float.Parse(splitMessage[FIRST_DEVICE_INDEX + AXIS_INDEX]));
+                _save_right_speed = GetSpeed(float.Parse(splitMessage[SECOND_DEVICE_INDEX + AXIS_INDEX]));
             }
             else if(splitMessage[FIRST_DEVICE_INDEX] == RIGHT_DEVICE_NAME)
             {
-                _save_left_speed = GetSpeed(float.Parse(splitMessage[SECOND_DEVICE_INDEX + 2]));
-                _save_right_speed = GetSpeed(float.Parse(splitMessage[FIRST_DEVICE_INDEX + 2]));
+                _save_left_speed = GetSpeed(float.Parse(splitMessage[SECOND_DEVICE_INDEX + AXIS_INDEX]));
+                _save_right_speed = GetSpeed(float.Parse(splitMessage[FIRST_DEVICE_INDEX + AXIS_INDEX]));
              }
 
             //Debug.Log($"LEFT_RPM : {splitMessage[X_AXIS_SPEED_INDEX_L]}");

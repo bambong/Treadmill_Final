@@ -116,8 +116,8 @@ namespace ZB
             if (checking)
             {
 
-                leftRpm = token.Save_left_rpm;
-                rightRpm = token.Save_right_rpm;
+                leftRpm = token.Save_left_rpm * token.FactorValue;
+                rightRpm = token.Save_right_rpm * token.FactorValue;
 
                 //프레임마다 이동할 정도 구함
                 if (intervalAbs < minInterval)
