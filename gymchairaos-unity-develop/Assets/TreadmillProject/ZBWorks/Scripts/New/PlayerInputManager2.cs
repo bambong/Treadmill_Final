@@ -106,6 +106,27 @@ namespace ZB
 #if UNITY_EDITOR
             SideMove();
 #endif
+            //이동
+            if (tf.position.x <= outPos_left && move < 0)
+            {
+                tf.position = new Vector3(outPos_left, tf.position.y, tf.position.z);
+            }
+            else if (tf.position.x >= outPos_right && move > 0)
+            {
+                tf.position = new Vector3(outPos_right, tf.position.y, tf.position.z);
+            }
+            else
+            {
+                tf.position += new Vector3(move * Time.deltaTime, 0, 0);
+            }
+
+            //이동 정도에 따른 차체 회전
+            if (currentRotTarget != move * rotMultiple)
+            {
+                currentRotTarget = move * rotMultiple;
+                tf.DOKill();
+                tf.DORotate(new Vector3(tf.eulerAngles.x, move * rotMultiple, tf.eulerAngles.z), 0.5f);
+            }
 
             if (Input.GetKeyDown(KeyCode.R))
             { token.Save_left_speed = 0; token.Save_right_speed = 0; }
@@ -133,28 +154,28 @@ namespace ZB
                         move = -maxMove;
                 }
 
-                //이동
-                if (tf.position.x <= outPos_left && move < 0)
-                {
-                    tf.position = new Vector3(outPos_left, tf.position.y, tf.position.z);
-                }
-                else if (tf.position.x >= outPos_right && move > 0)
-                {
-                    tf.position = new Vector3(outPos_right, tf.position.y, tf.position.z);
-                }
-                else
-                {
-                    tf.position += new Vector3(move * Time.deltaTime, 0, 0);
-                }
+                ////이동
+                //if (tf.position.x <= outPos_left && move < 0)
+                //{
+                //    tf.position = new Vector3(outPos_left, tf.position.y, tf.position.z);
+                //}
+                //else if (tf.position.x >= outPos_right && move > 0)
+                //{
+                //    tf.position = new Vector3(outPos_right, tf.position.y, tf.position.z);
+                //}
+                //else
+                //{
+                //    tf.position += new Vector3(move * Time.deltaTime, 0, 0);
+                //}
 
 
-                //이동 정도에 따른 차체 회전
-                if (currentRotTarget != move * rotMultiple)
-                {
-                    currentRotTarget = move * rotMultiple;
-                    tf.DOKill();
-                    tf.DORotate(new Vector3(tf.eulerAngles.x, move * rotMultiple, tf.eulerAngles.z), 0.5f);
-                }
+                ////이동 정도에 따른 차체 회전
+                //if (currentRotTarget != move * rotMultiple)
+                //{
+                //    currentRotTarget = move * rotMultiple;
+                //    tf.DOKill();
+                //    tf.DORotate(new Vector3(tf.eulerAngles.x, move * rotMultiple, tf.eulerAngles.z), 0.5f);
+                //}
             }
         }
 
