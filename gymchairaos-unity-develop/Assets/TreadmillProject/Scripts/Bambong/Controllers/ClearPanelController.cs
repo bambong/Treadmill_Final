@@ -24,10 +24,10 @@ namespace bambong
         private readonly float FADE_TIME = 1f;
         public void SetInfo(string dist, string timeText, string bpm, string calorie) 
         {
-            this.distText.text = dist;
+            this.distText.text = $"{dist} M";
             this.timeText.text = timeText;
-            this.bpmText.text = bpm;
-            this.calorieText.text = calorie;
+            this.bpmText.text = $"{bpm} BPM";
+            this.calorieText.text = $"{calorie} Kcal";
         }
         public override void Open()
         {

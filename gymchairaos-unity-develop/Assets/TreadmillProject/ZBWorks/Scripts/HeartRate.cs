@@ -19,9 +19,8 @@ public class HeartRate : MonoBehaviour
         tmpro.text = Managers.Token.Bpm.ToString();
         if (checking)
         {
-            sum += Managers.Token.Bpm;
+            sum += Managers.Token.Bpm * Time.deltaTime;
             time += Time.deltaTime;
-            Debug.LogError($"{sum}, {time}, {Average}");
         }
     }
 
@@ -30,9 +29,11 @@ public class HeartRate : MonoBehaviour
         sum = 0;
         time = 0;
         checking = true;
+        Debug.LogError("AverageCheckStart");
     }
     public void AverageCheckStop()
     {
         checking = false;
+        Debug.LogError("AverageCheckStop");
     }
 }

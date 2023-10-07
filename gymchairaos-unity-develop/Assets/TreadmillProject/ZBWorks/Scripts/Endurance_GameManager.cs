@@ -14,11 +14,14 @@ namespace ZB
         [SerializeField] GameStartProduction gameStartProduction;
         [SerializeField] ObstacleEvent obstacle;
         [SerializeField] DistanceRecord distance;
+        [SerializeField] HeartRate heartRate;
         [SerializeField] PlayerInputManager2 player;
         [SerializeField] ObjectsScrolling scroll;
         [SerializeField] TimeCounter timeCounter;
         [SerializeField] PlayerHP playerHP;
         [SerializeField] BoostGuage boostGuage;
+        [SerializeField] ResultPageController resultPage;
+        [SerializeField] RankingDataHolder rankingDataHolder;
 
         [Space]
         [SerializeField] float startDelay;
@@ -47,15 +50,9 @@ namespace ZB
         IEnumerator GameStart_C;
         IEnumerator GameStartC()
         {
-            GameOver();
             yield return startDelay_WFS;
             playerHP.PlusHP(3);
             GameStartProduction_Start();
-        }
-
-        public void OnPlayerHpZero()
-        {
-            GameOver();
         }
         public void GameRestart()
         {
@@ -64,11 +61,37 @@ namespace ZB
             GameStart_C = GameStartC();
             StartCoroutine(GameStart_C);
         }
-
         public void GameStartProduction_Start()
         {
             player.MoveFront_OnRebirth();
             gameStartProduction.ProudctionStart();
+        }
+
+        public void GameOver()
+        {
+            timeCounter.CountStop();
+            player.ResetState();
+            player.CheckActive(false);
+            player.EnableWheelEffect(false);
+            distance.RecordStop();
+            scroll.ResetFlexible();
+            obstacle.CheckActive(false);
+            obstacle.ResetState();
+            boostGuage.ChargeStop();
+            heartRate.AverageCheckStop();
+
+            //랭킹 기록 저장
+            rankingDataHolder.rankingData.ranking_Obstacle.Add(RankingData.GetUserName(), RankingData.GetDate(), timeCounter.CurrentTimeScore, distance.CurrentDistanceRecord);
+            rankingDataHolder.Write();
+
+            //결과UI 등장
+            resultPage.SetTextInfo(
+                ((int)distance.CurrentDistanceRecord).ToString(),
+                TimeCounter.FormatTime(timeCounter.CurrentTimeScore),
+                ((int)heartRate.Average).ToString(),
+                "0"
+                );
+            resultPage.Active(true);
         }
 
         [ContextMenu("Start")]
@@ -90,20 +113,6 @@ namespace ZB
         {
             scroll.ScrollStop();
             timeCounter.CountPause();
-        }
-
-        [ContextMenu("GameOver")]
-        public void GameOver()
-        {
-            timeCounter.CountStop();
-            player.ResetState();
-            player.CheckActive(false);
-            player.EnableWheelEffect(false);
-            distance.RecordStop();
-            scroll.ResetFlexible();
-            obstacle.CheckActive(false);
-            obstacle.ResetState();
-            boostGuage.ChargeStop();
         }
     }
 }
