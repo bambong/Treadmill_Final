@@ -22,6 +22,8 @@ namespace bambong
         private ClearPanelController clearPanel;
         [SerializeField]
         private DestinationUIController destinationUI;
+        [SerializeField]
+        private HeartRate heartRate;
 
         public void Init()
         {
@@ -32,8 +34,14 @@ namespace bambong
         public void CommonPanelOpen() => commonPanel.Open();
         public void CommonPanelClose() => commonPanel.Close();
         public void ClearPanelOpen() 
-        { 
-            clearPanel.SetTimeText(GetTimeText());
+        {
+            clearPanel.SetInfo(
+                GameSceneManager.Instance.DistText.ToString(),
+                GetTimeText(),
+                ((int)heartRate.Average).ToString(),
+                "0"
+                );
+
             clearPanel.Open(); 
         } 
 
@@ -64,7 +72,7 @@ namespace bambong
         }
         private string GetTimeText()
         {
-            float curTime = GameSceneManager.Instance.CurTime;
+            float curTime = GameSceneManager.Instance.TimeText;
             string curMin = ((int)curTime / 60).ToString("00");
             curTime %= 60;
             return curMin + ":" + curTime.ToString("00.00").Replace('.', ':');

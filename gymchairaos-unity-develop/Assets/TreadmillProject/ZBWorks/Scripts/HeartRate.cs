@@ -7,9 +7,32 @@ using TMPro;
 
 public class HeartRate : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI tmpro;
+    public float Average { get => sum / time; }
+
+    [SerializeField] private TextMeshProUGUI tmpro;
+    [SerializeField] private float sum;
+    [SerializeField] private float time;
+    bool checking;
+
     void Update()
     {
         tmpro.text = Managers.Token.Bpm.ToString();
+        if (checking)
+        {
+            sum += Managers.Token.Bpm;
+            time += Time.deltaTime;
+            Debug.LogError($"{sum}, {time}, {Average}");
+        }
+    }
+
+    public void AverageCheckStart()
+    {
+        sum = 0;
+        time = 0;
+        checking = true;
+    }
+    public void AverageCheckStop()
+    {
+        checking = false;
     }
 }
