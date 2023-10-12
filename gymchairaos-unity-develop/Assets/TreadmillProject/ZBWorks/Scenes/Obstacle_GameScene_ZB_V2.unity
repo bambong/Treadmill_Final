@@ -3705,7 +3705,7 @@ RectTransform:
   - {fileID: 439089163}
   - {fileID: 104459576}
   m_Father: {fileID: 1603613316}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -8566,6 +8566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c8aa1e63ad9ff4185e4a5e3aa9efb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectScroll: {fileID: 1262613670}
   tf: {fileID: 293190624}
   leftReceived: 0
   rightReceived: 0
@@ -8582,6 +8583,9 @@ MonoBehaviour:
   move: 0
   outPos_left: -1
   outPos_right: 1
+  minPower: 3
+  maxPower: 30
+  power: 0.1
   rotMultiple: 20
 --- !u!4 &948549369
 Transform:
@@ -10270,7 +10274,7 @@ RectTransform:
   - {fileID: 1927340050}
   - {fileID: 465595149}
   m_Father: {fileID: 1603613316}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -13875,14 +13879,14 @@ RectTransform:
   - {fileID: 1989912737}
   - {fileID: 195293135}
   - {fileID: 2009989694}
-  - {fileID: 5022942381938533367}
   - {fileID: 413698810}
+  - {fileID: 5022942381938533367}
   - {fileID: 1713730001}
   - {fileID: 621668183}
   - {fileID: 1513411131}
   - {fileID: 2020191567}
-  - {fileID: 1145856757}
   - {fileID: 1088206644}
+  - {fileID: 1145856757}
   - {fileID: 732260879}
   m_Father: {fileID: 0}
   m_RootOrder: 2

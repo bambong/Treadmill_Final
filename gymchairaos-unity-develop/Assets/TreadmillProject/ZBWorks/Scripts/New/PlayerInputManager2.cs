@@ -8,6 +8,7 @@ namespace ZB
 {
     public class PlayerInputManager2 : MonoBehaviour
     {
+        [SerializeField] ObjectsScrolling objectScroll;
         [SerializeField] Transform tf;
 
         [SerializeField] bool leftReceived;
@@ -21,7 +22,7 @@ namespace ZB
         [SerializeField] List<ParticleSystem> wheelEffects;
 
         [Space]
-        [Header("이동관련")]
+        [Header("좌우이동관련")]
         [SerializeField] float minInterval; //좌우 이동이 일어나는 최소간격
         [SerializeField] float moveMultiple;
         [SerializeField] float maxMove;
@@ -31,6 +32,12 @@ namespace ZB
         [Space]
         [SerializeField] float outPos_left;
         [SerializeField] float outPos_right;
+
+        [Space]
+        [Header("전후이동관련")]
+        [SerializeField] float minPower;
+        [SerializeField] float maxPower;
+        [SerializeField] float power;
 
         [Space]
         [Header("회전관련")]
@@ -127,6 +134,9 @@ namespace ZB
                 tf.DOKill();
                 tf.DORotate(new Vector3(tf.eulerAngles.x, move * rotMultiple, tf.eulerAngles.z), 0.5f);
             }
+
+            //현재 속도에 따른 스크롤 속도 조정
+            objectScroll.ScrollSpeedChange(Mathf.Clamp(Managers.Token.CurSpeed * power, minPower, maxPower));
 
             if (Input.GetKeyDown(KeyCode.R))
             { token.Save_left_speed = 0; token.Save_right_speed = 0; }
