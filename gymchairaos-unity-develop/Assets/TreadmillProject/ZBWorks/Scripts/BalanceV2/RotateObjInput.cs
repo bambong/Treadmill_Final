@@ -168,10 +168,7 @@ namespace ZB.Balance2
         {
             float result = 0;
             if (float.TryParse(input_MININPUT.text, out result))
-            {
                 MIN_INPUT = result;
-                Debug.LogError(input_MININPUT.text);
-            }
             if (float.TryParse(input_power.text, out result))
                 pow = result;
             if (float.TryParse(input_maxPower.text, out result))
