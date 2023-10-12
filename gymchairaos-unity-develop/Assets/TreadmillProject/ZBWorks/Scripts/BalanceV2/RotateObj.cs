@@ -7,9 +7,8 @@ namespace ZB.Balance2
     public class RotateObj : MonoBehaviour
     {
         [SerializeField] Transform rotationTarget;
-        [SerializeField] Rigidbody rigidbody;
         [SerializeField] float rotateVec_Roll;
-        [SerializeField] float rotateVec_Yaw;
+        [SerializeField] float rotateVec_Pitch;
         [SerializeField] float rotatePow;
         [SerializeField] float rotateMax;
 
@@ -19,30 +18,45 @@ namespace ZB.Balance2
         /// </summary>
         /// <param name="x축회전"></param>
         /// <param name="z축회전"></param>
-        public void RotateInfoUpdate(float rotateVec_Roll, float rotateVec_Yaw)
+        public void RotateInfoUpdate(float rotateVec_Roll, float rotateVec_Pitch)
         {
             this.rotateVec_Roll = rotateVec_Roll;
-            this.rotateVec_Yaw = rotateVec_Yaw;
+            this.rotateVec_Pitch = rotateVec_Pitch;
         }
 
         public void ResetState()
         {
             rotationTarget.eulerAngles = Vector3.zero;
             rotateVec_Roll = 0;
-            rotateVec_Yaw = 0;
+            rotateVec_Pitch = 0;
         }
 
         // Update is called once per frame
         private void FixedUpdate()
         {
-            if (CanRotate_Yaw())
-                rigidbody.MoveRotation(rigidbody.rotation * Quaternion.AngleAxis(rotateVec_Yaw * rotatePow * Time.fixedDeltaTime, Vector3.forward) * Quaternion.AngleAxis(rotateVec_Roll * rotatePow * Time.fixedDeltaTime, Vector3.right));
+            // Roll 회전
+            if (CanRotate_Roll())
+            {
+                Vector3 currentRotation = rotationTarget.localEulerAngles;
+                currentRotation.x += rotateVec_Roll * rotatePow * Time.fixedDeltaTime;
+                //currentRotation.x = Mathf.Clamp(currentRotation.x, -rotateMax, rotateMax); // 원하는 회전 범위로 제한
+                rotationTarget.localEulerAngles = currentRotation;
+            }
+
+            // Yaw 회전
+            if (CanRotate_Pitch())
+            {
+                Vector3 currentRotation = rotationTarget.localEulerAngles;
+                currentRotation.z += rotateVec_Pitch * rotatePow * Time.fixedDeltaTime;
+                //currentRotation.x = Mathf.Clamp(currentRotation.x, -rotateMax, rotateMax); // 원하는 회전 범위로 제한
+                rotationTarget.localEulerAngles = currentRotation;
+            }
         }
         private bool CanRotate_Roll()
         {
             return true;
         }
-        private bool CanRotate_Yaw()
+        private bool CanRotate_Pitch()
         {
             return true;
         }

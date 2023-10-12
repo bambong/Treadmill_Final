@@ -4213,7 +4213,7 @@ MonoBehaviour:
   rotationTarget: {fileID: 6836015279116038215}
   rigidbody: {fileID: 6485698715321211803}
   rotateVec_Roll: 0
-  rotateVec_Yaw: 0
+  rotateVec_Pitch: 0
   rotatePow: 1
   rotateMax: 30
 --- !u!114 &6836015279116038233
@@ -4230,9 +4230,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotateObj: {fileID: 6836015279116038232}
   yaw: 0
-  roll: 0
-  pow: 50
-  maxPow: 30
+  pitch: 0
+  pow: 20
+  maxPow: 40
   active: 0
 --- !u!54 &6485698715321211803
 Rigidbody:
