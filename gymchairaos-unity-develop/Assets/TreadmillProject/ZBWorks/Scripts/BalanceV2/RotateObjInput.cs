@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
+using TMPro;
 
 namespace ZB.Balance2
 {
@@ -12,12 +13,13 @@ namespace ZB.Balance2
         [SerializeField] float yaw;
         [SerializeField] float pitch;
 
+        [Space]
         [SerializeField] float pow;
         [SerializeField] float maxPow;
+        [SerializeField] private float MIN_INPUT= 0.1f; 
 
         [SerializeField] bool active;
 
-        private readonly float MIN_INPUT= 0.1f; 
         public void ResetState()
         {
             yaw = 0;
@@ -156,6 +158,24 @@ namespace ZB.Balance2
 
                 rotateObj.RotateInfoUpdate(yaw, pitch);
             }
+        }
+
+        [Space(30)]
+        [SerializeField] TMP_InputField input_MININPUT;
+        [SerializeField] TMP_InputField input_power;
+        [SerializeField] TMP_InputField input_maxPower;
+        public void TestInputField()
+        {
+            float result = 0;
+            if (float.TryParse(input_MININPUT.text, out result))
+            {
+                MIN_INPUT = result;
+                Debug.LogError(input_MININPUT.text);
+            }
+            if (float.TryParse(input_power.text, out result))
+                pow = result;
+            if (float.TryParse(input_maxPower.text, out result))
+                maxPow = result;
         }
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace ZB.Balance2
 {
@@ -31,25 +32,34 @@ namespace ZB.Balance2
             rotateVec_Pitch = 0;
         }
 
-        // Update is called once per frame
         private void FixedUpdate()
         {
             // Roll 회전
             if (CanRotate_Roll())
             {
-                Vector3 currentRotation = rotationTarget.localEulerAngles;
-                currentRotation.x += rotateVec_Roll * rotatePow * Time.fixedDeltaTime;
-                //currentRotation.x = Mathf.Clamp(currentRotation.x, -rotateMax, rotateMax); // 원하는 회전 범위로 제한
-                rotationTarget.localEulerAngles = currentRotation;
+                float x = rotationTarget.eulerAngles.x + rotateVec_Roll * rotatePow * Time.fixedDeltaTime;
+                if (x > 89 && x < 271)
+                    x = Mathf.Abs(x - 89) < Mathf.Abs(x - 271) ? 89 : 271;
+
+                rotationTarget.rotation =
+                    Quaternion.Euler(
+                        x,
+                        0,
+                        rotationTarget.eulerAngles.z);
             }
 
             // Yaw 회전
             if (CanRotate_Pitch())
             {
-                Vector3 currentRotation = rotationTarget.localEulerAngles;
-                currentRotation.z += rotateVec_Pitch * rotatePow * Time.fixedDeltaTime;
-                //currentRotation.x = Mathf.Clamp(currentRotation.x, -rotateMax, rotateMax); // 원하는 회전 범위로 제한
-                rotationTarget.localEulerAngles = currentRotation;
+                float z = rotationTarget.eulerAngles.z + rotateVec_Pitch * rotatePow * Time.fixedDeltaTime;
+                if (z > 89 && z < 271)
+                    z = Mathf.Abs(z - 89) < Mathf.Abs(z - 271) ? 89 : 271;
+
+                rotationTarget.rotation =
+                    Quaternion.Euler(
+                        rotationTarget.eulerAngles.x,
+                        0,
+                        z);
             }
         }
         private bool CanRotate_Roll()
