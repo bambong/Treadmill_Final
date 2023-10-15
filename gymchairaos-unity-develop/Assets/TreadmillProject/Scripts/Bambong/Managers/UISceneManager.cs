@@ -79,7 +79,7 @@ namespace bambong
         }
         private string GetSpeedText()
         {
-            var curGuage = Managers.Token.CurSpeed;
+            var curGuage = Managers.Token.CurSpeedMeterPerSec;
           
             return curGuage.ToString("00") + " m/s";
         }

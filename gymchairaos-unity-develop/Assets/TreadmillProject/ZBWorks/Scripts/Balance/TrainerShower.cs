@@ -55,7 +55,7 @@ namespace ZB.Balance
             while (true)
             {
                 //최소 속도를 넘지 못함
-                if (Managers.Token.CurSpeed < m_minSpeed)
+                if (Managers.Token.CurSpeedMeterPerSec < m_minSpeed)
                 {
                     //따라가기 시작
                     if (waitT == 0)
