@@ -32,7 +32,9 @@ public enum E_SceneName
     Balance_GameScene_3,
     Balance_GameScene_4,
     Balance_GameScene_5,
-    Balance_GameScene_6
+    Balance_GameScene_6,
+    Balance_GameScene_7,
+    Balance_GameScene_8
 }
 
 public class SceneManagerEx
