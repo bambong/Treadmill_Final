@@ -27,6 +27,9 @@ public class UiShadow : MonoBehaviour
         if (!this.active && active)
         {
             this.active = active;
+
+            shadowImg.raycastTarget = true;
+
             shadowImg.DOKill();
 
             shadowImg.DOColor(originalColor, duration).SetEase(Ease.OutQuart).SetUpdate(true);
@@ -36,7 +39,7 @@ public class UiShadow : MonoBehaviour
             this.active = active;
             shadowImg.DOKill();
 
-            shadowImg.DOColor(Color.clear, duration).SetEase(Ease.OutQuart).SetUpdate(true);
+            shadowImg.DOColor(Color.clear, duration).SetEase(Ease.OutQuart).SetUpdate(true).OnComplete(() => shadowImg.raycastTarget = false);
         }
     }
 }

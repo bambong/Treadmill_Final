@@ -95,23 +95,23 @@ namespace ZB.Balance2
 
                     if (curDir > 0)
                     {
-                        if (roll < maxPow)
+                        if (pitch < maxPow)
                         {
-                            roll += Time.deltaTime * pow;
+                            pitch += Time.deltaTime * pow;
                         }
                     }
                     else
                     {
-                        if (roll > -maxPow)
+                        if (pitch > -maxPow)
                         {
-                            roll -= Time.deltaTime * pow;
+                            pitch -= Time.deltaTime * pow;
                         }
 
                     }
                 }
                 else
                 {
-                    roll = Mathf.Lerp(0, roll, Time.deltaTime);
+                    pitch = Mathf.Lerp(0, pitch, Time.deltaTime);
                 }
 
 #else

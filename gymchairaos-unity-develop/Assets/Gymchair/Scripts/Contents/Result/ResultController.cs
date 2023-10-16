@@ -98,10 +98,6 @@ namespace Gymchair.Contents.Result
             _textSpeed.text = string.Format("{0:0.#}", _gymData.speed);
             _textBestSpeed.text = string.Format("{0:0.#}", _gymData.high_speed);
 
-            _textRpm.text = string.Format("{0:0.#}", _gymData.rpm);
-            _textLowRpm.text = string.Format("{0:0.#}", _gymData.left_rpm);
-            _textHighRpm.text = string.Format("{0:0.#}", _gymData.right_rpm);
-
             _textBpm.text = string.Format("{0:0.#}", _gymData.bpm);
             _textLowBpm.text = string.Format("{0:0.#}", _gymData.low_bpm);
             _textHighBpm.text = string.Format("{0:0.#}", _gymData.high_bpm);
@@ -166,9 +162,6 @@ namespace Gymchair.Contents.Result
                 rightSpeedData.value = gym.right_speed;
                 rightSpeedData.show = true;
 
-                ChartUtil.Data rpmData = new ChartUtil.Data();
-                rpmData.value = gym.rpm;
-                rpmData.show = true;
 
                 ChartUtil.Data bpmData = new ChartUtil.Data();
                 bpmData.value = gym.bpm;
@@ -177,7 +170,6 @@ namespace Gymchair.Contents.Result
                 _charSpeed.chartData.series[0].data.Add(speedData);
                 _charLeftSpeed.chartData.series[0].data.Add(leftSpeedData);
                 _charRightSpeed.chartData.series[0].data.Add(rightSpeedData);
-                _charRPM.chartData.series[0].data.Add(rpmData);
                 _charBPM.chartData.series[0].data.Add(bpmData);
             }
 
