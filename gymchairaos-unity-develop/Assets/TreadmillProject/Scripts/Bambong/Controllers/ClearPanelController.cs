@@ -11,13 +11,23 @@ namespace bambong
     public class ClearPanelController : PanelController
     {
         [SerializeField]
+        private TextMeshProUGUI distText;
+        [SerializeField]
         private TextMeshProUGUI timeText;
+        [SerializeField]
+        private TextMeshProUGUI bpmText;
+        [SerializeField]
+        private TextMeshProUGUI calorieText;
+
         [SerializeField]
         private CanvasGroup canvasGroup;
         private readonly float FADE_TIME = 1f;
-        public void SetTimeText(string text) 
+        public void SetInfo(string dist, string timeText, string bpm, string calorie) 
         {
-           timeText.text = text;
+            this.distText.text = $"{dist} M";
+            this.timeText.text = timeText;
+            this.bpmText.text = $"{bpm} BPM";
+            this.calorieText.text = $"{calorie} Kcal";
         }
         public override void Open()
         {

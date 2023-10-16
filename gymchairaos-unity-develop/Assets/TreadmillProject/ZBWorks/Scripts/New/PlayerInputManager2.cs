@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using ZB;
 using DG.Tweening;
-using Unity.Mathematics;
+using TMPro;
 
 namespace ZB
 {
     public class PlayerInputManager2 : MonoBehaviour
     {
+        [SerializeField] ObjectsScrolling objectScroll;
+        [SerializeField] BoostGuage boostGuage;
         [SerializeField] Transform tf;
 
         [SerializeField] bool leftReceived;
@@ -22,7 +24,7 @@ namespace ZB
         [SerializeField] List<ParticleSystem> wheelEffects;
 
         [Space]
-        [Header("이동관련")]
+        [Header("좌우이동관련")]
         [SerializeField] float minInterval; //좌우 이동이 일어나는 최소간격
         [SerializeField] float moveMultiple;
         [SerializeField] float maxMove;
@@ -34,9 +36,24 @@ namespace ZB
         [SerializeField] float outPos_right;
 
         [Space]
+        [Header("전후이동관련")]
+        [SerializeField] float minPower;
+        [SerializeField] float maxPower;
+        [SerializeField] float power;
+
+        [Space]
         [Header("회전관련")]
         [SerializeField] float rotMultiple;
         float currentRotTarget;
+
+        [Space(30)]
+        [Header("임시인풋값변경")]
+        [SerializeField] TMP_InputField ver_minPower;
+        [SerializeField] TMP_InputField ver_maxPower;
+        [SerializeField] TMP_InputField ver_Power;
+        [Space]
+        [SerializeField] TMP_InputField hor_minInterval;
+        [SerializeField] TMP_InputField hor_moveMultiple;
 
         TokenInputManager token { get => Managers.Token; }
 
@@ -108,10 +125,18 @@ namespace ZB
             SideMove();
 #endif
             //이동
-            var pos = tf.position;
-            pos += new Vector3(move * Time.deltaTime, 0, 0);
-            pos.x = Mathf.Clamp(pos.x, outPos_left, outPos_right);
-            tf.position = pos;
+            if (tf.position.x <= outPos_left && move < 0)
+            {
+                tf.position = new Vector3(outPos_left, tf.position.y, tf.position.z);
+            }
+            else if (tf.position.x >= outPos_right && move > 0)
+            {
+                tf.position = new Vector3(outPos_right, tf.position.y, tf.position.z);
+            }
+            else
+            {
+                tf.position += new Vector3(move * Time.deltaTime, 0, 0);
+            }
 
             //이동 정도에 따른 차체 회전
             if (currentRotTarget != move * rotMultiple)
@@ -120,10 +145,13 @@ namespace ZB
                 tf.DOKill();
                 tf.DORotate(new Vector3(tf.eulerAngles.x, move * rotMultiple, tf.eulerAngles.z), 0.5f);
             }
-#if UNITY_EDITOR
+
+            //현재 속도에 따른 스크롤 속도 조정
+            if (!boostGuage.Boosting) 
+                objectScroll.ScrollSpeedChange(Mathf.Clamp(Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower));
+
             if (Input.GetKeyDown(KeyCode.R))
             { token.Save_left_speed = 0; token.Save_right_speed = 0; }
-#endif
         }
 
         void SideMove()
@@ -140,7 +168,12 @@ namespace ZB
                 else
                 {
                     move = (rightRpm - leftRpm) * moveMultiple;
-                    move = Mathf.Clamp(move, -maxMove, maxMove);
+
+                    if (rightRpm > leftRpm &&
+                        move > maxMove)
+                        move = maxMove;
+                    else if (move <= -maxMove)
+                        move = -maxMove;
                 }
 
                 ////이동
@@ -176,6 +209,22 @@ namespace ZB
         {
             tf.position = resetPos + new Vector3(0, 0, -2.5f);
             tf.DOMove(resetPos, 1.6f).SetEase(Ease.OutQuart);
+        }
+
+        public void TestInputField()
+        {
+            float result = 0;
+            if (float.TryParse(ver_minPower.text, out result))
+                minPower = result;
+            if (float.TryParse(ver_maxPower.text, out result))
+                maxPower = result;
+            if (float.TryParse(ver_Power.text, out result))
+                power = result;
+
+            if (float.TryParse(hor_minInterval.text, out result))
+                minInterval = result;
+            if (float.TryParse(hor_moveMultiple.text, out result))
+                moveMultiple = result;
         }
     }
 }

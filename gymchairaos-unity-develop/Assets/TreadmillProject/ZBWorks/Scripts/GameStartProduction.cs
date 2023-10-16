@@ -14,6 +14,7 @@ public class GameStartProduction : MonoBehaviour
     [SerializeField] Transform Count_2_Tf;
     [SerializeField] Transform Count_1_Tf;
     [SerializeField] PausePageController pauseController;
+    [SerializeField] HeartRate heartRate;
 
     [SerializeField] Vector3 countSize;
 
@@ -82,7 +83,7 @@ public class GameStartProduction : MonoBehaviour
         //±×¸²ÀÚ ²¨Áü
         uiShadow.Active(false);
         pauseController.PauseBtnInteractBlockActive(false);
-
+        heartRate.AverageCheckStart();
 
 
 

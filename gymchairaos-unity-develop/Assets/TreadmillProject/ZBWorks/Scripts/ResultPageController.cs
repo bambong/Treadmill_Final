@@ -8,11 +8,12 @@ using TMPro;
 
 public class ResultPageController : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI tmp_Time;
     [SerializeField] TextMeshProUGUI tmp_Distance;
+    [SerializeField] TextMeshProUGUI tmp_Time;
+    [SerializeField] TextMeshProUGUI tmp_Bpm;
+    [SerializeField] TextMeshProUGUI tmp_Calorie;
     [SerializeField] GameObject interactBlock;
     [SerializeField] PausePageController pauseController;
-    [SerializeField] RankingDataHolder rankingDataHolder;
     [Space]
 
     [SerializeField] TimeCounter timeCounter;
@@ -36,6 +37,13 @@ public class ResultPageController : MonoBehaviour
         body.gameObject.SetActive(false);
     }
 
+    public void SetTextInfo(string dist, string time, string bpm, string calorie)
+    {
+        tmp_Distance.text = dist;
+        tmp_Time.text = time;
+        tmp_Bpm.text = bpm;
+        tmp_Calorie.text = calorie;
+    }
     public void Active(bool active)
     {
         //활성화
@@ -54,12 +62,6 @@ public class ResultPageController : MonoBehaviour
             body.transform.localScale = Vector2.zero;
             body.transform.DOScale(originalSize, duration).SetEase(Ease.OutQuart);
 
-            tmp_Distance.text = ((int)distanceRecord.CurrentDistanceRecord).ToString()+"M";
-            tmp_Time.text = TimeCounter.FormatTime(timeCounter.CurrentTimeScore);
-
-            //기록저장
-            rankingDataHolder.rankingData.ranking_Obstacle.Add(RankingData.GetUserName(), RankingData.GetDate(), timeCounter.CurrentTimeScore, distanceRecord.CurrentDistanceRecord);
-            rankingDataHolder.Write();
         }
         //비활성화
         else if (this.active && !active)

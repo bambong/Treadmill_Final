@@ -17,6 +17,7 @@ namespace ZB
         [SerializeField] DistanceRecord distance;
         [SerializeField] BoostGuage boostGuage;
         [SerializeField] PoliceCarChase policeCarChase;
+        [SerializeField] Endurance_GameManager gameManager;
 
         //자동체력회복 거리
         [SerializeField] float hpGainDistance;
@@ -98,7 +99,10 @@ namespace ZB
                 policeCarChase.Move(nowHP);
 
                 if (nowHP <= 0)
+                {
+                    gameManager.GameOver();
                     dieEvent.Invoke();
+                }
             }
         }
 

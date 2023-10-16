@@ -15,6 +15,9 @@ namespace bambong
     {
         #region SerializeField
 
+        public float TimeText { get => curTime; }
+        public int DistText { get => (int)curDistance; }
+
         [Header("Player")]
         [SerializeField]
         private PlayerController player;
@@ -52,6 +55,10 @@ namespace bambong
         private GameObject failFx;
         [SerializeField]
         private GameObject playerArrowFx;
+
+        [Header("ForRecord")]
+        [SerializeField]
+        private HeartRate heartRate;
 
         [Header("Ranking")]
         [SerializeField]
@@ -146,6 +153,7 @@ namespace bambong
             speedGuage.OnPlayerMoved(GetCurDistanceRatio(player.transform));
         }
 
+        //게임 시작
         public void OnStart()
         {
             UISceneManager.Instance.CommonPanelOpen();
@@ -158,6 +166,8 @@ namespace bambong
             sequence.Play();
             playerArrowFx.SetActive(true);
             player.ArrowAnimStart();
+
+            heartRate.AverageCheckStart();
 
             SetStateGamePlay();
         }
@@ -213,7 +223,9 @@ namespace bambong
             gameStateController.ChangeState(GamePause.Instance);
             AIControlManager.Instance.SetStateAIsStop();
         }
-        public void SetStateGameClear() 
+
+        //플레이어가 먼저 지나갔을 때 호출
+        public void SetStateGameClear()
         {
             OnGameClear?.Invoke();
             gameStateController.ChangeState(GameClear.Instance);
@@ -227,11 +239,14 @@ namespace bambong
             Managers.Sound.StopBGM();
             Managers.Sound.PlayEffect("sfx_Speed_Clear");
 #endif
+            heartRate.AverageCheckStop();
 
             //랭킹 저장
             rankingDataHolder.rankingData.ranking_Speed.Add(RankingData.GetUserName(), RankingData.GetDate(), curTime, (int)curDistance);
             rankingDataHolder.Write();
         }
+
+        //AI가 먼저 지나갔을 때 호출
         public void SetStateGameOver()
         {
             OnGameClear?.Invoke();
@@ -244,6 +259,7 @@ namespace bambong
             Managers.Sound.PlayEffect("sfx_Speed_GameOver");
 #endif
             //AIControlManager.Instance.SetStateAIsStop();
+            heartRate.AverageCheckStop();
 
             UISceneManager.Instance.EndPanelOpen();
         }

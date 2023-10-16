@@ -1697,6 +1697,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 989262336928851847, guid: a875a365e966bb24196386386e528545, type: 3}
+      propertyPath: m_text
+      value: "0.1\u200B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 1509007279983943510, guid: a875a365e966bb24196386386e528545, type: 3}
+      propertyPath: m_text
+      value: "20\u200B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4069414072708208462, guid: a875a365e966bb24196386386e528545, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4979471057066904308, guid: a875a365e966bb24196386386e528545, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6836015277291251314, guid: a875a365e966bb24196386386e528545, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.75
@@ -1736,10 +1752,6 @@ PrefabInstance:
     - target: {fileID: 6836015278855952379, guid: a875a365e966bb24196386386e528545, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6836015279116038233, guid: a875a365e966bb24196386386e528545, type: 3}
-      propertyPath: maxPow
-      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 6836015279231933070, guid: a875a365e966bb24196386386e528545, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1800,6 +1812,18 @@ PrefabInstance:
     - target: {fileID: 6836015279238574755, guid: a875a365e966bb24196386386e528545, type: 3}
       propertyPath: m_Name
       value: BalanceGameModule
+      objectReference: {fileID: 0}
+    - target: {fileID: 7609955283766176201, guid: a875a365e966bb24196386386e528545, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8774480156652624035, guid: a875a365e966bb24196386386e528545, type: 3}
+      propertyPath: m_text
+      value: "40\u200B"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8975915445583441694, guid: a875a365e966bb24196386386e528545, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a875a365e966bb24196386386e528545, type: 3}
@@ -2073,14 +2097,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1894281396}
-  m_LocalRotation: {x: 0.4015789, y: -0.58236974, z: 0.40254813, w: 0.58097756}
-  m_LocalPosition: {x: 11.79, y: 27.255892, z: -1.1019831}
+  m_LocalRotation: {x: 0.27059805, y: -0.6532815, z: 0.27059805, w: 0.6532815}
+  m_LocalPosition: {x: 27, y: 28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: -90, z: 0}
 --- !u!4 &2128012355 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6836015279116038215, guid: a875a365e966bb24196386386e528545, type: 3}

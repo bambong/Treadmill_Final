@@ -18,6 +18,7 @@ namespace ZB.Balance2
         [SerializeField] RotateObjInput input;
         [SerializeField] BallControl ballControl;
         [SerializeField] TimeCounter timeCounter;
+        [SerializeField] HeartRate heartRate;
 
         [SerializeField] TextMeshProUGUI tmp_Ready;
         [SerializeField] Image img_Shadow;
@@ -33,6 +34,8 @@ namespace ZB.Balance2
 
         public void GameClear()
         {
+            heartRate.AverageCheckStop();
+            uiControll.SetTextInfo(stage.ToString(), timeCounter.NowTime, ((int)heartRate.Average).ToString());
             uiControll.PageActive_Result(true);
             timeCounter.CountPause();
 
@@ -95,6 +98,7 @@ namespace ZB.Balance2
             yield return new WaitForSeconds(1.5f);
             img_Shadow.DOColor(Color.clear, 0.5f).OnComplete(()=>img_Shadow.gameObject.SetActive(false));
             timeCounter.CountStart();
+            heartRate.AverageCheckStart();
 
             ballControl.Active(true);
             input.Active(true);

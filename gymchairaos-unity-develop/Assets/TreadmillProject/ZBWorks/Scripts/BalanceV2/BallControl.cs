@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BallControl : MonoBehaviour
 {
+    private static BallControl instance;
+
     [SerializeField] Rigidbody rb;
     [SerializeField] float power_Y;
     [SerializeField] float power_XZ;
@@ -25,6 +27,10 @@ public class BallControl : MonoBehaviour
 
         activing = active;
     }
+    public static void SJump()
+    {
+        instance.Jump();
+    }
     public void Jump()
     {
         Vector2 normalVel = new Vector2(rb.velocity.x, rb.velocity.z).normalized;
@@ -38,6 +44,10 @@ public class BallControl : MonoBehaviour
         rb.transform.position = position;
     }
 
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.L)) Jump();

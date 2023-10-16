@@ -13,6 +13,7 @@ namespace ZB
         }
 
         public State NowState { get => nowState; }
+        public bool Boosting { get; private set; }
 
         [SerializeField] private ObjectsScrolling objectsScrolling;
         [SerializeField] private UIGauge uiGuage;
@@ -87,8 +88,10 @@ namespace ZB
                 {
                     nowState = State.Boost;
                     nowGuage = maxGuage;
+                    Boosting = true;
                     uEvent_BoostStart.Invoke();
                     yield return wfs_boostTime;
+                    Boosting = false;
                     uEvent_BoostEnd.Invoke();
                     nowState = State.Charging;
                     nowGuage = 0;
