@@ -26,6 +26,7 @@ namespace ZB
         [Space]
         [Header("좌우이동관련")]
         [SerializeField] float minInterval; //좌우 이동이 일어나는 최소간격
+        [SerializeField] float intervalMultiple; 
         [SerializeField] float moveMultiple;
         [SerializeField] float maxMove;
         [SerializeField] float move;
@@ -54,6 +55,7 @@ namespace ZB
         [Space]
         [SerializeField] TMP_InputField hor_minInterval;
         [SerializeField] TMP_InputField hor_moveMultiple;
+        [SerializeField] TMP_InputField hor_intervalMultiple;
 
         TokenInputManager token { get => Managers.Token; }
 
@@ -111,6 +113,7 @@ namespace ZB
         void Start()
         {
             resetPos = tf.position;
+            TestInputField();
 
 #if UNITY_EDITOR
             Managers.Token.AddLeftTokenEvent(AddLeftToken);
@@ -163,7 +166,7 @@ namespace ZB
                 rightRpm = token.Save_right_speed;
 
                 //프레임마다 이동할 정도 구함
-                if (intervalAbs < minInterval)
+                if (intervalAbs < minInterval + (intervalAbs * intervalMultiple)) 
                     move = 0;
                 else
                 {
@@ -225,6 +228,8 @@ namespace ZB
                 minInterval = result;
             if (float.TryParse(hor_moveMultiple.text, out result))
                 moveMultiple = result;
+            if (float.TryParse(hor_intervalMultiple.text, out result))
+                intervalMultiple = result;
         }
     }
 }
