@@ -205,34 +205,12 @@ namespace Gymchair.Contents.Record
 
             _textCO2.text = string.Format("{0:0.0}", gymCo2);
 
-            ///////////////산소포화도 관련 - (매우 좋음 ~ 나쁨)
-            //if (gymCo2 >= 30.0f)
-            //    _imgCO2.sprite = _spriteCO2s[0];
-            //else if (gymCo2 >= 27.9f)
-            //    _imgCO2.sprite = _spriteCO2s[1];
-            //else if (gymCo2 >= 25.9f)
-            //    _imgCO2.sprite = _spriteCO2s[2];
-            //else if (gymCo2 >= 23.9f)
-            //    _imgCO2.sprite = _spriteCO2s[3];
-            //else if (gymCo2 >= 21.9f)
-            //    _imgCO2.sprite = _spriteCO2s[4];
-            //else
-            //    _imgCO2.sprite = _spriteCO2s[5];
-        }
+       }
 
         public void OnModifyUserName()
         {
             Managers.Sound.PlayTouchEffect();
             Managers.Scene.LoadScene(E_SceneName.Modify);
-
-            //Popup.MessagePopup.Create()
-            //    .SetText("수정 기능을 아직 제공하지 않습니다.")
-            //    .HideCancelButton()
-            //    .ShowOKButton()
-            //    .SetOKAction((script) =>
-            //    {
-            //        Destroy(script.gameObject);
-            //    });
         }
 
         public void OnGameSceneButton()

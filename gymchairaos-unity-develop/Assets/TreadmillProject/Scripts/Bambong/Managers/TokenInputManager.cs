@@ -2,6 +2,7 @@
 using Gymchair.Contents.Popup;
 using System;
 using System.Collections;
+using System.Runtime.Remoting.Contexts;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -68,9 +69,10 @@ public class TokenInputManager
     public float RightTokenTerm { get => rightToken.TokenEventTerm; }
     private const float METER_FACTOR = 0.4396f; // 2f * PI * 0.07f(반지름)
 
-    [Obsolete("미터 기준")]
-    public float CurSpeedMeterPerSec { get => (METER_FACTOR * CurRpm) / 360.0f; } // 
+    public float CurSpeedMeterPerSec { get => (METER_FACTOR * CurRpm) / 360.0f; } // 평균 바퀴 스피드 m/s  abs 값
     public float CurRpm { get { return math.abs(_save_left_speed) + math.abs(_save_right_speed) * 0.5f; } }
+    public float CurLeftSpeedMPS { get => (METER_FACTOR * math.abs(_save_left_speed)) / 360.0f; }// 왼쪽 바퀴 스피드 m/s abs 값
+    public float CurRightSpeedMPS { get => (METER_FACTOR * math.abs(_save_right_speed)) / 360.0f; }//  오른쪽 바퀴 스피드 m/s abs 값
     public float Bpm { get => _save_bpm; }
     public bool IsConnect { get => _connect; } 
 
@@ -93,7 +95,7 @@ public class TokenInputManager
     {
         get { return Math.Min(leftToken.LastEventTime, rightToken.LastEventTime); }
     }
-
+  
     public float Save_left_speed { get => _save_left_speed; set => _save_left_speed = value;  }
     public float Save_right_speed { get => _save_right_speed; set => _save_right_speed = value; }
     public InputToken LeftToken { get => leftToken; }

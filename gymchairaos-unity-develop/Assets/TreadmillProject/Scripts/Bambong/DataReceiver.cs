@@ -24,6 +24,7 @@ public class DataReceiver : MonoBehaviour
 
     private readonly int UDP_PORT = 12345; // 서버 포트 번호
     private readonly string SERVER_IP_ADDRESS = "127.0.0.1"; // 서버 IP 주소 (로컬 호스트)
+    private readonly string END_EVENT_KEY = "GYMCHAIR END"; // 서버 IP 주소 (로컬 호스트)
 
     private bool isConect;
     public string LastMsg { get => lastMsg; }
@@ -122,6 +123,19 @@ public class DataReceiver : MonoBehaviour
     {
         ClearMsg();
     }
-
+    public void OnEnterQuitButton()
+    {
+        SendDataToServer(END_EVENT_KEY); // 앱 종료시 센서 앱에게도 종료 신호 발생
+        Debug.Log("END EVENT");
+        Application.Quit();
+    }
+    private void OnApplicationQuit()
+    {
+#if !UNITY_EDITOR
+        SendDataToServer(END_EVENT_KEY); // 앱 종료시 센서 앱에게도 종료 신호 발생
+           Debug.Log("END EVENT");
+#endif
+    }
 
 }
+

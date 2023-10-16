@@ -92,16 +92,12 @@ namespace Gymchair.Contents.Game
         [SerializeField] ChartUtil.Chart _charRightSpeed;
 
     
-
-        float _meter = 0.0f;
+        float curMeter = 0.0f;
         float _time = 0.0f;
 
         float _maxSpeed = 0.0f;
 
-
         bool _isPlay;
-        float _deltaTime = -999.0f;
-        string _targetAddress = "DC:A6:32:EC:1C:2C";
 
         string _description = "";
 
@@ -111,23 +107,14 @@ namespace Gymchair.Contents.Game
 
         bool _connect = false;
 
-    
- 
-        float _save_left_count = 0.0f;
-        float _save_right_count = 0.0f;
-
         bool _show_warnning = false;
         List<float> _left_values = new List<float>();
         List<float> _right_values = new List<float>();
-
-
 
         float _save_to_rotateZ = -999.0f;
         float _save_to_leftRotateZ = -999.0f;
         float _save_to_rightRotateZ = -999.0f;
 
-        float _save_roll_count = -999.0f;
-     
 
         private void Awake()
         {
@@ -157,7 +144,6 @@ namespace Gymchair.Contents.Game
 
             _gameCanvas.SetActive(false);
             _isPlay = false;
-            _deltaTime = 0.0f;
             _listData.Clear();
             OnAttemptConnectToServer();
             StartCoroutine(UpdateAnimation());
@@ -261,9 +247,6 @@ namespace Gymchair.Contents.Game
 
                 user.speed += gym.speed;
                 user.bpm += gym.bpm;
-                user.rpm += gym.rpm;
-                user.left_rpm += gym.left_speed;
-                user.right_rpm += gym.right_speed;
 
                 // 속도 
                 if (user.high_speed == 0)
@@ -271,19 +254,6 @@ namespace Gymchair.Contents.Game
 
                 if (user.high_speed < gym.speed)
                     user.high_speed = gym.speed;
-
-                // RPM
-                if (user.low_rpm == 0)
-                    user.low_rpm = gym.rpm;
-
-                if (user.high_rpm == 0)
-                    user.high_rpm = gym.rpm;
-
-                if (user.low_rpm > gym.rpm)
-                    user.low_rpm = gym.rpm;
-
-                if (user.high_rpm < gym.rpm)
-                    user.high_rpm = gym.rpm;
 
                 // BPM(심박수)
                 if (user.low_bpm == 0)
@@ -299,16 +269,13 @@ namespace Gymchair.Contents.Game
                     user.high_bpm = gym.bpm;
             }
 
-            user.gymMeter = _meter;
+            user.gymMeter = curMeter;
             Debug.Log("1 단계");
-            float ml = 5.189f + (2.768f * (_meter * 0.001f));
+            float ml = 5.189f + (2.768f * (curMeter * 0.001f));
             user.gymCalorie = ((ml * Managers.Data.UserData.weight * (user.gymTime / 60.0f)) * 0.001f) * 5.0f;
             Debug.Log("2 단계");
             user.speed /= _listData.Count;
             user.bpm /= _listData.Count;
-            user.rpm /= _listData.Count;
-            user.left_rpm /= _listData.Count;
-            user.right_rpm /= _listData.Count;
             user.description = _description;
             user.allow = true;
 
@@ -377,12 +344,8 @@ namespace Gymchair.Contents.Game
             while (true)
             {
                 yield return null;
-                // 누적 회전수 x 드럼 외경(24cm) / 100
 
-                float rpm = Managers.Token.CurRpm;
-                float speed = rpm * 240.0f / 60000.0f;
-
-                UpdateRPM(Managers.Token.Bpm, rpm, Managers.Token.CurRpm);
+                UpdateRPM(Managers.Token.Bpm);
             }
         }
 
@@ -490,53 +453,29 @@ namespace Gymchair.Contents.Game
             }
         }
 
-        void UpdateRPM(float bpm, float speed, float rpm)
+        void UpdateRPM(float bpm)
         {
             if (!_isPlay)
                 return;
 
-            if (_deltaTime < 0.0f)
-            {
-                _deltaTime = Time.time;
-            }
-            float deltatime = Time.time - _deltaTime;
-            _deltaTime = Time.time;
-
-            // 150 : 0, 145 : 1, 93 : 2, 43 : 3, 0.0 : 4, -45 : 5
-            // 데이터 수정 예정
-
-            float roll_count = (_save_right_count + _save_left_count) / 2.0f;
-
-            if (_save_roll_count < 0.0f)
-                _save_roll_count = roll_count;
-
-            roll_count = roll_count - _save_roll_count;
-
-            float meter = roll_count * 24.0f / 100.0f;
-            _meter = meter;
+            float speed = Managers.Token.CurSpeedMeterPerSec;
+            curMeter += speed * Time.deltaTime;
 
             if (_maxSpeed < speed)
                 _maxSpeed = speed;
 
             GymchairData gymchairData = new GymchairData();
-            gymchairData.time = deltatime;
-            gymchairData.bpm = (bpm == 0.0f) ? 0.00001f : bpm;
-            gymchairData.rpm = (rpm < 0) ? 0 : rpm;
-            gymchairData.speed = (speed == 0.0f) ? 0.00001f : speed;
-            gymchairData.left_speed = Managers.Token.Save_left_speed;
-            gymchairData.right_speed = Managers.Token.Save_right_speed;
+            gymchairData.time = Time.deltaTime;
+            gymchairData.bpm = bpm;
+            gymchairData.speed = speed;
+            gymchairData.left_speed = Managers.Token.CurLeftSpeedMPS;
+            gymchairData.right_speed = Managers.Token.CurRightSpeedMPS;
             
-            /*
-
-            gymchairData.meter = meter;
-
-            float ml = 5.189f + (2.768f * (meter * 0.001f));
-            gymchairData.calorie = ((ml * DataMgr.Instance.UserData.weight * (deltatime / 60.0f)) * 0.001f) * 5.0f;
-
-            */
             
             _listData.Add(gymchairData);
 
+
+            #region VisulRotate
             float rotateValue = speed;
 
             if (rotateValue > 4.8f)
@@ -601,6 +540,9 @@ namespace Gymchair.Contents.Game
                 _imageRightGage.sprite = _spriteLeftRightNormalGage;
             }
 
+            #endregion VisulRotate
+
+            #region VisualBG
             Sprite background = null;
 
             Sprite gage1 = _spriteNormalGage1;
@@ -655,6 +597,9 @@ namespace Gymchair.Contents.Game
             _imageGage4.sprite = gage4;
             _imageGage5.sprite = gage5;
 
+            #endregion VisualBG
+
+
             ChartUtil.Data rpmData = new ChartUtil.Data();
             rpmData.value = (bpm == 0.0f)? 0.00001f:bpm;
             rpmData.show = true;
@@ -664,11 +609,12 @@ namespace Gymchair.Contents.Game
             speedData.show = true;
 
             ChartUtil.Data leftSpeedData = new ChartUtil.Data();
-            leftSpeedData.value = (Managers.Token.Save_left_speed <= 0.0f) ? 0.00001f : Managers.Token.Save_left_speed;
+            leftSpeedData.value = Managers.Token.CurLeftSpeedMPS;
             leftSpeedData.show = true;
 
             ChartUtil.Data rightSpeedData = new ChartUtil.Data();
-            rightSpeedData.value = (Managers.Token.Save_right_speed <= 0.0f) ? 0.00001f : Managers.Token.Save_right_speed;
+            rightSpeedData.value = Managers.Token.CurRightSpeedMPS;
+                //(Managers.Token.Save_right_speed <= 0.0f) ? 0.00001f : Managers.Token.Save_right_speed;
             rightSpeedData.show = true;
 
             _charRPM.chartData.series[0].data.Add(rpmData);
@@ -701,7 +647,7 @@ namespace Gymchair.Contents.Game
             _textChartSpeed.text = string.Format("{0:0.#}", _maxSpeed);
 
             _textSpeed.text = string.Format("{0:0.#}", speed);
-            _textMeter.text = string.Format("{0:0.#}", _meter);
+            _textMeter.text = string.Format("{0:0.#}", curMeter);
 
             _charRPM.UpdateChart();
             _charSpeed.UpdateChart();
@@ -709,8 +655,8 @@ namespace Gymchair.Contents.Game
             _charRightSpeed.UpdateChart();
 
 
-            _left_values.Add(Managers.Token.Save_left_speed);
-            _right_values.Add(Managers.Token.Save_right_speed);
+            _left_values.Add(Managers.Token.CurLeftSpeedMPS);
+            _right_values.Add(Managers.Token.CurRightSpeedMPS);
 
             if (_left_values.Count > 150)
                 _left_values.RemoveAt(0);
