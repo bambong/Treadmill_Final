@@ -4,6 +4,7 @@ using UnityEngine;
 using ZB;
 using DG.Tweening;
 using TMPro;
+using Unity.Mathematics;
 
 namespace ZB
 {
@@ -46,7 +47,9 @@ namespace ZB
         [Header("회전관련")]
         [SerializeField] float rotMultiple;
         float currentRotTarget;
-
+        float processMove;
+        float processTime;
+        float lastProcessTime;
         [Space(30)]
         [Header("임시인풋값변경")]
         [SerializeField] TMP_InputField ver_minPower;
@@ -56,6 +59,7 @@ namespace ZB
         [SerializeField] TMP_InputField hor_minInterval;
         [SerializeField] TMP_InputField hor_moveMultiple;
         [SerializeField] TMP_InputField hor_intervalMultiple;
+        [SerializeField] TMP_InputField processTimeField;
 
         TokenInputManager token { get => Managers.Token; }
 
@@ -161,23 +165,30 @@ namespace ZB
         {
             if (checking)
             {
-
+                if (Mathf.Abs(leftRpm - token.Save_left_speed) > processTime || Mathf.Abs(rightRpm - token.Save_right_speed) > processTime)
+                {
+                    return;
+                }
                 leftRpm = token.Save_left_speed;
                 rightRpm = token.Save_right_speed;
+               // float speed = (Managers.Token.Save_left_speed + Managers.Token.Save_right_speed)*0.1f;
 
-                //프레임마다 이동할 정도 구함
-                if (intervalAbs < minInterval + (intervalAbs * intervalMultiple)) 
-                    move = 0;
-                else
+                //if ((leftRpm >= 0 && rightRpm >= 0) || (leftRpm < 0 && rightRpm < 0))
+                //{
+                //    move = 0;
+                //    return;
+                //}
+
+                if (intervalAbs < minInterval)
                 {
-                    move = (rightRpm - leftRpm) * moveMultiple;
-
-                    if (rightRpm > leftRpm &&
-                        move > maxMove)
-                        move = maxMove;
-                    else if (move <= -maxMove)
-                        move = -maxMove;
+                    move = 0;
+                    return;
                 }
+                //프레임마다 이동할 정도 구함
+
+                move = (rightRpm - leftRpm) * moveMultiple;
+                move = Mathf.Clamp(move, -maxMove, maxMove);
+
 
                 ////이동
                 //if (tf.position.x <= outPos_left && move < 0)
@@ -230,6 +241,10 @@ namespace ZB
                 moveMultiple = result;
             if (float.TryParse(hor_intervalMultiple.text, out result))
                 intervalMultiple = result;
+            if (float.TryParse(processTimeField.text, out result))
+                processTime = result;
+
+
         }
     }
 }
