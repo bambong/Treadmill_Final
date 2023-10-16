@@ -75,6 +75,12 @@ EditorBuildSettings:
     path: Assets/TreadmillProject/ZBWorks/Scenes/Balance_Game/Balance_GameScene_6.unity
     guid: 35e391cb156c71944b9fc4ec3b8c70cc
   - enabled: 1
+    path: Assets/TreadmillProject/ZBWorks/Scenes/Balance_Game/Balance_GameScene_7.unity
+    guid: e6dc88f4f1245a74f9dc44006a852d26
+  - enabled: 1
+    path: Assets/TreadmillProject/ZBWorks/Scenes/Balance_Game/Balance_GameScene_8.unity
+    guid: e201b4132911763499149751c5c756ea
+  - enabled: 1
     path: Assets/TreadmillProject/ZBWorks/Scenes/Balance_Game/Balance_GameScene_Tutorial.unity
     guid: da8f6a18a174e874abc9efca36010fd8
   - enabled: 1
