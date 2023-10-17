@@ -38,8 +38,8 @@ namespace ZB.Balance2
             if (CanRotate_Roll())
             {
                 float x = rotationTarget.eulerAngles.x + rotateVec_Roll * rotatePow * Time.fixedDeltaTime;
-                if (x > 89 && x < 271)
-                    x = Mathf.Abs(x - 89) < Mathf.Abs(x - 271) ? 89 : 271;
+                if (x > 30 && x < 330)
+                    x = Mathf.Abs(x - 30) < Mathf.Abs(x - 330) ? 30 : 330;
 
                 rotationTarget.rotation =
                     Quaternion.Euler(
@@ -52,8 +52,8 @@ namespace ZB.Balance2
             if (CanRotate_Pitch())
             {
                 float z = rotationTarget.eulerAngles.z + rotateVec_Pitch * rotatePow * Time.fixedDeltaTime;
-                if (z > 89 && z < 271)
-                    z = Mathf.Abs(z - 89) < Mathf.Abs(z - 271) ? 89 : 271;
+                if (z > 30 && z < 330)
+                    z = Mathf.Abs(z - 30) < Mathf.Abs(z - 330) ? 30 : 330;
 
                 rotationTarget.rotation =
                     Quaternion.Euler(
