@@ -48,7 +48,7 @@ namespace ZB
         [SerializeField] float rotMultiple;
         float currentRotTarget;
         float processMove;
-        float processTime;
+        [SerializeField] float processTime;
         float lastProcessTime;
         [Space(30)]
         [Header("임시인풋값변경")]

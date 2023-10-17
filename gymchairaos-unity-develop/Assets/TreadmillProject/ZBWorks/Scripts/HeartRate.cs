@@ -29,11 +29,11 @@ public class HeartRate : MonoBehaviour
         sum = 0;
         time = 0;
         checking = true;
-        Debug.LogError("AverageCheckStart");
+        //Debug.LogError("AverageCheckStart");
     }
     public void AverageCheckStop()
     {
         checking = false;
-        Debug.LogError("AverageCheckStop");
+        //Debug.LogError("AverageCheckStop");
     }
 }
