@@ -10,7 +10,7 @@ namespace ZB.Balance2
     {
         public enum RotDir { front, back, left, right}
         [SerializeField] RotateObj rotateObj;
-        [SerializeField] float yaw;
+        [SerializeField] float roll;
         [SerializeField] float pitch;
 
         [Space]
@@ -22,7 +22,7 @@ namespace ZB.Balance2
 
         public void ResetState()
         {
-            yaw = 0;
+            roll = 0;
             pitch = 0;
         }
         public void Active(bool active)
@@ -39,21 +39,21 @@ namespace ZB.Balance2
             {
                 case RotDir.front:
                     if (pitch > max &&
-                        Mathf.Abs(yaw) < min)
+                        Mathf.Abs(roll) < min)
                         result = true;
                     break;
                 case RotDir.back:
                     if (pitch < -max &&
-                        Mathf.Abs(yaw) < min)
+                        Mathf.Abs(roll) < min)
                         result = true;
                     break;
                 case RotDir.left:
-                    if (yaw < -max &&
+                    if (roll < -max &&
                         Mathf.Abs(pitch) < min)
                         result = true;
                     break;
                 case RotDir.right:
-                    if (yaw > max &&
+                    if (roll > max &&
                         Mathf.Abs(pitch) < min)
                         result = true;
                     break;
@@ -68,29 +68,32 @@ namespace ZB.Balance2
 #if !UNITY_EDITOR
                 var left = Managers.Token.Save_left_speed;
                 var right = Managers.Token.Save_right_speed;
-                if (MIN_INPUT < Mathf.Abs(left - right)) 
+                //if (MIN_INPUT < Mathf.Abs(left - right)) 
+                if (left * right < 0 &&
+                    MIN_INPUT < Mathf.Abs(left - right)) 
                 {
                     if(left < right)
                     {
-                        if (yaw > -maxPow)
+                        if (roll > -maxPow)
                         {
-                            yaw = -Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
+                            roll = -Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
                     }
                     else 
                     {
-                        if (yaw < maxPow)
+                        if (roll < maxPow)
                         {
-                            yaw = Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
+                            roll = Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
                     }
                 }
                 else 
                 {
-                    yaw = Mathf.Lerp(0, yaw, Time.deltaTime);
+                    roll = Mathf.Lerp(0, roll, Time.deltaTime);
                 }
                 var curDir = left + right;
-                if (MIN_INPUT < Mathf.Abs(curDir)) 
+                if (left * right > 0 &&
+                    MIN_INPUT < Mathf.Abs(curDir)) 
                 {
 
                     if (curDir < 0)
@@ -115,21 +118,21 @@ namespace ZB.Balance2
                 }
 
 #else
-                if (Input.GetKey(KeyCode.D) && yaw < maxPow)
+                if (Input.GetKey(KeyCode.D) && roll < maxPow)
                 {
-                    yaw += Time.deltaTime * pow;
+                    roll += Time.deltaTime * pow;
                 }
-                else if (yaw > 0)
+                else if (roll > 0)
                 {
-                    yaw -= Time.deltaTime * pow;
+                    roll -= Time.deltaTime * pow;
                 }
-                if (Input.GetKey(KeyCode.A) && yaw > -maxPow)
+                if (Input.GetKey(KeyCode.A) && roll > -maxPow)
                 {
-                    yaw -= Time.deltaTime * pow;
+                    roll -= Time.deltaTime * pow;
                 }
-                else if (yaw < 0)
+                else if (roll < 0)
                 {
-                    yaw += Time.deltaTime * pow;
+                    roll += Time.deltaTime * pow;
                 }
 
                 if (Input.GetKey(KeyCode.K) && pitch < maxPow)
@@ -149,21 +152,26 @@ namespace ZB.Balance2
                     pitch += Time.deltaTime * pow;
                 }
 #endif
-                rotateObj.RotateInfoUpdate(yaw, pitch);
+                rotateObj.RotateInfoUpdate(roll, pitch);
             }
             else
             {
                 pitch *= Time.deltaTime;
-                yaw *= Time.deltaTime;
+                roll *= Time.deltaTime;
 
-                rotateObj.RotateInfoUpdate(yaw, pitch);
+                rotateObj.RotateInfoUpdate(roll, pitch);
             }
+
+            tmp_roll.text = $"roll : {roll}";
+            tmp_pitch.text = $"pitch : {pitch}";
         }
 
         [Space(30)]
         [SerializeField] TMP_InputField input_MININPUT;
         [SerializeField] TMP_InputField input_power;
         [SerializeField] TMP_InputField input_maxPower;
+        [SerializeField] TextMeshProUGUI tmp_roll;
+        [SerializeField] TextMeshProUGUI tmp_pitch;
         public void TestInputField()
         {
             float result = 0;
