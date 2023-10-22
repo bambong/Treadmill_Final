@@ -66,7 +66,7 @@ namespace ZB.Balance2
             if (active)
             {
 #if !UNITY_EDITOR
-                 var left = Managers.Token.Save_left_speed;
+                var left = Managers.Token.Save_left_speed;
                 var right = Managers.Token.Save_right_speed;
                 if (MIN_INPUT < Mathf.Abs(left - right)) 
                 {
@@ -74,14 +74,14 @@ namespace ZB.Balance2
                     {
                         if (yaw > -maxPow)
                         {
-                            yaw -= Time.deltaTime * pow;
+                            yaw = -Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
                     }
                     else 
                     {
                         if (yaw < maxPow)
                         {
-                            yaw += Time.deltaTime * pow;
+                            yaw = Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
                     }
                 }
@@ -93,18 +93,18 @@ namespace ZB.Balance2
                 if (MIN_INPUT < Mathf.Abs(curDir)) 
                 {
 
-                    if (curDir > 0)
+                    if (curDir < 0)
                     {
                         if (pitch < maxPow)
                         {
-                            pitch += Time.deltaTime * pow;
+                            pitch = Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
                     }
                     else
                     {
                         if (pitch > -maxPow)
                         {
-                            pitch -= Time.deltaTime * pow;
+                            pitch = -Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
 
                     }
