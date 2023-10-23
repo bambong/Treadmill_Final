@@ -182,10 +182,10 @@ namespace ZB
         {
             if (checking)
             {
-                if (Mathf.Abs(leftRpm - token.Save_left_speed) > processTime || Mathf.Abs(rightRpm - token.Save_right_speed) > processTime)
-                {
-                    return;
-                }
+                //if (Mathf.Abs(leftRpm - token.Save_left_speed) > processTime || Mathf.Abs(rightRpm - token.Save_right_speed) > processTime)
+                //{
+                //    return;
+                //}
                 leftRpm = token.Save_left_speed;
                 rightRpm = token.Save_right_speed;
                // float speed = (Managers.Token.Save_left_speed + Managers.Token.Save_right_speed)*0.1f;

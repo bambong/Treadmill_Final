@@ -63,7 +63,7 @@ public class UIControll : MonoBehaviour
     public void GoMain()
     {
         Time.timeScale = 1;
-        Managers.Scene.LoadScene(E_SceneName.SelectGame);
+        Managers.Scene.LoadScene(E_SceneName.Balance_MenuScene);
     }
 
     private void Awake()
