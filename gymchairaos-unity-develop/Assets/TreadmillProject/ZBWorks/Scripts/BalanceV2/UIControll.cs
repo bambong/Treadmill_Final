@@ -21,11 +21,6 @@ public class UIControll : MonoBehaviour
         ui_Result.DOKill();
         ui_Result.DOScale(active ? Vector3.one : Vector3.zero, 0.3f).SetUpdate(true);
 
-        if (active)
-        {
-            Time.timeScale = 0;
-        }
-
         shadow.SetActive(true);
         UnityAction action = null;
         if (!active) action = () => shadow.SetActive(false);
