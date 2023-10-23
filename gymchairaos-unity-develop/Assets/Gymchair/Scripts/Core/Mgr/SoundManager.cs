@@ -43,7 +43,6 @@ using UnityEngine;
             _dictAudioClips.Add("play", Resources.Load<AudioClip>("play"));
             _dictAudioClips.Add("count", Resources.Load<AudioClip>("count"));
             _dictAudioClips.Add("back", Resources.Load<AudioClip>("back"));
-            //_dictAudioClips.Add("touch", Resources.Load<AudioClip>("touch"));
             _dictAudioClips.Add("touch", Resources.Load<AudioClip>("Sounds/SFX_Button_Click"));
 
             //배경음
@@ -51,7 +50,7 @@ using UnityEngine;
             _dictAudioClips.Add("bgm_Obstacle", Resources.Load<AudioClip>("Sounds/BGM_Obstacle_17._Technically_Accurate_353"));
             _dictAudioClips.Add("bgm_GameSelect", Resources.Load<AudioClip>("Sounds/BGM_GameSelect"));
             _dictAudioClips.Add("bgm_SpeedMenu", Resources.Load<AudioClip>("Sounds/bgm_SpeedMenu"));
-            _dictAudioClips.Add("bgm_Balance", Resources.Load<AudioClip>("Sounds/13. Track 13"));
+            _dictAudioClips.Add("bgm_Control", Resources.Load<AudioClip>("Sounds/Control/[SHK's Free BGM] 025 Good friend"));
 
             //효과음
             _dictAudioClips.Add("sfx_CarCrash", Resources.Load<AudioClip>("Sounds/SFX_CarCrash_Car_Impact_Concrete"));
@@ -74,6 +73,12 @@ using UnityEngine;
             _dictAudioClips.Add("sfx_to_the_right", Resources.Load<AudioClip>("Sounds/To the right"));
             _dictAudioClips.Add("sfx_whistle1", Resources.Load<AudioClip>("Sounds/Whistle1"));
             _dictAudioClips.Add("sfx_whistle2", Resources.Load<AudioClip>("Sounds/Whistle2"));
+
+            _dictAudioClips.Add("sfx_obstacleCrash", Resources.Load<AudioClip>("Sounds/Obstacle/obstacle crash"));
+            _dictAudioClips.Add("sfx_obstacleExplosion", Resources.Load<AudioClip>("Sounds/Obstacle/obstacles explosion"));
+            _dictAudioClips.Add("sfx_obstacleSiren", Resources.Load<AudioClip>("Sounds/Obstacle/siren approach"));
+            _dictAudioClips.Add("sfx_controlSuccuess", Resources.Load<AudioClip>("Sounds/Control/Control stage success"));
+            _dictAudioClips.Add("sfx_controlFail", Resources.Load<AudioClip>("Sounds/Control/Control stage failure"));
         }
 
         public void PlayBGM(string name)

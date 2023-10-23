@@ -27,6 +27,8 @@ namespace ZB.Balance2
         [SerializeField] RankingDataHolder rankingDataHolder;
         [SerializeField] int stage;
 
+        [SerializeField] ParticleSystem par_ShowPos;
+
         public void GameStart()
         {
             StartCoroutine(StartCycle());
@@ -36,12 +38,14 @@ namespace ZB.Balance2
         {
             heartRate.AverageCheckStop();
             uiControll.SetTextInfo(stage.ToString(), timeCounter.NowTime, ((int)heartRate.Average).ToString());
-            uiControll.PageActive_Result(true);
             timeCounter.CountPause();
 
             //클리어판정
             rankingDataHolder.rankingData.ranking_Balance.Add(RankingData.GetUserName(), RankingData.GetDate(), timeCounter.NowTime, stage);
             rankingDataHolder.Write();
+            Managers.Sound.PlayEffect("sfx_controlSuccuess");
+
+            StartCoroutine(delayNActiveResult());
         }
 
         public void GameOver()
@@ -51,6 +55,7 @@ namespace ZB.Balance2
             input.Active(false);
             ballControl.Active(false);
             timeCounter.CountPause();
+            Managers.Sound.PlayEffect("sfx_controlFail");
         }
 
         public void Pause(bool active)
@@ -69,6 +74,9 @@ namespace ZB.Balance2
 
         IEnumerator StartCycle()
         {
+            yield return null;
+            Managers.Sound.PlayBGM("bgm_Control");
+
             input.Active(false);
             img_Shadow.gameObject.SetActive(true);
             Time.timeScale = 1;
@@ -96,12 +104,23 @@ namespace ZB.Balance2
                 tmp_Ready.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InQuart);
             });
             yield return new WaitForSeconds(1.5f);
-            img_Shadow.DOColor(Color.clear, 0.5f).OnComplete(()=>img_Shadow.gameObject.SetActive(false));
+            img_Shadow.DOColor(Color.clear, 0.5f).OnComplete(()=>
+            {
+                img_Shadow.gameObject.SetActive(false);
+            });
             timeCounter.CountStart();
             heartRate.AverageCheckStart();
 
             ballControl.Active(true);
             input.Active(true);
+            par_ShowPos.Stop();
+        }
+
+        WaitForSeconds delayNActiveResult_WFS = new WaitForSeconds(0.75f);
+        IEnumerator delayNActiveResult()
+        {
+            yield return delayNActiveResult_WFS;
+            uiControll.PageActive_Result(true);
         }
     }
 }

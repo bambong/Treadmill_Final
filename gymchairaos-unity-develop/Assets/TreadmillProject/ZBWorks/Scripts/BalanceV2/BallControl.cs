@@ -9,6 +9,7 @@ public class BallControl : MonoBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] float power_Y;
     [SerializeField] float power_XZ;
+
     bool activing;
 
     public void Active(bool active)

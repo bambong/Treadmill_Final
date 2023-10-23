@@ -17,6 +17,9 @@ public class PoliceCarChase : MonoBehaviour
 
     public void Move(int hpInfo)
     {
+        if (hpInfo < 3) 
+            Managers.Sound.PlayEffect("sfx_obstacleSiren");
+
         if (hpInfo == 0)
         {
             ui_Body_Player.DOKill();

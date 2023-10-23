@@ -50,6 +50,12 @@ namespace ZB
         float processMove;
         [SerializeField] float processTime;
         float lastProcessTime;
+
+        [Space]
+        [Header("이펙트")]
+        [SerializeField] ParticleSystem par_slowAlarm;
+        [SerializeField] float appearSpeed;
+
         [Space(30)]
         [Header("임시인풋값변경")]
         [SerializeField] TMP_InputField ver_minPower;
@@ -156,6 +162,17 @@ namespace ZB
             //현재 속도에 따른 스크롤 속도 조정
             if (!boostGuage.Boosting) 
                 objectScroll.ScrollSpeedChange(Mathf.Clamp(Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower));
+
+            if (checking)
+            {
+                if (Managers.Token.CurSpeedMeterPerSec < appearSpeed &&
+                    !par_slowAlarm.isPlaying)
+                    par_slowAlarm.Play();
+
+                else if (Managers.Token.CurSpeedMeterPerSec >= appearSpeed &&
+                    par_slowAlarm.isPlaying)
+                    par_slowAlarm.Stop();
+            }
 
             if (Input.GetKeyDown(KeyCode.R))
             { token.Save_left_speed = 0; token.Save_right_speed = 0; }
