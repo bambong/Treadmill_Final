@@ -16,8 +16,9 @@ namespace ZB.Balance2
         [SerializeField] float rotateVec_Pitch;
         [SerializeField] float rotatePow;
         [SerializeField] float rotateMax;
-
-
+        [SerializeField] float lerpPow = 1;
+        private readonly float MIN_POW = 0.5f;
+       
         /// <summary>
         /// 회전정보 업데이트
         /// </summary>
@@ -41,118 +42,63 @@ namespace ZB.Balance2
             //roll 인풋이 있냐없냐에 따라 다음 행동이 정해진다
             //있으면 roll회전, 없으면 pitch회전을 하도록한다
 
-            //이동준비가 끝난 경우, 다음 입력에 따라 해당방향이동으로 전환하고, 이동을 시작한다.
-            if (dirSelect == DirSelect.none &&
-                (Mathf.Abs(rotateVec_Roll) > 0.5f || Mathf.Abs(rotateVec_Pitch) > 0.5f)) 
+            float rollPow = Mathf.Abs(rotateVec_Roll);
+            float pitchPow = Mathf.Abs(rotateVec_Pitch);
+
+            if(rollPow < MIN_POW && pitchPow < MIN_POW)
             {
-                if (Mathf.Abs(rotateVec_Roll) > Mathf.Abs(rotateVec_Pitch))
-                {
-                    dirSelect = DirSelect.roll;
-                    return;
-                }
-                dirSelect = DirSelect.pitch;
+                //rotationTarget.rotation = Quaternion.Lerp(rotationTarget.rotation, Quaternion.Euler(0, 0, 0), Time.fixedDeltaTime * lerpPow);
                 return;
             }
-
-            //* 기존방향 입력받으면 해당방향으로 이동한다.
-            //roll 방향 이동
-            if (dirSelect == DirSelect.roll && Mathf.Abs(rotateVec_Pitch) < 0.5f) 
+#if UNITY_EDITOR
+            if(Input.GetKey(KeyCode.A)|| Input.GetKey(KeyCode.D)) 
             {
                 RotateRoll(rotateVec_Roll);
-                return;
             }
-            //pitch 방향 이동
-            if (dirSelect == DirSelect.pitch && Mathf.Abs(rotateVec_Roll) < 0.5f)
+            else if (Input.GetKey(KeyCode.K) || Input.GetKey(KeyCode.M))
             {
                 RotatePitch(rotateVec_Pitch);
-                return;
             }
 
-            //* 한쪽방향 이동 도중, 다른방향 이동 입력을 받으면, 이동준비를 시작한다.
-            //roll 방향 이동 중 다른방향 입력
-            float rotDir;
-            if (dirSelect == DirSelect.roll)
+#else
+            if (Managers.Token.Save_left_speed < -1990 || Managers.Token.Save_right_speed < -1990)
             {
-                //원위치 이동...
-                //이동해야할 방향을 구한다
-                rotDir = rotationTarget.eulerAngles.x >= 330 && rotationTarget.eulerAngles.x <= 360 ? 1 : -1;
-                RotateRoll(Mathf.Abs(rotateVec_Pitch) * rotDir);
-
-                //원위치 이동완료
-                if (Mathf.Abs(rotationTarget.eulerAngles.x) < 0.5f)
-                {
-                    rotationTarget.rotation = Quaternion.Euler(0, 0, rotationTarget.eulerAngles.z);
-                    dirSelect = DirSelect.none;
-                }
                 return;
-            }
-            //pitch 방향 이동 중 다른방향 입력
-            if (dirSelect == DirSelect.pitch)
+            }  
+            
+            var left = Managers.Token.Save_left_speed;
+            var right = Managers.Token.Save_right_speed;
+ 
+            if(left * right < 0)
             {
-                //원위치 이동...
-                rotDir = rotationTarget.eulerAngles.z >= 330 && rotationTarget.eulerAngles.z <= 360 ? 1 : -1;
-                RotatePitch(Mathf.Abs(rotateVec_Roll) * rotDir);
-
-                //원위치 이동완료
-                if (Mathf.Abs(rotationTarget.eulerAngles.z) < 0.5f)
-                {
-                    rotationTarget.rotation = Quaternion.Euler(rotationTarget.eulerAngles.x, 0, 0);
-                    dirSelect = DirSelect.none;
-                }
-                return;
+                RotateRoll(rotateVec_Roll);
             }
+            else 
+            {
+                RotatePitch(rotateVec_Pitch);
+            }
+#endif
 
-            //// Roll 회전
-            //if (CanRotate_Roll())
-            //{
-            //    float x = rotationTarget.eulerAngles.x + rotateVec_Roll * rotatePow * Time.fixedDeltaTime;
-            //    if (x > 30 && x < 330)
-            //        x = Mathf.Abs(x - 30) < Mathf.Abs(x - 330) ? 30 : 330;
-
-            //    rotationTarget.rotation =
-            //        Quaternion.Euler(
-            //            x,
-            //            0,
-            //            rotationTarget.eulerAngles.z);
-            //}
-
-            //// Yaw 회전
-            //if (CanRotate_Pitch())
-            //{
-            //    float z = rotationTarget.eulerAngles.z + rotateVec_Pitch * rotatePow * Time.fixedDeltaTime;
-            //    if (z > 30 && z < 330)
-            //        z = Mathf.Abs(z - 30) < Mathf.Abs(z - 330) ? 30 : 330;
-
-            //    rotationTarget.rotation =
-            //        Quaternion.Euler(
-            //            rotationTarget.eulerAngles.x,
-            //            0,
-            //            z);
-            //}
         }
         private void RotateRoll(float value)
         {
-            float x = rotationTarget.eulerAngles.x + value * rotatePow * Time.fixedDeltaTime;
+            //x값에서 input 값을 더함 / input을 +에서 -방향으로 전환해도, 바로 -가 안됌 / 남은 +값이 계속더해져서, 살짝 해당방향으로 치우쳐짐
+            float x = rotationTarget.eulerAngles.x + value * rotatePow ;
             if (x > 30 && x < 330)
                 x = Mathf.Abs(x - 30) < Mathf.Abs(x - 330) ? 30 : 330;
 
-            rotationTarget.rotation =
-                Quaternion.Euler(
-                    x,
-                    0,
-                    rotationTarget.eulerAngles.z);
+            rotationTarget.rotation =Quaternion.Slerp( rotationTarget.rotation, Quaternion.Euler(x, 0, 0), Time.fixedDeltaTime * lerpPow);
+ 
         }
         private void RotatePitch(float value)
         {
-            float z = rotationTarget.eulerAngles.z + value * rotatePow * Time.fixedDeltaTime;
+            float z = rotationTarget.eulerAngles.z + value * rotatePow;
             if (z > 30 && z < 330)
+            {
                 z = Mathf.Abs(z - 30) < Mathf.Abs(z - 330) ? 30 : 330;
+            }
 
-            rotationTarget.rotation =
-                Quaternion.Euler(
-                    rotationTarget.eulerAngles.x,
-                    0,
-                    z);
+            rotationTarget.rotation = Quaternion.Slerp(rotationTarget.rotation, Quaternion.Euler(0, 0, z), Time.fixedDeltaTime* lerpPow);
         }
         private bool CanRotate_Roll()
         {

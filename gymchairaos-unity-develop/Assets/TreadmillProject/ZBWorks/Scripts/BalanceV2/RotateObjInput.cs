@@ -68,7 +68,12 @@ namespace ZB.Balance2
 #if !UNITY_EDITOR
                 var left = Managers.Token.Save_left_speed;
                 var right = Managers.Token.Save_right_speed;
-                //if (MIN_INPUT < Mathf.Abs(left - right)) 
+                
+                if(left < -1990 || right < -1990)
+                {
+                    return;
+                }  
+
                 if (left * right < 0 &&
                     MIN_INPUT < Mathf.Abs(left - right)) 
                 {
@@ -89,7 +94,7 @@ namespace ZB.Balance2
                 }
                 else 
                 {
-                    roll = Mathf.Lerp(0, roll, Time.deltaTime);
+                    roll = 0;
                 }
                 var curDir = left + right;
                 if (left * right > 0 &&
@@ -114,43 +119,54 @@ namespace ZB.Balance2
                 }
                 else
                 {
-                    pitch = Mathf.Lerp(0, pitch, Time.deltaTime);
+                    pitch = 0;
                 }
 
 #else
-                if (Input.GetKey(KeyCode.D) && roll < maxPow)
+                bool rollInput = false;
+                bool pitchInput = false;
+                
+                if (Input.GetKey(KeyCode.D))
                 {
+
+                    if (roll < 0) roll = 0;
                     roll += Time.deltaTime * pow;
-                }
-                else if (roll > 0)
+                    rollInput = true;
+                }        
+                else if (Input.GetKey(KeyCode.A))
                 {
+                    if (roll > 0) roll = 0;
                     roll -= Time.deltaTime * pow;
-                }
-                if (Input.GetKey(KeyCode.A) && roll > -maxPow)
-                {
-                    roll -= Time.deltaTime * pow;
-                }
-                else if (roll < 0)
-                {
-                    roll += Time.deltaTime * pow;
+                    rollInput = true;
                 }
 
-                if (Input.GetKey(KeyCode.K) && pitch < maxPow)
+                if (!rollInput)
                 {
+                    roll = Mathf.Lerp(roll, 0, Time.deltaTime);
+                }
+
+                if (Input.GetKey(KeyCode.K))
+                {
+                    if (pitch < 0) pitch = 0;
                     pitch += Time.deltaTime * pow;
+                    pitchInput = true;
                 }
-                else if (pitch > 0)
+                else if (Input.GetKey(KeyCode.M))
                 {
+                    if (pitch > 0) pitch = 0;
                     pitch -= Time.deltaTime * pow;
+                    pitchInput = true;
                 }
-                if (Input.GetKey(KeyCode.M) && pitch > -maxPow)
+
+                if (!pitchInput)
                 {
-                    pitch -= Time.deltaTime * pow;
+                    pitch = Mathf.Lerp(pitch, 0, Time.deltaTime);
                 }
-                else if (pitch < 0)
-                {
-                    pitch += Time.deltaTime * pow;
-                }
+
+
+                pitch = Mathf.Clamp(pitch, -maxPow, maxPow);
+                roll = Mathf.Clamp(roll, -maxPow, maxPow);
+
 #endif
                 rotateObj.RotateInfoUpdate(roll, pitch);
             }
