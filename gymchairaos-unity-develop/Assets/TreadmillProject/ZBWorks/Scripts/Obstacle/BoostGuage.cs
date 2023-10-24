@@ -15,6 +15,7 @@ namespace ZB
         public State NowState { get => nowState; }
         public bool Boosting { get; private set; }
 
+        [SerializeField] private PlayerInputManager2 playerInput;
         [SerializeField] private ObjectsScrolling objectsScrolling;
         [SerializeField] private UIGauge uiGuage;
         [SerializeField] private UnityEvent uEvent_BoostStart;
@@ -29,7 +30,6 @@ namespace ZB
         private float decreaseGuageValue;
         private float guageIncreasePerSecond;
         private bool decreaseSignal;
-        private float normalSpeed;
         private float boostDuration;
 
         WaitForSeconds wfs_boostTime;
@@ -114,7 +114,6 @@ namespace ZB
             maxGuage = 100;
             decreaseGuageValue = 20;
             guageIncreasePerSecond = 6.25f;
-            normalSpeed = objectsScrolling.ScrollSpeed;
             boostDuration = 1.5f;
             decreaseSignal = false;
             wfs_decreaseTime = new WaitForSeconds(decreaseTime);
@@ -129,7 +128,7 @@ namespace ZB
             uEvent_BoostEnd.AddListener(() =>
             {
                 //속도변화
-                objectsScrolling.ScrollSpeedChangeLinear(normalSpeed, boostDuration);
+                objectsScrolling.ScrollSpeedChangeLinear(playerInput.FocusPower, boostDuration);
             });
         }
     }

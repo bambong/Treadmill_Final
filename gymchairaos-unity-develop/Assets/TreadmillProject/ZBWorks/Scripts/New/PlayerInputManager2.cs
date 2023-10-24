@@ -10,6 +10,8 @@ namespace ZB
 {
     public class PlayerInputManager2 : MonoBehaviour
     {
+        public float FocusPower { get => Mathf.Clamp(Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower); }
+
         [SerializeField] ObjectsScrolling objectScroll;
         [SerializeField] BoostGuage boostGuage;
         [SerializeField] Transform tf;
@@ -161,7 +163,7 @@ namespace ZB
 
             //현재 속도에 따른 스크롤 속도 조정
             if (!(boostGuage.NowState == BoostGuage.State.Boost || boostGuage.NowState == BoostGuage.State.BoostBreak)) 
-                objectScroll.ScrollSpeedChange(Mathf.Clamp(Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower));
+                objectScroll.ScrollSpeedChange(FocusPower);
 
             if (checking)
             {
