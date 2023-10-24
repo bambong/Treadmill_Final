@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using DG.Tweening;
 
 public class SingleObstacle : MonoBehaviour
 {
     public bool IsDynamic { get => isDynamic; }
 
+    [SerializeField] UnityEvent onBoostBoom;
     [SerializeField] ZB.BoostGuage boostGuage;
-    ZB.ObjectsScrolling objectScrolling;
+    [SerializeField] ZB.ObjectPooling pool;
+    [SerializeField] ZB.ObjectsScrolling objectScrolling;
     [SerializeField] GameObject body;
     [SerializeField] float delayTime;
     protected bool isDynamic;
@@ -19,6 +22,9 @@ public class SingleObstacle : MonoBehaviour
     {
         if (boostGuage.NowState == ZB.BoostGuage.State.Boost)
         {
+            onBoostBoom.Invoke();
+            pool.Spawn("Eft_ObstacleBoom", transform.position);
+            Managers.Sound.PlayEffect("sfx_obstacleObjBoom");
             objectScrolling.RemoveObj(transform);
             transform.DOMove(new Vector3(Random.Range(-3, 4), 2, Random.Range(-3, 4)), 0.5f).SetEase(Ease.OutQuart);
             transform.DOScale(Vector3.zero, 1);
@@ -44,8 +50,6 @@ public class SingleObstacle : MonoBehaviour
 
     protected void Init()
     {
-        boostGuage = FindObjectOfType<ZB.BoostGuage>();
-        objectScrolling = FindObjectOfType<ZB.ObjectsScrolling>();
         DelayNUnActive_WFS = new WaitForSeconds(delayTime);
     }
     private void Awake()

@@ -16,8 +16,9 @@ public class CameraShake : MonoBehaviour
     [ContextMenu("!")]
     public void Shake()
     {
+        cameraObj.DOKill();
         cameraObj.transform.position = resetPos;
-        cameraObj.DOShakePosition(duration, strength, vibrato);
+        cameraObj.transform.DOShakePosition(duration, strength, vibrato);
     }
 
     private void Awake()

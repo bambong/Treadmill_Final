@@ -50,6 +50,7 @@ namespace ZB
         //스크롤 속도 변경
         public void ScrollSpeedChange(float value)
         {
+            Debug.LogError("SPEEDCHANGE");
             scrollSpeed = value;
         }
         public void ScrollSpeedChangeLinear(float value, float duration)
@@ -123,12 +124,14 @@ namespace ZB
         IEnumerator ScrollSpeedChangeLinearCycle_C;
         IEnumerator ScrollSpeedChangeLinearCycle(float goalSpeed, float duration)
         {
+            Debug.LogError("SCROLLSPEEDCHANGE");
             float gap = goalSpeed - scrollSpeed;
             gap *= 1 / duration;
             while (duration > 0) 
             {
                 scrollSpeed += gap * Time.deltaTime;
                 duration -= Time.deltaTime;
+                Debug.Log($"{gap} / {gap * Time.deltaTime} / {duration} / {ScrollSpeed}");
                 yield return null;
             }
             scrollSpeed = goalSpeed;

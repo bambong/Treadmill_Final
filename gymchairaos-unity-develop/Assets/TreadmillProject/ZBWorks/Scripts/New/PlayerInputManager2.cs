@@ -160,7 +160,7 @@ namespace ZB
             }
 
             //현재 속도에 따른 스크롤 속도 조정
-            if (!boostGuage.Boosting) 
+            if (!(boostGuage.NowState == BoostGuage.State.Boost || boostGuage.NowState == BoostGuage.State.BoostBreak)) 
                 objectScroll.ScrollSpeedChange(Mathf.Clamp(Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower));
 
             if (checking)

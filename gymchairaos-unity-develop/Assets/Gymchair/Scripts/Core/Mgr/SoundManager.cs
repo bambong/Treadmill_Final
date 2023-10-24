@@ -77,6 +77,9 @@ using UnityEngine;
             _dictAudioClips.Add("sfx_obstacleCrash", Resources.Load<AudioClip>("Sounds/Obstacle/obstacle crash"));
             _dictAudioClips.Add("sfx_obstacleExplosion", Resources.Load<AudioClip>("Sounds/Obstacle/obstacles explosion"));
             _dictAudioClips.Add("sfx_obstacleSiren", Resources.Load<AudioClip>("Sounds/Obstacle/siren approach"));
+            _dictAudioClips.Add("sfx_obstacleObjBoom", Resources.Load<AudioClip>("Sounds/Obstacle/obstacles explosion"));
+            _dictAudioClips.Add("sfx_obstacleBoostStart", Resources.Load<AudioClip>("Sounds/Obstacle/obstaclceBoostStart"));
+            _dictAudioClips.Add("sfx_obstacleBoostBreak", Resources.Load<AudioClip>("Sounds/Obstacle/speed_down"));
             _dictAudioClips.Add("sfx_controlSuccuess", Resources.Load<AudioClip>("Sounds/Control/Control stage success"));
             _dictAudioClips.Add("sfx_controlFail", Resources.Load<AudioClip>("Sounds/Control/Control stage failure"));
         }

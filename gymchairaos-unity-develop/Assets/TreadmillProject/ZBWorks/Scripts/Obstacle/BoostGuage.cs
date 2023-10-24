@@ -9,7 +9,7 @@ namespace ZB
     {
         public enum State
         {
-            None, Charging, Decreasing, Boost
+            None, Charging, Decreasing, Boost, BoostBreak
         }
 
         public State NowState { get => nowState; }
@@ -33,6 +33,7 @@ namespace ZB
         private float boostDuration;
 
         WaitForSeconds wfs_boostTime;
+        WaitForSeconds wfs_boostBreak = new WaitForSeconds(1.5f);
         WaitForSeconds wfs_boostTime_BackDelay = new WaitForSeconds(0.75f);
         WaitForSeconds wfs_decreaseTime;
 
@@ -90,9 +91,15 @@ namespace ZB
                     nowGuage = maxGuage;
                     Boosting = true;
                     uEvent_BoostStart.Invoke();
+                    Managers.Sound.PlayEffect("sfx_obstacleBoostStart");
                     yield return wfs_boostTime;
-                    Boosting = false;
+
+                    nowState = State.BoostBreak;
+                    Managers.Sound.PlayEffect("sfx_obstacleBoostBreak");
                     uEvent_BoostEnd.Invoke();
+                    yield return wfs_boostBreak;
+
+                    Boosting = false;
                     nowState = State.Charging;
                     nowGuage = 0;
                     uiGuage.ChangeRatioWithTweening(nowGuage / maxGuage);
@@ -108,7 +115,7 @@ namespace ZB
             decreaseGuageValue = 20;
             guageIncreasePerSecond = 6.25f;
             normalSpeed = objectsScrolling.ScrollSpeed;
-            boostDuration = 1;
+            boostDuration = 1.5f;
             decreaseSignal = false;
             wfs_decreaseTime = new WaitForSeconds(decreaseTime);
             wfs_boostTime = new WaitForSeconds(boostTime);
