@@ -129,6 +129,7 @@ namespace ZB
             {
                 scrollSpeed += gap * Time.deltaTime;
                 duration -= Time.deltaTime;
+                Debug.Log($"{gap} / {gap * Time.deltaTime} / {duration} / {ScrollSpeed}");
                 yield return null;
             }
             scrollSpeed = goalSpeed;

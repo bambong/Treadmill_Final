@@ -83,7 +83,9 @@ namespace ZB
 
         public void MinusHP(int value)
         {
-            if (checking && !invincibility && boostGuage.NowState != BoostGuage.State.Boost) 
+            if (checking &&
+                !invincibility &&
+                !(boostGuage.NowState == BoostGuage.State.Boost || boostGuage.NowState == BoostGuage.State.BoostBreak)) 
             {
                 uEvent_Hit.Invoke();
                 for (int i = nowHP - 1; i > nowHP - value - 1; i--)
