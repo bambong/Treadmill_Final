@@ -62,17 +62,19 @@ public class TokenInputManager
     private readonly KeyCode FOR_PC_LEFT_KEY = KeyCode.A;
     private readonly KeyCode FOR_PC_RIGHT_KEY = KeyCode.D;
     private readonly int INPUT_NEED_COUNT = 1;
+    private const float METER_FACTOR = 0.4396f; // 2f * PI * 0.07f(반지름)
 
     // 왼쪽 바퀴 입력 텀    
     public float LeftTokenTerm { get => leftToken.TokenEventTerm; }
     // 오른쪽 바퀴 입력 텀
     public float RightTokenTerm { get => rightToken.TokenEventTerm; }
-    private const float METER_FACTOR = 0.4396f; // 2f * PI * 0.07f(반지름)
 
-    public float CurSpeedMeterPerSec { get => (METER_FACTOR * CurRpm) / 360.0f; } // 평균 바퀴 스피드 m/s  abs 값
-    public float CurRpm { get { return math.abs(_save_left_speed) + math.abs(_save_right_speed) * 0.5f; } }
-    public float CurLeftSpeedMPS { get => (METER_FACTOR * math.abs(_save_left_speed)) / 360.0f; }// 왼쪽 바퀴 스피드 m/s abs 값
-    public float CurRightSpeedMPS { get => (METER_FACTOR * math.abs(_save_right_speed)) / 360.0f; }//  오른쪽 바퀴 스피드 m/s abs 값
+    private float curSpeed;
+  
+    public float CurSpeedMeterPerSec { get; private set; } // 평균 바퀴 스피드 m/s  abs 값
+    public float CurRpm { get { return math.abs(prevLeftAsX) + math.abs(prevRightAsX) * 0.5f; } }
+    public float CurLeftSpeedMPS { get; private set; }// 왼쪽 바퀴 스피드 m/s abs 값
+    public float CurRightSpeedMPS { get; private set; }//  오른쪽 바퀴 스피드 m/s abs 값
     public float Bpm { get => _save_bpm; }
     public bool IsConnect { get => _connect; } 
 
@@ -80,8 +82,16 @@ public class TokenInputManager
     private InputToken rightToken;
 
     private float _save_bpm = 0.0f;
-    private float _save_left_speed = 0.0f;
-    private float _save_right_speed = 0.0f;
+    
+    // 각속도 저장 변수
+    private float prevLeftAsX = 0.0f;
+    private float prevRightAsX = 0.0f;
+    // 이전 각도 저장 변수
+    private float prevLeftDegX = 0.0f;
+    private float prevRightDegX = 0.0f;
+    // 각도 변화량 저장 변수
+    private float LeftDiffDegX = 0.0f;
+    private float RightDiffDegX = 0.0f;
 
     private GymchairConnectPopupController _popup;
     private bool _connect = false;
@@ -90,14 +100,15 @@ public class TokenInputManager
     public float FactorValue { get => dataReceiver.FactorValue; }
     public Action ReceivedEvent { get; set; }
 
+
     // 마지막 이벤트 입력이 들어온 이 후 시간 (두 개 중 하나라도 입력이 들어오면 더 작은쪽을 반환) 
     public float LastEventTime
     {
         get { return Math.Min(leftToken.LastEventTime, rightToken.LastEventTime); }
     }
   
-    public float Save_left_speed { get => _save_left_speed; set => _save_left_speed = value;  }
-    public float Save_right_speed { get => _save_right_speed; set => _save_right_speed = value; }
+    public float Save_left_speed { get => prevLeftAsX; set => prevLeftAsX = value;  }
+    public float Save_right_speed { get => prevRightAsX; set => prevRightAsX = value; }
     public InputToken LeftToken { get => leftToken; }
     public InputToken RightToken { get => rightToken; }
 
@@ -174,7 +185,8 @@ public class TokenInputManager
 
     private readonly int FIRST_DEVICE_INDEX = 0;
     private readonly int SECOND_DEVICE_INDEX = 5;
-    private readonly int AXIS_INDEX = 1;
+    private readonly int AS_X_INDEX = 1;
+    private readonly int DEG_X_INDEX = 3;
 
     private readonly string LEFT_DEVICE_NAME = "WTwheelL";
     private readonly string RIGHT_DEVICE_NAME = "WTwheelR";
@@ -184,25 +196,46 @@ public class TokenInputManager
    
     private float GetSpeed( float v ) 
     {
-        return v * FactorValue * -1;
+        return v * -1;
         
         // 각속도 -> 속도 계산법 (V = (2π X 반지름 X 각속도) / 360
+    }
+    private void MessageParse(string[] splitMessage ,int leftIndex , int rightIndex ) 
+    {
+
+        // 왼쪽 바퀴 데이터 매핑
+        prevLeftAsX = GetSpeed(float.Parse(splitMessage[leftIndex + AS_X_INDEX]));
+        var leftDegTemp = GetSpeed(float.Parse(splitMessage[leftIndex + DEG_X_INDEX]));
+        leftDegTemp = math.abs(leftDegTemp);
+        LeftDiffDegX = math.abs(prevLeftDegX - leftDegTemp);
+        prevLeftDegX = leftDegTemp;
+        CurLeftSpeedMPS = LeftDiffDegX / 360.0f * METER_FACTOR;
+
+        // 오른쪽 바퀴 데이터 매핑
+        prevRightAsX = GetSpeed(float.Parse(splitMessage[rightIndex + AS_X_INDEX]));
+        var rightDegTemp = GetSpeed(float.Parse(splitMessage[rightIndex + DEG_X_INDEX]));
+        rightDegTemp = math.abs(rightDegTemp);
+        RightDiffDegX = math.abs(prevRightDegX - rightDegTemp);
+        prevRightDegX = rightDegTemp;
+        CurRightSpeedMPS = RightDiffDegX / 360.0f * METER_FACTOR;
+
+        CurSpeedMeterPerSec = (CurLeftSpeedMPS + CurRightSpeedMPS)*0.5f;
     }
     public void OnReceivedMessage(string message)
     {
             int count = message.Length;
             var splitMessage = message.Split(',');
             Debug.Log($" 메세지 받음 : {message}");
-            if (splitMessage[FIRST_DEVICE_INDEX] == LEFT_DEVICE_NAME) 
+
+
+            if (splitMessage[FIRST_DEVICE_INDEX] == LEFT_DEVICE_NAME)
             {
-                _save_left_speed = GetSpeed(float.Parse(splitMessage[FIRST_DEVICE_INDEX + AXIS_INDEX]));
-                _save_right_speed = GetSpeed(float.Parse(splitMessage[SECOND_DEVICE_INDEX + AXIS_INDEX]));
+                MessageParse(splitMessage, FIRST_DEVICE_INDEX, SECOND_DEVICE_INDEX);
             }
-            else if(splitMessage[FIRST_DEVICE_INDEX] == RIGHT_DEVICE_NAME)
+            else
             {
-                _save_left_speed = GetSpeed(float.Parse(splitMessage[SECOND_DEVICE_INDEX + AXIS_INDEX]));
-                _save_right_speed = GetSpeed(float.Parse(splitMessage[FIRST_DEVICE_INDEX + AXIS_INDEX]));
-             }
+                MessageParse(splitMessage, SECOND_DEVICE_INDEX, FIRST_DEVICE_INDEX);
+            }
 
             //Debug.Log($"LEFT_RPM : {splitMessage[X_AXIS_SPEED_INDEX_L]}");
             //Debug.Log($"RIGHT_RPM : {splitMessage[Y_AXIS_SPEED_INDEX_L]}");
@@ -211,11 +244,11 @@ public class TokenInputManager
             ReceivedEvent?.Invoke();
           //  Debug.Log("LEFT_RPM : " + _save_left_speed + " RIGHT_RPM : " + _save_right_speed);
 
-            if (_save_left_speed > MIN_CHECK_RPM) 
+            if (prevLeftAsX > MIN_CHECK_RPM) 
             {
                 leftToken.CallEvent?.Invoke();
             }
-            if(_save_right_speed > MIN_CHECK_RPM) 
+            if(prevRightAsX > MIN_CHECK_RPM) 
             {
                 rightToken.CallEvent?.Invoke();
             }
@@ -328,8 +361,8 @@ public class TokenInputManager
         void OnSceneUnloaded(Scene scene)
         {
             _save_bpm = 0;
-            _save_left_speed = 0;
-            _save_right_speed = 0;        
+            prevLeftAsX = 0;
+            prevRightAsX = 0;        
             leftToken.CallEvent = null;
             rightToken.CallEvent = null;
             ReceivedEvent = null;
