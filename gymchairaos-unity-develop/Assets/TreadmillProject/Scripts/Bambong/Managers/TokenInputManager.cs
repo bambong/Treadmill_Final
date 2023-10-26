@@ -73,7 +73,7 @@ public class TokenInputManager
     public float CurRpm { get { return math.abs(_save_left_speed) + math.abs(_save_right_speed) * 0.5f; } }
     public float CurLeftSpeedMPS { get => (METER_FACTOR * math.abs(_save_left_speed)) / 360.0f; }// 왼쪽 바퀴 스피드 m/s abs 값
     public float CurRightSpeedMPS { get => (METER_FACTOR * math.abs(_save_right_speed)) / 360.0f; }//  오른쪽 바퀴 스피드 m/s abs 값
-    public float Bpm { get => _save_bpm; }
+    public float Bpm { get => MathF.Abs(_save_bpm); }
     public bool IsConnect { get => _connect; } 
 
     private InputToken leftToken;
@@ -180,7 +180,7 @@ public class TokenInputManager
     private readonly string RIGHT_DEVICE_NAME = "WTwheelR";
 
     private readonly int BPM_INDEX = 11;
-    private readonly float MIN_CHECK_RPM = 0;
+    private readonly float MIN_CHECK_RPM = 900;
    
     private float GetSpeed( float v ) 
     {
