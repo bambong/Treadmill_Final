@@ -490,7 +490,7 @@ namespace Gymchair.Contents.Game
             _save_to_rotateZ = Mathf.Lerp(_save_to_rotateZ, rotateZ, 0.3f);
             _imageGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, _save_to_rotateZ);
 
-            float leftPercent = Managers.Token.Save_left_speed;
+            float leftPercent = Managers.Token.CurLeftSpeedMPS;
             leftPercent = (leftPercent > 4.8f) ? 1.0f : leftPercent / 4.8f;
             float leftRotateZ = 180 * leftPercent;
             leftRotateZ = 90 - leftRotateZ;
@@ -500,7 +500,7 @@ namespace Gymchair.Contents.Game
 
             _save_to_leftRotateZ = Mathf.Lerp(_save_to_leftRotateZ, leftRotateZ, 0.3f);
 
-            float rightPercent = Managers.Token.Save_right_speed;
+            float rightPercent = Managers.Token.CurRightSpeedMPS;
             rightPercent = (rightPercent > 4.8f) ? 1.0f : rightPercent / 4.8f;
             float rightRotateZ = 180 * rightPercent;
             rightRotateZ = 90 - rightRotateZ;

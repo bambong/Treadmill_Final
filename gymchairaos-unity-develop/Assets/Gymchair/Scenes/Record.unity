@@ -636,7 +636,7 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_Spacing: 20
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
@@ -682,7 +682,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -15, y: 0}
+  m_AnchoredPosition: {x: -56, y: -8}
   m_SizeDelta: {x: 30.27, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &398836269
@@ -1817,11 +1817,11 @@ RectTransform:
   m_Father: {fileID: 1761012311}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 867, y: 509}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -78, y: -27}
   m_SizeDelta: {x: 458, y: 206}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &1152115493
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2174,11 +2174,11 @@ RectTransform:
   m_Father: {fileID: 1761012311}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -628, y: 517}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 551, y: -43}
   m_SizeDelta: {x: 200, y: 50}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1311866869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3059,14 +3059,6 @@ MonoBehaviour:
   _spriteMale: {fileID: 21300000, guid: b265929943132964ca6817ac4d98872a, type: 3}
   _spriteFemale: {fileID: 21300000, guid: 99c9a7333e5399a4b88f6458fb1b5dac, type: 3}
   _textCO2: {fileID: 80819749}
-  _imgCO2: {fileID: 0}
-  _spriteCO2s:
-  - {fileID: 21300000, guid: c29873555e55e674a9cd9812dbfd94c9, type: 3}
-  - {fileID: 21300000, guid: 0fed409ee4387644c8e7016dc3639a03, type: 3}
-  - {fileID: 21300000, guid: 864d65ff9398b8340be306a0801d8c0b, type: 3}
-  - {fileID: 21300000, guid: d0361078da1a52e47a19a2fb0e281446, type: 3}
-  - {fileID: 21300000, guid: 8c280f1ec36ad3b4f9a4027151e1e58b, type: 3}
-  - {fileID: 21300000, guid: 608060f9ab80ffb4f9eb1194cffa22ed, type: 3}
   _textGymCount: {fileID: 1949462221}
   _textGymTime: {fileID: 1005825483}
   _textGymMonthTime: {fileID: 1258314756}

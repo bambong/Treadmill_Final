@@ -69,13 +69,13 @@ public class TokenInputManager
     // ¿À¸¥ÂÊ ¹ÙÄû ÀÔ·Â ÅÒ
     public float RightTokenTerm { get => rightToken.TokenEventTerm; }
 
-    private float curSpeed;
-  
     public float CurSpeedMeterPerSec { get; private set; } // Æò±Õ ¹ÙÄû ½ºÇÇµå m/s  abs °ª
     public float CurRpm { get { return math.abs(prevLeftAsX) + math.abs(prevRightAsX) * 0.5f; } }
     public float CurLeftSpeedMPS { get; private set; }// ¿ÞÂÊ ¹ÙÄû ½ºÇÇµå m/s abs °ª
     public float CurRightSpeedMPS { get; private set; }//  ¿À¸¥ÂÊ ¹ÙÄû ½ºÇÇµå m/s abs °ª
-    public float Bpm { get => _save_bpm; }
+
+    public float Bpm { get => MathF.Abs(_save_bpm); }
+
     public bool IsConnect { get => _connect; } 
 
     private InputToken leftToken;
@@ -192,7 +192,7 @@ public class TokenInputManager
     private readonly string RIGHT_DEVICE_NAME = "WTwheelR";
 
     private readonly int BPM_INDEX = 11;
-    private readonly float MIN_CHECK_RPM = 0;
+    private readonly float MIN_CHECK_RPM = 900;
    
     private float GetSpeed( float v ) 
     {
