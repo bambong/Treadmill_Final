@@ -14,6 +14,7 @@ namespace ZB
 
         [SerializeField] ObjectsScrolling objectScroll;
         [SerializeField] BoostGuage boostGuage;
+        [SerializeField] PlayerHP hp;
         [SerializeField] Transform tf;
 
         [SerializeField] bool leftReceived;
@@ -57,6 +58,12 @@ namespace ZB
         [Header("이펙트")]
         [SerializeField] ParticleSystem par_slowAlarm;
         [SerializeField] float appearSpeed;
+
+        [Space]
+        [SerializeField] float minSpeedMinusHp;
+        [SerializeField] float time_minSpeedMinusHp;
+        WaitForSeconds wfs_minSpeedMinusHp;
+        bool minSpeedMinusHpCounting;
 
         [Space(30)]
         [Header("임시인풋값변경")]
@@ -124,6 +131,7 @@ namespace ZB
 
         void Start()
         {
+            wfs_minSpeedMinusHp = new WaitForSeconds(time_minSpeedMinusHp);
             resetPos = tf.position;
             TestInputField();
 
@@ -174,6 +182,22 @@ namespace ZB
                 else if (Managers.Token.CurSpeedMeterPerSec >= appearSpeed &&
                     par_slowAlarm.isPlaying)
                     par_slowAlarm.Stop();
+
+                //최소속도 못넘으면 체력감소 카운트 시작
+                if (Managers.Token.CurSpeedMeterPerSec < minSpeedMinusHp &&
+                    !minSpeedMinusHpCounting) 
+                {
+                    if (minSpeedMinusHpCycle_C != null)
+                        StopCoroutine(minSpeedMinusHpCycle_C);
+                    minSpeedMinusHpCycle_C = minSpeedMinusHpCycle();
+                    StartCoroutine(minSpeedMinusHpCycle_C);
+                }
+                else if (Managers.Token.CurSpeedMeterPerSec >= minSpeedMinusHp &&
+                    minSpeedMinusHpCounting)
+                {
+                    if (minSpeedMinusHpCycle_C != null)
+                        StopCoroutine(minSpeedMinusHpCycle_C);
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.R))
@@ -252,24 +276,31 @@ namespace ZB
 
         public void TestInputField()
         {
-            float result = 0;
-            if (float.TryParse(ver_minPower.text, out result))
-                minPower = result;
-            if (float.TryParse(ver_maxPower.text, out result))
-                maxPower = result;
-            if (float.TryParse(ver_Power.text, out result))
-                power = result;
+            //float result = 0;
+            //if (float.TryParse(ver_minPower.text, out result))
+            //    minPower = result;
+            //if (float.TryParse(ver_maxPower.text, out result))
+            //    maxPower = result;
+            //if (float.TryParse(ver_Power.text, out result))
+            //    power = result;
 
-            if (float.TryParse(hor_minInterval.text, out result))
-                minInterval = result;
-            if (float.TryParse(hor_moveMultiple.text, out result))
-                moveMultiple = result;
-            if (float.TryParse(hor_intervalMultiple.text, out result))
-                intervalMultiple = result;
-            if (float.TryParse(processTimeField.text, out result))
-                processTime = result;
+            //if (float.TryParse(hor_minInterval.text, out result))
+            //    minInterval = result;
+            //if (float.TryParse(hor_moveMultiple.text, out result))
+            //    moveMultiple = result;
+            //if (float.TryParse(hor_intervalMultiple.text, out result))
+            //    intervalMultiple = result;
+            //if (float.TryParse(processTimeField.text, out result))
+            //    processTime = result;
+        }
 
-
+        IEnumerator minSpeedMinusHpCycle_C;
+        IEnumerator minSpeedMinusHpCycle()
+        {
+            minSpeedMinusHpCounting = true;
+            yield return wfs_minSpeedMinusHp;
+            hp.MinusHP(1);
+            minSpeedMinusHpCounting = false;
         }
     }
 }
