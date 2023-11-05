@@ -103,6 +103,12 @@ namespace ZB
         public void CheckActive(bool active)
         {
             checking = active;
+            if (!active)
+            {
+                if (minSpeedMinusHpCycle_C != null)
+                    StopCoroutine(minSpeedMinusHpCycle_C);
+                minSpeedMinusHpCounting = false;
+            }
         }
         public void EnableWheelEffect(bool acitve) 
         {

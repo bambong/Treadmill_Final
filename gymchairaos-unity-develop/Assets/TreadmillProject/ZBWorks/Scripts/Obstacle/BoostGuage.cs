@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
 
 namespace ZB
 {
@@ -26,6 +27,8 @@ namespace ZB
         [SerializeField] private float decreaseTime;
         [SerializeField] private float guageIncreaseByTime;
         [SerializeField] private float guageIncreaseBySpeed;
+        [SerializeField] private TMP_InputField input_increaseBySpeed;
+        [SerializeField] private TMP_InputField input_increaseByTime;
         [Space]
         [SerializeField] private State nowState;
         private float maxGuage;
@@ -131,6 +134,19 @@ namespace ZB
                 //속도변화
                 objectsScrolling.ScrollSpeedChangeLinear(playerInput.FocusPower, boostDuration);
             });
+        }
+
+        public void InputFieldUpdate()
+        {
+            float result;
+            if (float.TryParse(input_increaseByTime.text, out result))
+            {
+                guageIncreaseByTime = result;
+            }
+            if (float.TryParse(input_increaseBySpeed.text, out result))
+            {
+                guageIncreaseBySpeed = result;
+            }
         }
     }
 }
