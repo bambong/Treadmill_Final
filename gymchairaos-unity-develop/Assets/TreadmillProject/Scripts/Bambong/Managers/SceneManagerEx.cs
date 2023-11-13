@@ -68,7 +68,11 @@ public class SceneManagerEx
     {
         Transition.SceneTransition(scene.ToString(), success);
     }
- 
+    public void LoadScene(string name, Action success = null)
+    {
+        Transition.SceneTransition(name, success);
+    }
+
 
     public void LoadSceneAsync(E_SceneName scene , Action success = null)
     {

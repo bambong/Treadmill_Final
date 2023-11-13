@@ -30,6 +30,9 @@ EditorBuildSettings:
     path: Assets/Gymchair/Scenes/TestResult.unity
     guid: 78aa9ff72151e4515abc5224292272cb
   - enabled: 1
+    path: Assets/TreadmillProject/Scenes/Bambong/DebugMeter.unity
+    guid: f04542f9337d3704d9f36e6e52832ee9
+  - enabled: 1
     path: Assets/Gymchair/Scenes/Modify.unity
     guid: 586274364d67145dcbbc18de02866c96
   - enabled: 1
