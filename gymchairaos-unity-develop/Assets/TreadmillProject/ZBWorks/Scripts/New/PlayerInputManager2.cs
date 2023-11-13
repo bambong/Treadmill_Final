@@ -10,7 +10,7 @@ namespace ZB
 {
     public class PlayerInputManager2 : MonoBehaviour
     {
-        public float FocusPower { get => Mathf.Clamp(Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower); }
+        public float FocusPower { get => Mathf.Clamp((float)Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower); }
 
         [SerializeField] ObjectsScrolling objectScroll;
         [SerializeField] BoostGuage boostGuage;

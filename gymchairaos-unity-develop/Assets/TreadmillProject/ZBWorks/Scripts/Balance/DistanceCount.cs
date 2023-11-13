@@ -10,8 +10,8 @@ namespace ZB.Balance
         [SerializeField] WheelChairGuage m_wheelChairGuage;
         [SerializeField] TextMeshProUGUI m_tmp_distanceShow;
 
-        public float m_NowDistance { get => m_nowDistance; }
-        [SerializeField] private float m_nowDistance;
+        public double m_NowDistance { get => m_nowDistance; }
+        [SerializeField] private double m_nowDistance;
 
         [ContextMenu("Start")]
         public void CountStart()

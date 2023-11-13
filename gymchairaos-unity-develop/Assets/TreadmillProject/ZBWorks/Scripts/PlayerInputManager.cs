@@ -52,7 +52,7 @@ namespace ZB
             //회전속도에 따른 스크롤속도 조정
 
             Debug.Log("token Is On");
-            scroll.ScrollSpeedChange(Managers.Token.CurSpeedMeterPerSec);
+            scroll.ScrollSpeedChange((float)Managers.Token.CurSpeedMeterPerSec);
         
         }
 

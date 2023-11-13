@@ -14,9 +14,12 @@ public class DataReceiver : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI text;
     [SerializeField]
-    private TextMeshProUGUI factor;
+    private TMP_InputField factor_1;
+    [SerializeField]
+    private TMP_InputField factor_2;
 
-    private float factorValue = 0.5f;  // 민감도 테스트를 위한 기준 값
+    private float factorValue_1 = 300f;  // 민감도 테스트를 위한 기준 값
+    private float factorValue_2 = 0; 
     private string lastMsg = "";
 
     private UdpClient udpClient;
@@ -29,7 +32,8 @@ public class DataReceiver : MonoBehaviour
     private bool isConect;
     public string LastMsg { get => lastMsg; }
     public bool IsConect { get => isConect;  }
-    public float FactorValue { get => factorValue;  }
+    public float FactorValue_1 { get => factorValue_1;  }
+    public float FactorValue_2 { get => factorValue_2;  }
 
 
     private void Start()
@@ -50,6 +54,25 @@ public class DataReceiver : MonoBehaviour
             StartReceivingData();
         }
 #endif
+    }
+    public void OnValueChange_1() 
+    {
+        float num = 0;
+        if(!float.TryParse(factor_1.text,out num)) 
+        {
+            return;
+        }
+        factorValue_1 = num;
+    }
+
+    public void OnValueChange_2()
+    {
+        float num = 0;
+        if (!float.TryParse(factor_2.text, out num))
+        {
+            return;
+        }
+        factorValue_2 = num;
     }
     public void SendDataToServer(string message)
     {
@@ -75,9 +98,6 @@ public class DataReceiver : MonoBehaviour
                 byte[] receivedBytes = receivedResult.Buffer; // 수신한 데이터를 바이트 배열로 추출
                 string receivedMessage = System.Text.Encoding.UTF8.GetString(receivedBytes);
 
-
-                // 수신한 데이터 처리 로직을 여기에 작성
-                Debug.Log("Received data from server: " + receivedMessage);
                 // 수신한 데이터를 원하는 방식으로 처리
                 OnReceive(receivedMessage);
 
@@ -92,7 +112,7 @@ public class DataReceiver : MonoBehaviour
 
     public void AddValue(float value) 
     {
-        factorValue += value; 
+        factorValue_1 = (FactorValue_1*1000 + value*1000)/1000; 
         UpdateValue();
     }
     private void Update()
@@ -105,7 +125,7 @@ public class DataReceiver : MonoBehaviour
     }
     private void UpdateValue() 
     {
-        factor.text = $"기준 : {factorValue}";  
+        factor_1.text = factorValue_1.ToString();  
     }
     public void ClearMsg() => lastMsg = string.Empty;
 
@@ -116,8 +136,11 @@ public class DataReceiver : MonoBehaviour
             isConect = true;
         }
 
-        text.text = $"받은 메세지 : {msg}";
         Managers.Token.OnReceivedMessage(msg);
+    }
+    public void SetText(string msg)
+    {
+        text.text = msg;
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {

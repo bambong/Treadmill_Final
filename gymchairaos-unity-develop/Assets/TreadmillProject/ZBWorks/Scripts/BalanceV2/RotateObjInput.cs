@@ -65,10 +65,10 @@ namespace ZB.Balance2
         {
             if (active)
             {
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR  
                 var left = Managers.Token.Save_left_speed;
                 var right = Managers.Token.Save_right_speed;
-                
+
                 if(left < -1990 || right < -1990)
                 {
                     return;
@@ -81,14 +81,14 @@ namespace ZB.Balance2
                     {
                         if (roll > -maxPow)
                         {
-                            roll = -Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
+                            roll = -Mathf.Abs((float)Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
                     }
                     else 
                     {
                         if (roll < maxPow)
                         {
-                            roll = Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
+                            roll = Mathf.Abs((float)Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
                     }
                 }
@@ -105,14 +105,14 @@ namespace ZB.Balance2
                     {
                         if (pitch < maxPow)
                         {
-                            pitch = Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
+                            pitch = Mathf.Abs((float)Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
                     }
                     else
                     {
                         if (pitch > -maxPow)
                         {
-                            pitch = -Mathf.Abs(Managers.Token.CurSpeedMeterPerSec) * pow;
+                            pitch = -Mathf.Abs((float)Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
 
                     }

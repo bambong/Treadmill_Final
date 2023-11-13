@@ -2,7 +2,7 @@
 using Gymchair.Contents.Popup;
 using System;
 using System.Collections;
-using System.Runtime.Remoting.Contexts;
+using System.Text;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -62,17 +62,17 @@ public class TokenInputManager
     private readonly KeyCode FOR_PC_LEFT_KEY = KeyCode.A;
     private readonly KeyCode FOR_PC_RIGHT_KEY = KeyCode.D;
     private readonly int INPUT_NEED_COUNT = 1;
-    private const float METER_FACTOR = 0.4396f; // 2f * PI * 0.07f(반지름)
+    private float METER_FACTOR = 1.884f; // PI * 7f(지름) * 0.01(METER)
 
     // 왼쪽 바퀴 입력 텀    
     public float LeftTokenTerm { get => leftToken.TokenEventTerm; }
     // 오른쪽 바퀴 입력 텀
     public float RightTokenTerm { get => rightToken.TokenEventTerm; }
 
-    public float CurSpeedMeterPerSec { get; private set; } // 평균 바퀴 스피드 m/s  abs 값
+    public double CurSpeedMeterPerSec { get; private set; } // 평균 바퀴 스피드 m/s  abs 값
     public float CurRpm { get { return math.abs(prevLeftAsX) + math.abs(prevRightAsX) * 0.5f; } }
-    public float CurLeftSpeedMPS { get; private set; }// 왼쪽 바퀴 스피드 m/s abs 값
-    public float CurRightSpeedMPS { get; private set; }//  오른쪽 바퀴 스피드 m/s abs 값
+    public double CurLeftSpeedMPS { get; private set; }// 왼쪽 바퀴 스피드 m/s abs 값
+    public double CurRightSpeedMPS { get; private set; }//  오른쪽 바퀴 스피드 m/s abs 값
 
     public float Bpm { get => MathF.Abs(_save_bpm); }
 
@@ -86,18 +86,24 @@ public class TokenInputManager
     // 각속도 저장 변수
     private float prevLeftAsX = 0.0f;
     private float prevRightAsX = 0.0f;
-    // 이전 각도 저장 변수
-    private float prevLeftDegX = 0.0f;
-    private float prevRightDegX = 0.0f;
-    // 각도 변화량 저장 변수
-    private float LeftDiffDegX = 0.0f;
-    private float RightDiffDegX = 0.0f;
+    
+    // 이전 Meter 저장 변수
+    private double prevMeterL = 0.0;
+    private double prevMeterR = 0.0;
 
+    //  움직인 미터
+    private double moveMeterR = 0;
+    private double moveMeterL = 0;
+
+    // 보정 계산 미터
+    private double curMoveMeter;
+    private double curcalc = 0;
     private GymchairConnectPopupController _popup;
     private bool _connect = false;
-
+    private bool _meterWheel = false;
     private DataReceiver dataReceiver;
-    public float FactorValue { get => dataReceiver.FactorValue; }
+    public float FactorValue_1 { get => dataReceiver.FactorValue_1; }
+    public float FactorValue_2 { get => dataReceiver.FactorValue_2; }
     public Action ReceivedEvent { get; set; }
 
 
@@ -109,9 +115,14 @@ public class TokenInputManager
   
     public float Save_left_speed { get => prevLeftAsX; set => prevLeftAsX = value;  }
     public float Save_right_speed { get => prevRightAsX; set => prevRightAsX = value; }
+   
     public InputToken LeftToken { get => leftToken; }
     public InputToken RightToken { get => rightToken; }
-
+    
+    public double MoveMeterL { get => moveMeterL;}
+    public double MoveMeterR { get => moveMeterR;}
+    public double CurrentMoveMeter { get => curMoveMeter; }
+    public double Calc { get => curcalc; }
     public void Init()
     {
        
@@ -186,7 +197,8 @@ public class TokenInputManager
     private readonly int FIRST_DEVICE_INDEX = 0;
     private readonly int SECOND_DEVICE_INDEX = 5;
     private readonly int AS_X_INDEX = 1;
-    private readonly int DEG_X_INDEX = 3;
+    private readonly int METER_INDEX = 2;
+    private readonly int SPEED_INDEX = 3;
 
     private readonly string LEFT_DEVICE_NAME = "WTwheelL";
     private readonly string RIGHT_DEVICE_NAME = "WTwheelR";
@@ -194,40 +206,88 @@ public class TokenInputManager
     private readonly int BPM_INDEX = 11;
     private readonly float MIN_CHECK_RPM = 900;
    
-    private float GetSpeed( float v ) 
+
+    public double GetCalorie(float curMeter , float time)  // 달린 거리  , 달린 시간(second)
     {
-        return v * -1;
-        
-        // 각속도 -> 속도 계산법 (V = (2π X 반지름 X 각속도) / 360
+        double ml = 5.189f + (2.768f * (curMeter * 0.001f));
+        return ((ml * Managers.Data.UserData.weight * (time / 60.0f)) * 0.001f) * 5.0f;
     }
+
+
     private void MessageParse(string[] splitMessage ,int leftIndex , int rightIndex ) 
     {
+        double curMeterL = Double.Parse(splitMessage[leftIndex + METER_INDEX]);
+        double curMeterR = Double.Parse(splitMessage[rightIndex + METER_INDEX]);
+
+        
+        moveMeterL = curMeterL - prevMeterL;
+        moveMeterR = curMeterR - prevMeterR;
+       
+        curMoveMeter = (moveMeterL + moveMeterR) *0.5f;
+       
+        prevMeterL = curMeterL;
+        prevMeterR = curMeterR;
 
         // 왼쪽 바퀴 데이터 매핑
-        prevLeftAsX = GetSpeed(float.Parse(splitMessage[leftIndex + AS_X_INDEX]));
-        var leftDegTemp = GetSpeed(float.Parse(splitMessage[leftIndex + DEG_X_INDEX]));
-        leftDegTemp = math.abs(leftDegTemp);
-        LeftDiffDegX = math.abs(prevLeftDegX - leftDegTemp);
-        prevLeftDegX = leftDegTemp;
-        CurLeftSpeedMPS = LeftDiffDegX / 360.0f * METER_FACTOR;
+        var leftAsX = float.Parse(splitMessage[leftIndex + AS_X_INDEX]);
+        if (math.abs(leftAsX) < 5) 
+        {
+            prevLeftAsX = 0;
+        }
+        else  
+        {
+            prevLeftAsX = leftAsX;
+        }
+       
+
+        CurLeftSpeedMPS = float.Parse(splitMessage[leftIndex + SPEED_INDEX]); // 직접 m/s 이용 방식
+        if (math.abs(CurLeftSpeedMPS) < 0.1)
+        {
+            CurLeftSpeedMPS = 0;
+        }
+
 
         // 오른쪽 바퀴 데이터 매핑
-        prevRightAsX = GetSpeed(float.Parse(splitMessage[rightIndex + AS_X_INDEX]));
-        var rightDegTemp = GetSpeed(float.Parse(splitMessage[rightIndex + DEG_X_INDEX]));
-        rightDegTemp = math.abs(rightDegTemp);
-        RightDiffDegX = math.abs(prevRightDegX - rightDegTemp);
-        prevRightDegX = rightDegTemp;
-        CurRightSpeedMPS = RightDiffDegX / 360.0f * METER_FACTOR;
+        var rightAsX = float.Parse(splitMessage[rightIndex + AS_X_INDEX]);
 
-        CurSpeedMeterPerSec = (CurLeftSpeedMPS + CurRightSpeedMPS)*0.5f;
+        if (math.abs(rightAsX) < 5)
+        {
+            prevRightAsX = 0;
+        }
+        else
+        {
+            prevRightAsX = rightAsX;
+        }
+
+        CurRightSpeedMPS = float.Parse(splitMessage[rightIndex + SPEED_INDEX]);
+        if (math.abs(CurRightSpeedMPS) < 0.1)
+        {
+            CurRightSpeedMPS = 0;
+        }
+
+        CurSpeedMeterPerSec = (CurLeftSpeedMPS + CurRightSpeedMPS) * 0.5f;
+    }
+    public string ForDebugDataMEssage(string[] splitMessage)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.Append(splitMessage[FIRST_DEVICE_INDEX]);
+        stringBuilder.Append($" AsX : {splitMessage[FIRST_DEVICE_INDEX + AS_X_INDEX]}\t");
+        stringBuilder.Append($" total m : {splitMessage[FIRST_DEVICE_INDEX + METER_INDEX]}\t");
+        stringBuilder.Append($" calc: {splitMessage[FIRST_DEVICE_INDEX + SPEED_INDEX]}\t");
+        stringBuilder.Append(splitMessage[SECOND_DEVICE_INDEX]);
+        stringBuilder.Append($" AsX : {splitMessage[SECOND_DEVICE_INDEX + AS_X_INDEX]}\t");
+        stringBuilder.Append($" total m : {splitMessage[SECOND_DEVICE_INDEX + METER_INDEX]}\t");
+        stringBuilder.Append($" calc : {splitMessage[SECOND_DEVICE_INDEX + SPEED_INDEX]}\t");
+        return stringBuilder.ToString();
     }
     public void OnReceivedMessage(string message)
     {
             int count = message.Length;
             var splitMessage = message.Split(',');
-            Debug.Log($" 메세지 받음 : {message}");
+            //Debug.Log($" 메세지 받음 : {message}");
 
-
+            
+        //dataReceiver.
             if (splitMessage[FIRST_DEVICE_INDEX] == LEFT_DEVICE_NAME)
             {
                 MessageParse(splitMessage, FIRST_DEVICE_INDEX, SECOND_DEVICE_INDEX);
@@ -252,7 +312,8 @@ public class TokenInputManager
             {
                 rightToken.CallEvent?.Invoke();
             }
-          
+            // 디버그 용 텍스트   
+            dataReceiver.SetText(ForDebugDataMEssage(splitMessage));
             dataReceiver.ClearMsg();
     }
     IEnumerator connectServer()
