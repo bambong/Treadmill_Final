@@ -4156,6 +4156,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6836015277297858226}
   - component: {fileID: 6836015277297858224}
+  - component: {fileID: 8626528684055972640}
   m_Layer: 5
   m_Name: ResultPage
   m_TagString: Untagged
@@ -4199,6 +4200,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6836015277297858227}
   m_CullTransparentMesh: 1
+--- !u!225 &8626528684055972640
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836015277297858227}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6836015277424800118
 GameObject:
   m_ObjectHideFlags: 0
@@ -4629,6 +4642,7 @@ GameObject:
   - component: {fileID: 6836015277825571617}
   - component: {fileID: 6836015277825571631}
   - component: {fileID: 6836015277825571616}
+  - component: {fileID: 4251429758229187812}
   m_Layer: 5
   m_Name: PausePage
   m_TagString: Untagged
@@ -4700,6 +4714,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &4251429758229187812
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6836015277825571618}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6836015277852261687
 GameObject:
   m_ObjectHideFlags: 0
@@ -6005,8 +6031,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04fac039e49d69d4c81d707c72db18ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ui_Result: {fileID: 6836015277297858226}
-  ui_Pause: {fileID: 6836015277825571617}
+  group_result: {fileID: 8626528684055972640}
+  group_pause: {fileID: 4251429758229187812}
   tmp_stage: {fileID: 7819301751046748805}
   tmp_time: {fileID: 2047758452176996095}
   tmp_bpm: {fileID: 6288669526285039295}

@@ -17544,7 +17544,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1048865010}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -18241,6 +18241,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1088206644}
   - component: {fileID: 1088206646}
+  - component: {fileID: 1088206647}
   m_Layer: 5
   m_Name: ResultPage
   m_TagString: Untagged
@@ -18284,6 +18285,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1088206643}
   m_CullTransparentMesh: 1
+--- !u!225 &1088206647
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1088206643}
+  m_Enabled: 1
+  m_Alpha: 0.94
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1090021685
 GameObject:
   m_ObjectHideFlags: 0
@@ -19163,7 +19176,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 1180063216}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -22232,6 +22245,7 @@ GameObject:
   - component: {fileID: 1513411131}
   - component: {fileID: 1513411133}
   - component: {fileID: 1513411132}
+  - component: {fileID: 1513411134}
   m_Layer: 5
   m_Name: PausePage
   m_TagString: Untagged
@@ -22303,6 +22317,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1513411130}
   m_CullTransparentMesh: 1
+--- !u!225 &1513411134
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513411130}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &1521194314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23481,9 +23507,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  body: {fileID: 1088206644}
+  group: {fileID: 1088206647}
   uiShadow: {fileID: 1603613321}
-  duration: 0.5
+  duration: 1
   active: 0
 --- !u!114 &1603613321
 MonoBehaviour:
@@ -23515,6 +23541,7 @@ MonoBehaviour:
   interactBlock: {fileID: 1084499820}
   uiShadow: {fileID: 1603613321}
   body: {fileID: 1513411131}
+  group: {fileID: 1513411134}
   duration: 0.5
   pauseBlockImg: {fileID: 621668184}
   pauseBlockActive: 0

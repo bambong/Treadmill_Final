@@ -21,7 +21,7 @@ public class ResultPageController : MonoBehaviour
 
     [SerializeField] UnityEvent uEvent_ReStart;
     [SerializeField] UnityEvent uEvent_GoMain;
-    [SerializeField] RectTransform body;
+    [SerializeField] CanvasGroup group;
     [SerializeField] UiShadow uiShadow;
     [SerializeField] float duration;
 
@@ -32,9 +32,8 @@ public class ResultPageController : MonoBehaviour
 
     private void Awake()
     {
-        originalSize = body.transform.localScale;
         Unactive_WFS = new WaitForSeconds(duration);
-        body.gameObject.SetActive(false);
+        group.gameObject.SetActive(false);
     }
 
     public void SetTextInfo(string dist, string time, string bpm, string calorie)
@@ -58,9 +57,10 @@ public class ResultPageController : MonoBehaviour
                 StopCoroutine(Unactive_C);
 
             uiShadow.Active(true);
-            body.gameObject.SetActive(true);
-            body.transform.localScale = Vector2.zero;
-            body.transform.DOScale(originalSize, duration).SetEase(Ease.OutQuart);
+            group.gameObject.SetActive(true);
+            group.DOKill();
+            group.alpha = 0;
+            group.DOFade(1, duration).SetUpdate(true);
 
         }
         //비활성화
@@ -75,7 +75,8 @@ public class ResultPageController : MonoBehaviour
             StartCoroutine(Unactive_C);
 
             uiShadow.Active(false);
-            body.transform.DOScale(Vector2.zero, duration).SetEase(Ease.InQuart);
+            group.DOKill();
+            group.DOFade(0, duration).SetUpdate(true);
         }
     }
 
@@ -93,7 +94,7 @@ public class ResultPageController : MonoBehaviour
     {
         pauseController.PauseBtnInteractBlockActive(false);
         yield return Unactive_WFS;
-        body.gameObject.SetActive(false);
+        group.gameObject.SetActive(false);
         uEvent_ReStart.Invoke();
     }
 }
