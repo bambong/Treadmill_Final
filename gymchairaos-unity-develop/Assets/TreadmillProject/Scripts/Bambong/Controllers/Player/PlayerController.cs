@@ -48,7 +48,10 @@ namespace bambong
             stateController = new PlayerStateController(this);
             animateController = new WheelChairAnimateController(playerAnimator);
             arrowStartY = arrowTrs.transform.localPosition.y;
-
+#if UNITY_EDITOR
+            Managers.Token.AddLeftTokenEvent(AddLeftToken);
+            Managers.Token.AddRightTokenEvent(AddRightToken);
+#endif
         }
         public void ArrowAnimStart()
         {
@@ -62,7 +65,6 @@ namespace bambong
 
         public void PlayerMoveUpdate()
         {
-
             var speed = GetCurSpeed() * Time.deltaTime;
             //var speed = Managers.Token.CurRpm * 0.02f * Time.deltaTime;
             var pos = transform.position;
@@ -71,8 +73,20 @@ namespace bambong
             animateController.SetMoveAnimSpeed(GameSceneManager.Instance.GetGaugeRatio());
             GameSceneManager.Instance.AddDistance();
         }
-        public float GetCurSpeed() => (GameSceneManager.Instance.CurGauage / SpeedRatio) * MoveSpeed;
+        //public float GetCurSpeed() => (GameSceneManager.Instance.CurGauage / SpeedRatio) * MoveSpeed;
+        public float GetCurSpeed()
+        {
+            float testInput = 1;
+            if (TokenStateShow.instance != null &&
+                TokenStateShow.instance.InputText != "") 
+            {
+                float.TryParse(TokenStateShow.instance.InputText, out testInput);
+            }
 
+            float result = ((float)Managers.Token.CurSpeedMeterPerSec) * MoveSpeed * testInput;
+            Debug.Log($"!! testInput {testInput} / result {result}");
+            return result;
+        }
 
         public void PlayerInputCheckForStop()
         {
@@ -90,7 +104,7 @@ namespace bambong
             animateController.PlayAnimateMove(trigger);
         }
      
-        #region SetState
+#region SetState
         
         public void SetStateNone() 
         {
@@ -100,8 +114,15 @@ namespace bambong
         {
             stateController.ChangeState(PlayerIdle.Instance);
         }
-        #endregion SetState
+#endregion SetState
 
-
+        private void AddLeftToken()
+        {
+            Managers.Token.Save_left_speed += 50;
+        }
+        private void AddRightToken()
+        {
+            Managers.Token.Save_right_speed += 50;
+        }
     }
 }

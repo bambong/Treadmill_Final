@@ -94,11 +94,11 @@ namespace ZB
         }
         public void AddLeftToken()
         {
-            Managers.Token.Save_left_speed += 50;
+            Managers.Token.Save_left_speed += 500;
         }
         public void AddRightToken()
         {
-            Managers.Token.Save_right_speed += 50;
+            Managers.Token.Save_right_speed += 500;
         }
         public void CheckActive(bool active)
         {
@@ -176,8 +176,10 @@ namespace ZB
             }
 
             //현재 속도에 따른 스크롤 속도 조정
-            if (!(boostGuage.NowState == BoostGuage.State.Boost || boostGuage.NowState == BoostGuage.State.BoostBreak)) 
+            if (!(boostGuage.NowState == BoostGuage.State.Boost || boostGuage.NowState == BoostGuage.State.BoostBreak))
+            {
                 objectScroll.ScrollSpeedChange(FocusPower);
+            }
 
             if (checking)
             {
@@ -226,13 +228,6 @@ namespace ZB
 
                 leftRpm = token.Save_left_speed;
                 rightRpm = token.Save_right_speed;
-               // float speed = (Managers.Token.Save_left_speed + Managers.Token.Save_right_speed)*0.1f;
-
-                //if ((leftRpm >= 0 && rightRpm >= 0) || (leftRpm < 0 && rightRpm < 0))
-                //{
-                //    move = 0;
-                //    return;
-                //}
 
                 if (intervalAbs < minInterval)
                 {
@@ -243,30 +238,6 @@ namespace ZB
 
                 move = (rightRpm - leftRpm) * moveMultiple;
                 move = Mathf.Clamp(move, -maxMove, maxMove);
-
-
-                ////이동
-                //if (tf.position.x <= outPos_left && move < 0)
-                //{
-                //    tf.position = new Vector3(outPos_left, tf.position.y, tf.position.z);
-                //}
-                //else if (tf.position.x >= outPos_right && move > 0)
-                //{
-                //    tf.position = new Vector3(outPos_right, tf.position.y, tf.position.z);
-                //}
-                //else
-                //{
-                //    tf.position += new Vector3(move * Time.deltaTime, 0, 0);
-                //}
-
-
-                ////이동 정도에 따른 차체 회전
-                //if (currentRotTarget != move * rotMultiple)
-                //{
-                //    currentRotTarget = move * rotMultiple;
-                //    tf.DOKill();
-                //    tf.DORotate(new Vector3(tf.eulerAngles.x, move * rotMultiple, tf.eulerAngles.z), 0.5f);
-                //}
             }
         }
 

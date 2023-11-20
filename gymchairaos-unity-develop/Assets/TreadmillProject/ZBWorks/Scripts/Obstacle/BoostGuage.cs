@@ -74,7 +74,7 @@ namespace ZB
                 if (nowState == State.Charging)
                 {
                     nowGuage += Time.deltaTime * guageIncreaseByTime;
-                    nowGuage += Managers.Token.CurSpeedMeterPerSec * guageIncreaseBySpeed;
+                    //nowGuage += Managers.Token.CurSpeedMeterPerSec * guageIncreaseBySpeed;
                     uiGuage.ChangeRatio(nowGuage / maxGuage);
                 }
 

@@ -8171,15 +8171,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1895197936001946533, guid: 8d634541444d2b1448fa40b3422d8d86, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1895197936001946533, guid: 8d634541444d2b1448fa40b3422d8d86, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1895197936001946533, guid: 8d634541444d2b1448fa40b3422d8d86, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 1895197936001946533, guid: 8d634541444d2b1448fa40b3422d8d86, type: 3}
       propertyPath: m_ConstrainProportionsScale
