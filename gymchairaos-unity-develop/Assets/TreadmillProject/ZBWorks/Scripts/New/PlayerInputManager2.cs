@@ -10,10 +10,12 @@ namespace ZB
 {
     public class PlayerInputManager2 : MonoBehaviour
     {
-        public float FocusPower { get => Mathf.Clamp((float)Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower); }
+        //public float FocusPower { get => Mathf.Clamp((float)Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower); }
+        public float FocusPower { get; private set; }
 
         [SerializeField] ObjectsScrolling objectScroll;
         [SerializeField] BoostGuage boostGuage;
+        [SerializeField] PlayerHP hp;
         [SerializeField] Transform tf;
 
         [SerializeField] bool leftReceived;
@@ -58,6 +60,12 @@ namespace ZB
         [SerializeField] ParticleSystem par_slowAlarm;
         [SerializeField] float appearSpeed;
 
+        [Space]
+        [SerializeField] float minSpeedMinusHp;
+        [SerializeField] float time_minSpeedMinusHp;
+        WaitForSeconds wfs_minSpeedMinusHp;
+        bool minSpeedMinusHpCounting;
+
         [Space(30)]
         [Header("임시인풋값변경")]
         [SerializeField] TMP_InputField ver_minPower;
@@ -87,15 +95,21 @@ namespace ZB
         }
         public void AddLeftToken()
         {
-            Managers.Token.Save_left_speed += 50;
+            Managers.Token.Save_left_speed += 500;
         }
         public void AddRightToken()
         {
-            Managers.Token.Save_right_speed += 50;
+            Managers.Token.Save_right_speed += 500;
         }
         public void CheckActive(bool active)
         {
             checking = active;
+            if (!active)
+            {
+                if (minSpeedMinusHpCycle_C != null)
+                    StopCoroutine(minSpeedMinusHpCycle_C);
+                minSpeedMinusHpCounting = false;
+            }
         }
         public void EnableWheelEffect(bool acitve) 
         {
@@ -124,20 +138,28 @@ namespace ZB
 
         void Start()
         {
+            wfs_minSpeedMinusHp = new WaitForSeconds(time_minSpeedMinusHp);
             resetPos = tf.position;
             TestInputField();
 
-#if UNITY_EDITOR
-            Managers.Token.AddLeftTokenEvent(AddLeftToken);
-            Managers.Token.AddRightTokenEvent(AddRightToken);
-            StartCoroutine(DecreaseToken());
-#endif
+//#if UNITY_EDITOR
+//            Managers.Token.AddLeftTokenEvent(AddLeftToken);
+//            Managers.Token.AddRightTokenEvent(AddRightToken);
+//            StartCoroutine(DecreaseToken());
+//#endif
             Managers.Token.ReceivedEvent += SideMove;
         }
         private void Update()
         {
 #if UNITY_EDITOR
-            SideMove();
+            if (Input.GetKeyDown(KeyCode.A)) leftRpm += 250;
+            if (Input.GetKeyDown(KeyCode.D)) rightRpm += 250;
+            if (Input.GetKeyDown(KeyCode.S)) FocusPower += 1;
+            if (Input.GetKeyDown(KeyCode.R)) { token.Save_left_speed = 0; token.Save_right_speed = 0; FocusPower = 0; }
+            move = (rightRpm - leftRpm) * moveMultiple;
+#endif
+#if !UNITY_EDITOR
+            FocusPower = Mathf.Clamp((float)Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower);
 #endif
             //이동
             if (tf.position.x <= outPos_left && move < 0)
@@ -162,8 +184,10 @@ namespace ZB
             }
 
             //현재 속도에 따른 스크롤 속도 조정
-            if (!(boostGuage.NowState == BoostGuage.State.Boost || boostGuage.NowState == BoostGuage.State.BoostBreak)) 
+            if (!(boostGuage.NowState == BoostGuage.State.Boost || boostGuage.NowState == BoostGuage.State.BoostBreak))
+            {
                 objectScroll.ScrollSpeedChange(FocusPower);
+            }
 
             if (checking)
             {
@@ -174,10 +198,23 @@ namespace ZB
                 else if (Managers.Token.CurSpeedMeterPerSec >= appearSpeed &&
                     par_slowAlarm.isPlaying)
                     par_slowAlarm.Stop();
-            }
 
-            if (Input.GetKeyDown(KeyCode.R))
-            { token.Save_left_speed = 0; token.Save_right_speed = 0; }
+                //최소속도 못넘으면 체력감소 카운트 시작
+                if (FocusPower < minSpeedMinusHp &&
+                    !minSpeedMinusHpCounting) 
+                {
+                    if (minSpeedMinusHpCycle_C != null)
+                        StopCoroutine(minSpeedMinusHpCycle_C);
+                    minSpeedMinusHpCycle_C = minSpeedMinusHpCycle();
+                    StartCoroutine(minSpeedMinusHpCycle_C);
+                }
+                else if (FocusPower >= minSpeedMinusHp &&
+                    minSpeedMinusHpCounting)
+                {
+                    if (minSpeedMinusHpCycle_C != null)
+                        StopCoroutine(minSpeedMinusHpCycle_C);
+                }
+            }
         }
 
         void SideMove()
@@ -196,13 +233,6 @@ namespace ZB
 
                 leftRpm = token.Save_left_speed;
                 rightRpm = token.Save_right_speed;
-               // float speed = (Managers.Token.Save_left_speed + Managers.Token.Save_right_speed)*0.1f;
-
-                //if ((leftRpm >= 0 && rightRpm >= 0) || (leftRpm < 0 && rightRpm < 0))
-                //{
-                //    move = 0;
-                //    return;
-                //}
 
                 if (intervalAbs < minInterval)
                 {
@@ -213,30 +243,6 @@ namespace ZB
 
                 move = (rightRpm - leftRpm) * moveMultiple;
                 move = Mathf.Clamp(move, -maxMove, maxMove);
-
-
-                ////이동
-                //if (tf.position.x <= outPos_left && move < 0)
-                //{
-                //    tf.position = new Vector3(outPos_left, tf.position.y, tf.position.z);
-                //}
-                //else if (tf.position.x >= outPos_right && move > 0)
-                //{
-                //    tf.position = new Vector3(outPos_right, tf.position.y, tf.position.z);
-                //}
-                //else
-                //{
-                //    tf.position += new Vector3(move * Time.deltaTime, 0, 0);
-                //}
-
-
-                ////이동 정도에 따른 차체 회전
-                //if (currentRotTarget != move * rotMultiple)
-                //{
-                //    currentRotTarget = move * rotMultiple;
-                //    tf.DOKill();
-                //    tf.DORotate(new Vector3(tf.eulerAngles.x, move * rotMultiple, tf.eulerAngles.z), 0.5f);
-                //}
             }
         }
 
@@ -252,24 +258,31 @@ namespace ZB
 
         public void TestInputField()
         {
-            float result = 0;
-            if (float.TryParse(ver_minPower.text, out result))
-                minPower = result;
-            if (float.TryParse(ver_maxPower.text, out result))
-                maxPower = result;
-            if (float.TryParse(ver_Power.text, out result))
-                power = result;
+            //float result = 0;
+            //if (float.TryParse(ver_minPower.text, out result))
+            //    minPower = result;
+            //if (float.TryParse(ver_maxPower.text, out result))
+            //    maxPower = result;
+            //if (float.TryParse(ver_Power.text, out result))
+            //    power = result;
 
-            if (float.TryParse(hor_minInterval.text, out result))
-                minInterval = result;
-            if (float.TryParse(hor_moveMultiple.text, out result))
-                moveMultiple = result;
-            if (float.TryParse(hor_intervalMultiple.text, out result))
-                intervalMultiple = result;
-            if (float.TryParse(processTimeField.text, out result))
-                processTime = result;
+            //if (float.TryParse(hor_minInterval.text, out result))
+            //    minInterval = result;
+            //if (float.TryParse(hor_moveMultiple.text, out result))
+            //    moveMultiple = result;
+            //if (float.TryParse(hor_intervalMultiple.text, out result))
+            //    intervalMultiple = result;
+            //if (float.TryParse(processTimeField.text, out result))
+            //    processTime = result;
+        }
 
-
+        IEnumerator minSpeedMinusHpCycle_C;
+        IEnumerator minSpeedMinusHpCycle()
+        {
+            minSpeedMinusHpCounting = true;
+            yield return wfs_minSpeedMinusHp;
+            hp.MinusHP(1);
+            minSpeedMinusHpCounting = false;
         }
     }
 }

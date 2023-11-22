@@ -29,6 +29,10 @@ namespace ZB.Balance2
 
         [SerializeField] ParticleSystem par_ShowPos;
 
+        bool cleared;
+        
+        //게임 최초 실행
+        //다시하기 버튼 클릭
         public void GameStart()
         {
             StartCoroutine(StartCycle());
@@ -36,26 +40,41 @@ namespace ZB.Balance2
 
         public void GameClear()
         {
-            heartRate.AverageCheckStop();
-            uiControll.SetTextInfo(stage.ToString(), timeCounter.NowTime, ((int)heartRate.Average).ToString());
-            timeCounter.CountPause();
+            if (!cleared)
+            {
+                cleared = true;
+                heartRate.AverageCheckStop();
+                uiControll.SetTextInfo(stage.ToString(), timeCounter.NowTime, ((int)heartRate.Average).ToString());
+                timeCounter.CountPause();
 
-            //클리어판정
-            rankingDataHolder.rankingData.ranking_Balance.Add(RankingData.GetUserName(), RankingData.GetDate(), timeCounter.NowTime, stage);
-            rankingDataHolder.Write();
-            Managers.Sound.PlayEffect("sfx_controlSuccuess");
+                //클리어판정
+                rankingDataHolder.rankingData.ranking_Balance.Add(RankingData.GetUserName(), RankingData.GetDate(), timeCounter.NowTime, stage);
+                rankingDataHolder.Write();
+                Managers.Sound.PlayEffect("sfx_controlSuccuess");
 
-            StartCoroutine(delayNActiveResult());
+                StartCoroutine(delayNActiveResult());
+            }
         }
 
         public void GameOver()
         {
-            rotateObj.ResetState();
-            input.ResetState();
-            input.Active(false);
-            ballControl.Active(false);
-            timeCounter.CountPause();
-            Managers.Sound.PlayEffect("sfx_controlFail");
+            if (!cleared)
+            {
+                rotateObj.ResetState();
+                input.ResetState();
+                input.Active(false);
+                ballControl.Active(false);
+                timeCounter.CountPause();
+                Managers.Sound.PlayEffect("sfx_controlFail");
+            }
+        }
+
+        //다음스테이지 버튼 클릭
+        public void NextStage()
+        {
+            E_SceneName nextStage = E_SceneName.Balance_GameScene_TutorialAsk + stage + 1;
+            Time.timeScale = 1;
+            Managers.Scene.LoadScene(nextStage);
         }
 
         public void Pause(bool active)
@@ -116,10 +135,11 @@ namespace ZB.Balance2
             par_ShowPos.Stop();
         }
 
-        WaitForSeconds delayNActiveResult_WFS = new WaitForSeconds(0.75f);
+        WaitForSeconds delayNActiveResult_WFS = new WaitForSeconds(2);
         IEnumerator delayNActiveResult()
         {
             yield return delayNActiveResult_WFS;
+            Time.timeScale = 0;
             uiControll.PageActive_Result(true);
         }
     }

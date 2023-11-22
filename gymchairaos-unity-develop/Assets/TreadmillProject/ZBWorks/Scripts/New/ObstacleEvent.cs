@@ -7,6 +7,7 @@ namespace ZB
     public class ObstacleEvent : MonoBehaviour
     {
         [SerializeField] ObstacleSpawnController obstacle;
+        [SerializeField] ObjectsScrolling scroll;
         [SerializeField] TimeCounter timeCounter;
         [SerializeField] PlayerHP playerHP;
         [SerializeField] float term;
@@ -23,26 +24,21 @@ namespace ZB
         public void CheckActive(bool active)
         {
             eventChecking = active;
+            if (active)
+            {
+                scroll.ResetScrolledDist();
+                obstacle.SpawnRandomObstacleSet();
+            }
         }
 
         void Update()
         {
             if (eventChecking)
             {
-                if (timeCounter.NowTime > recentChecked + term)
+                if (scroll.ScrolledDist > recentChecked + term)
                 {
                     recentChecked += term;
-
-                    //장애물스폰
-                    //if (Random.Range(0, 2) == 1)
-                        //여기서 장애물 스폰코드작성
-                        obstacle.SpawnRandomObstacleSet();
-
-                    ////현재속도검사, 체력감소
-                    //if (Managers.Token.CurSpeed < checkSpeed)
-                    //{
-                    //    playerHP.MinusHP(1);
-                    //}
+                    obstacle.SpawnRandomObstacleSet();
                 }
             }
         }

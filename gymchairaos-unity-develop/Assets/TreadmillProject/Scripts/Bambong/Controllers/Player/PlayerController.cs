@@ -9,6 +9,8 @@ namespace bambong
 
     public class PlayerController : MonoBehaviour
     {
+        public float NowSpeed { get => nowSpeed; }
+
         #region SerializeField
         [SerializeField]
         private Animator playerAnimator;
@@ -18,6 +20,10 @@ namespace bambong
      
         [SerializeField]
         private float speedRatio = 1f;
+
+        [SerializeField]
+        private float nowSpeed;
+        private float speedForEditor;
 
         [SerializeField]
         private Transform arrowTrs;
@@ -43,12 +49,16 @@ namespace bambong
         private readonly float INPUT_ANIMATE_STOP_TIME = 2f;
         #endregion ReadOnly
 
+
         private void Awake()
         {
             stateController = new PlayerStateController(this);
             animateController = new WheelChairAnimateController(playerAnimator);
             arrowStartY = arrowTrs.transform.localPosition.y;
-
+#if UNITY_EDITOR
+            Managers.Token.AddLeftTokenEvent(AddLeftToken);
+            Managers.Token.AddRightTokenEvent(AddRightToken);
+#endif
         }
         public void ArrowAnimStart()
         {
@@ -58,11 +68,16 @@ namespace bambong
         void Update()
         {
             stateController.Update();
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                speedForEditor++;
+            }
+#endif
         }
 
         public void PlayerMoveUpdate()
         {
-
             var speed = GetCurSpeed() * Time.deltaTime;
             //var speed = Managers.Token.CurRpm * 0.02f * Time.deltaTime;
             var pos = transform.position;
@@ -71,8 +86,25 @@ namespace bambong
             animateController.SetMoveAnimSpeed(GameSceneManager.Instance.GetGaugeRatio());
             GameSceneManager.Instance.AddDistance();
         }
-        public float GetCurSpeed() => (GameSceneManager.Instance.CurGauage / SpeedRatio) * MoveSpeed;
+        //public float GetCurSpeed() => (GameSceneManager.Instance.CurGauage / SpeedRatio) * MoveSpeed;
+        public float GetCurSpeed()
+        {
+            float testInput = 10;
+            if (TokenStateShow.instance != null &&
+                TokenStateShow.instance.InputText != "") 
+            {
+                float.TryParse(TokenStateShow.instance.InputText, out testInput);
+            }
 
+            float result = ((float)Managers.Token.CurSpeedMeterPerSec) * MoveSpeed * testInput;
+
+            nowSpeed = result;
+#if UNITY_EDITOR
+            nowSpeed = speedForEditor;
+#endif
+
+            return nowSpeed;
+        }
 
         public void PlayerInputCheckForStop()
         {
@@ -90,7 +122,7 @@ namespace bambong
             animateController.PlayAnimateMove(trigger);
         }
      
-        #region SetState
+#region SetState
         
         public void SetStateNone() 
         {
@@ -100,8 +132,15 @@ namespace bambong
         {
             stateController.ChangeState(PlayerIdle.Instance);
         }
-        #endregion SetState
+#endregion SetState
 
-
+        private void AddLeftToken()
+        {
+            Managers.Token.Save_left_speed += 50;
+        }
+        private void AddRightToken()
+        {
+            Managers.Token.Save_right_speed += 50;
+        }
     }
 }

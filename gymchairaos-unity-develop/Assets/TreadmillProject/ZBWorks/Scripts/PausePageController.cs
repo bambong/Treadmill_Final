@@ -10,6 +10,7 @@ public class PausePageController : MonoBehaviour
     [SerializeField] GameObject interactBlock;
     [SerializeField] UiShadow uiShadow;
     [SerializeField] Transform body;
+    [SerializeField] CanvasGroup group;
     [SerializeField] float duration;
     WaitForSecondsRealtime Unactive_WFS;
 
@@ -27,10 +28,7 @@ public class PausePageController : MonoBehaviour
         uiShadow.Active(true);
         Time.timeScale = 0;
 
-        body.gameObject.SetActive(true);
-        body.transform.DOKill();
-        body.transform.localScale = Vector3.zero;
-        body.transform.DOScale(Vector3.one, duration).SetEase(Ease.OutQuart).SetUpdate(true);
+        group.gameObject.SetActive(true);
     }
     public void OnBtnClicked_Play()
     {
@@ -71,11 +69,13 @@ public class PausePageController : MonoBehaviour
     IEnumerator Unactive_C;
     IEnumerator UnactiveC()
     {
-        body.transform.DOKill();
-        body.transform.DOScale(Vector3.zero, duration).SetEase(Ease.InQuart).SetUpdate(true);
+        //group.DOKill();
+        //group.DOFade(0, duration).SetUpdate(true);
 
-        yield return Unactive_WFS;
-        body.gameObject.SetActive(false);
+        //yield return Unactive_WFS;
+        //body.gameObject.SetActive(false);
+        group.gameObject.SetActive(false);
+        yield return null;
         Time.timeScale = 1;
     }
 

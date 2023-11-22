@@ -17,6 +17,7 @@ namespace bambong
 
         public float TimeText { get => curTime; }
         public int DistText { get => (int)curDistance; }
+        public bool isClear { get; private set; }
 
         [Header("Player")]
         [SerializeField]
@@ -110,14 +111,14 @@ namespace bambong
             Init();
             //Managers.Token.ConnectToDevice();
 
-            Managers.Token.AddRightTokenEvent(IncreaseGauage);
-            Managers.Token.AddLeftTokenEvent(IncreaseGauage);
+            //Managers.Token.AddRightTokenEvent(IncreaseGauage);
+            //Managers.Token.AddLeftTokenEvent(IncreaseGauage);
 
 #if !UNITY_EDITOR || SOUND_TEST
             Managers.Sound.PlayBGM("bgm_Speed");
 #endif
         }
-
+        /*
         public void IncreaseGauage()
         {
             if(!gameStateController.IsStateGamePlaying())
@@ -131,17 +132,22 @@ namespace bambong
             Debug.Log($"게이지 상승 + {increaseGauageAmount * factor}");
             curGauage = Mathf.Clamp(curGauage +  increaseGauageAmount * factor, 0 , maximumGauage);
         }
-        public bool CheckSpeedGageOring() => curGauage <= 0;
+        */
+        public bool CheckSpeedGageOring()
+        {
+            return player.NowSpeed < 0.2f;
+        }
         private void Update()
         {
             GameStateController.Update();
         }
-
+        /*
         private void DecreaseGauage()
         {
             var decGauage = curGauage - decreaseGauageAmount * Time.deltaTime;
             curGauage = Mathf.Max(0,decGauage);
         }
+        */
         private void UpdateTime() 
         {
             curTime += Time.deltaTime;
@@ -199,7 +205,7 @@ namespace bambong
         {
             UISceneManager.Instance.UI_UpdateOnPlay();
             UpdateTime();
-            DecreaseGauage();
+            //DecreaseGauage();
 
         }
 #region SetState
@@ -227,6 +233,8 @@ namespace bambong
         //플레이어가 먼저 지나갔을 때 호출
         public void SetStateGameClear()
         {
+            isClear = true;
+
             OnGameClear?.Invoke();
             gameStateController.ChangeState(GameClear.Instance);
             //player.SetStateNone();
@@ -249,6 +257,8 @@ namespace bambong
         //AI가 먼저 지나갔을 때 호출
         public void SetStateGameOver()
         {
+            isClear = false;
+
             OnGameClear?.Invoke();
             gameStateController.ChangeState(GameOver.Instance);
             //player.SetStateNone();

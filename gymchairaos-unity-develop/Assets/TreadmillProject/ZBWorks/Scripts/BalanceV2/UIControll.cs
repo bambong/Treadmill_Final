@@ -9,8 +9,8 @@ using TMPro;
 
 public class UIControll : MonoBehaviour
 {
-    [SerializeField] Transform ui_Result;
-    [SerializeField] Transform ui_Pause;
+    [SerializeField] CanvasGroup group_result;
+    [SerializeField] CanvasGroup group_pause;
     [SerializeField] TextMeshProUGUI tmp_stage;
     [SerializeField] TextMeshProUGUI tmp_time;
     [SerializeField] TextMeshProUGUI tmp_bpm;
@@ -18,8 +18,16 @@ public class UIControll : MonoBehaviour
 
     public void PageActive_Result(bool active)
     {
-        ui_Result.DOKill();
-        ui_Result.DOScale(active ? Vector3.one : Vector3.zero, 0.3f).SetUpdate(true);
+        if (active)
+        {
+            group_result.gameObject.SetActive(true);
+            group_result.alpha = 0;
+        }
+        group_result.DOKill();
+        group_result.DOFade(active ? 1 : 0, 1).SetUpdate(true).OnComplete(()=>
+        {
+            if (!active) group_result.gameObject.SetActive(false);
+        });
 
         shadow.SetActive(true);
         UnityAction action = null;
@@ -28,8 +36,7 @@ public class UIControll : MonoBehaviour
     }
     public void PageActive_Pause(bool active)
     {
-        ui_Pause.DOKill();
-        ui_Pause.DOScale(active ? Vector3.one : Vector3.zero, 0.3f).SetUpdate(true);
+        group_pause.gameObject.SetActive(active);
 
         shadow.SetActive(true);
         UnityAction action = null;
@@ -39,13 +46,13 @@ public class UIControll : MonoBehaviour
 
     public void PageActiveDirectly_Result(bool active)
     {
-        ui_Result.DOKill();
-        ui_Result.localScale = active ? Vector3.one : Vector3.zero;
+        group_result.DOKill();
+        group_result.gameObject.SetActive(active);
     }
     public void PageActiveDirectly_Pause(bool active)
     {
-        ui_Pause.DOKill();
-        ui_Pause.localScale = active ? Vector3.one : Vector3.zero;
+        group_pause.DOKill();
+        group_pause.gameObject.SetActive(active);
     }
 
     public void SetTextInfo(string stage, float time, string bpm)
@@ -63,8 +70,8 @@ public class UIControll : MonoBehaviour
 
     private void Awake()
     {
-        ui_Result.gameObject.SetActive(true);
-        ui_Pause.gameObject.SetActive(true);
+        group_result.gameObject.SetActive(false);
+        group_pause.gameObject.SetActive(false);
 
         PageActiveDirectly_Result(false);
         PageActiveDirectly_Pause(false);

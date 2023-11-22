@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using TMPro;
 
 namespace ZB
 {
@@ -24,11 +25,14 @@ namespace ZB
         [SerializeField] private float boostSpeed;
         [SerializeField] private float boostTime;
         [SerializeField] private float decreaseTime;
+        [SerializeField] private float guageIncreaseByTime;
+        [SerializeField] private float guageIncreaseBySpeed;
+        [SerializeField] private TMP_InputField input_increaseBySpeed;
+        [SerializeField] private TMP_InputField input_increaseByTime;
         [Space]
         [SerializeField] private State nowState;
         private float maxGuage;
         private float decreaseGuageValue;
-        private float guageIncreasePerSecond;
         private bool decreaseSignal;
         private float boostDuration;
 
@@ -69,7 +73,8 @@ namespace ZB
                 //Charging일때 : 게이지 증가
                 if (nowState == State.Charging)
                 {
-                    nowGuage += Time.deltaTime * guageIncreasePerSecond;
+                    nowGuage += Time.deltaTime * guageIncreaseByTime;
+                    //nowGuage += Managers.Token.CurSpeedMeterPerSec * guageIncreaseBySpeed;
                     uiGuage.ChangeRatio(nowGuage / maxGuage);
                 }
 
@@ -113,7 +118,6 @@ namespace ZB
             uiGuage.ChangeRatio(0);
             maxGuage = 100;
             decreaseGuageValue = 20;
-            guageIncreasePerSecond = 6.25f;
             boostDuration = 1.5f;
             decreaseSignal = false;
             wfs_decreaseTime = new WaitForSeconds(decreaseTime);
@@ -130,6 +134,19 @@ namespace ZB
                 //속도변화
                 objectsScrolling.ScrollSpeedChangeLinear(playerInput.FocusPower, boostDuration);
             });
+        }
+
+        public void InputFieldUpdate()
+        {
+            float result;
+            if (float.TryParse(input_increaseByTime.text, out result))
+            {
+                guageIncreaseByTime = result;
+            }
+            if (float.TryParse(input_increaseBySpeed.text, out result))
+            {
+                guageIncreaseBySpeed = result;
+            }
         }
     }
 }

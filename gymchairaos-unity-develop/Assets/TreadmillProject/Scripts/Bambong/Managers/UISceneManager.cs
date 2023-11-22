@@ -7,7 +7,6 @@ namespace bambong
 {
     public class UISceneManager : GameObjectSingletonDestroy<UISceneManager>, IInit
     {
-
         [SerializeField]
         private CommonPanelController commonPanel;
         [SerializeField]
@@ -36,6 +35,7 @@ namespace bambong
         public void ClearPanelOpen() 
         {
             clearPanel.SetInfo(
+                GameSceneManager.Instance.isClear,
                 GameSceneManager.Instance.DistText.ToString(),
                 GetTimeText(),
                 ((int)heartRate.Average).ToString(),

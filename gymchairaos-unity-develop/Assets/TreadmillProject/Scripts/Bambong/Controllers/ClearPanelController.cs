@@ -18,16 +18,19 @@ namespace bambong
         private TextMeshProUGUI bpmText;
         [SerializeField]
         private TextMeshProUGUI calorieText;
+        [SerializeField]
+        private GameObject obj_nextStageBtn;
 
         [SerializeField]
         private CanvasGroup canvasGroup;
         private readonly float FADE_TIME = 1f;
-        public void SetInfo(string dist, string timeText, string bpm, string calorie) 
+        public void SetInfo(bool isClear, string dist, string timeText, string bpm, string calorie) 
         {
             this.distText.text = $"{dist} M";
             this.timeText.text = timeText;
             this.bpmText.text = $"{bpm} BPM";
             this.calorieText.text = $"{calorie} Kcal";
+            obj_nextStageBtn.SetActive(isClear && GameManager.Instance.CurrentLevel < GameManager.Instance.MAXLEVEL);
         }
         public override void Open()
         {
@@ -56,6 +59,10 @@ namespace bambong
 #endif
             Managers.Scene.LoadScene(E_SceneName.SelectGame);
         }
-
+        public void OnClickNextButton()
+        {
+            GameManager.Instance.SetLevel(GameManager.Instance.CurrentLevel + 1);
+            Managers.Scene.LoadScene(E_SceneName.Speed_GameScene);
+        }
     }
 }
