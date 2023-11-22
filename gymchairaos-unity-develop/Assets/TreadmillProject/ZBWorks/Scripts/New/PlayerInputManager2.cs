@@ -10,7 +10,8 @@ namespace ZB
 {
     public class PlayerInputManager2 : MonoBehaviour
     {
-        public float FocusPower { get => Mathf.Clamp((float)Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower); }
+        //public float FocusPower { get => Mathf.Clamp((float)Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower); }
+        public float FocusPower { get; private set; }
 
         [SerializeField] ObjectsScrolling objectScroll;
         [SerializeField] BoostGuage boostGuage;
@@ -141,17 +142,24 @@ namespace ZB
             resetPos = tf.position;
             TestInputField();
 
-#if UNITY_EDITOR
-            Managers.Token.AddLeftTokenEvent(AddLeftToken);
-            Managers.Token.AddRightTokenEvent(AddRightToken);
-            StartCoroutine(DecreaseToken());
-#endif
+//#if UNITY_EDITOR
+//            Managers.Token.AddLeftTokenEvent(AddLeftToken);
+//            Managers.Token.AddRightTokenEvent(AddRightToken);
+//            StartCoroutine(DecreaseToken());
+//#endif
             Managers.Token.ReceivedEvent += SideMove;
         }
         private void Update()
         {
 #if UNITY_EDITOR
-            SideMove();
+            if (Input.GetKeyDown(KeyCode.A)) leftRpm += 250;
+            if (Input.GetKeyDown(KeyCode.D)) rightRpm += 250;
+            if (Input.GetKeyDown(KeyCode.S)) FocusPower += 1;
+            if (Input.GetKeyDown(KeyCode.R)) { token.Save_left_speed = 0; token.Save_right_speed = 0; FocusPower = 0; }
+            move = (rightRpm - leftRpm) * moveMultiple;
+#endif
+#if !UNITY_EDITOR
+            FocusPower = Mathf.Clamp((float)Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower);
 #endif
             //이동
             if (tf.position.x <= outPos_left && move < 0)
@@ -192,7 +200,7 @@ namespace ZB
                     par_slowAlarm.Stop();
 
                 //최소속도 못넘으면 체력감소 카운트 시작
-                if (Managers.Token.CurSpeedMeterPerSec < minSpeedMinusHp &&
+                if (FocusPower < minSpeedMinusHp &&
                     !minSpeedMinusHpCounting) 
                 {
                     if (minSpeedMinusHpCycle_C != null)
@@ -200,16 +208,13 @@ namespace ZB
                     minSpeedMinusHpCycle_C = minSpeedMinusHpCycle();
                     StartCoroutine(minSpeedMinusHpCycle_C);
                 }
-                else if (Managers.Token.CurSpeedMeterPerSec >= minSpeedMinusHp &&
+                else if (FocusPower >= minSpeedMinusHp &&
                     minSpeedMinusHpCounting)
                 {
                     if (minSpeedMinusHpCycle_C != null)
                         StopCoroutine(minSpeedMinusHpCycle_C);
                 }
             }
-
-            if (Input.GetKeyDown(KeyCode.R))
-            { token.Save_left_speed = 0; token.Save_right_speed = 0; }
         }
 
         void SideMove()

@@ -8,6 +8,7 @@ namespace ZB
     public class ObjectsScrolling : MonoBehaviour
     {
         public float ScrollSpeed { get { return scrollSpeed; } }
+        public float ScrolledDist { get => scrolledDist; }
 
         [Header("라이프사이클 Start에서 바로스크롤시작")]
         [SerializeField] bool scrollOnStart;
@@ -22,6 +23,8 @@ namespace ZB
         [Header("Flexible 오브젝트")]
         [SerializeField] List<SingleObstacle> flexibleObjs;
         [SerializeField] Transform flexiblesOriginalParent;
+        [Space]
+        [SerializeField] float scrolledDist;
 
         //스크롤 시작
         [ContextMenu("스크롤시작")]
@@ -89,6 +92,8 @@ namespace ZB
             flexibleObjs.Clear();
         }
 
+        public void ResetScrolledDist() => scrolledDist = 0;
+
         void Awake()
         {
             for (int i = 0; i < repeatSets.Length; i++)
@@ -107,10 +112,14 @@ namespace ZB
         IEnumerator ScrollUpdate()
         {
             float repeat = 0;
+            float move;
+
             while (true)
             {
-                repeat += scrollSpeed * Time.deltaTime;
-                transform.position += scrollDir.normalized * scrollSpeed * Time.deltaTime;
+                move = scrollSpeed * Time.deltaTime;
+                repeat += move;
+                transform.position += scrollDir.normalized * move;
+                scrolledDist += move;
 
                 for (int i = 0; i < repeatSets.Length; i++)
                 {
