@@ -17,6 +17,7 @@ namespace bambong
 
         public float TimeText { get => curTime; }
         public int DistText { get => (int)curDistance; }
+        public bool isClear { get; private set; }
 
         [Header("Player")]
         [SerializeField]
@@ -134,7 +135,7 @@ namespace bambong
         */
         public bool CheckSpeedGageOring()
         {
-            return Managers.Token.CurSpeedMeterPerSec < 0.2f;
+            return player.NowSpeed < 0.2f;
         }
         private void Update()
         {
@@ -232,6 +233,8 @@ namespace bambong
         //플레이어가 먼저 지나갔을 때 호출
         public void SetStateGameClear()
         {
+            isClear = true;
+
             OnGameClear?.Invoke();
             gameStateController.ChangeState(GameClear.Instance);
             //player.SetStateNone();
@@ -254,6 +257,8 @@ namespace bambong
         //AI가 먼저 지나갔을 때 호출
         public void SetStateGameOver()
         {
+            isClear = false;
+
             OnGameClear?.Invoke();
             gameStateController.ChangeState(GameOver.Instance);
             //player.SetStateNone();

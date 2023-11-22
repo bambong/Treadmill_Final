@@ -30,7 +30,9 @@ namespace ZB.Balance2
         [SerializeField] ParticleSystem par_ShowPos;
 
         bool cleared;
-
+        
+        //게임 최초 실행
+        //다시하기 버튼 클릭
         public void GameStart()
         {
             StartCoroutine(StartCycle());
@@ -65,6 +67,14 @@ namespace ZB.Balance2
                 timeCounter.CountPause();
                 Managers.Sound.PlayEffect("sfx_controlFail");
             }
+        }
+
+        //다음스테이지 버튼 클릭
+        public void NextStage()
+        {
+            E_SceneName nextStage = E_SceneName.Balance_GameScene_TutorialAsk + stage + 1;
+            Time.timeScale = 1;
+            Managers.Scene.LoadScene(nextStage);
         }
 
         public void Pause(bool active)

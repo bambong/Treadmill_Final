@@ -6,7 +6,7 @@ namespace bambong
     
     public class GameManager : Singleton<GameManager>
     {
-       
+       public int MAXLEVEL { get => 2; }
 
         private int currentLevel = 0;
         public int CurrentLevel { get { return currentLevel; } }
@@ -14,6 +14,7 @@ namespace bambong
         private readonly int Clear = 1;
         private readonly int NotClear = 0;
         
+
         public void InitLevel(int level) 
         {
             if(!PlayerPrefs.HasKey(LEVEL_CLEARED_PLAYER_PREFAB + level)) 
@@ -38,7 +39,7 @@ namespace bambong
         }
         public void SetLevel(int level ) 
         {
-            currentLevel = level;
+            currentLevel = level > MAXLEVEL ? MAXLEVEL : level;
         }
         
     }

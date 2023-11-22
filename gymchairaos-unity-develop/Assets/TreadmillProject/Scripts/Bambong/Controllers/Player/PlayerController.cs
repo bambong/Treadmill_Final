@@ -9,6 +9,8 @@ namespace bambong
 
     public class PlayerController : MonoBehaviour
     {
+        public float NowSpeed { get => nowSpeed; }
+
         #region SerializeField
         [SerializeField]
         private Animator playerAnimator;
@@ -18,6 +20,10 @@ namespace bambong
      
         [SerializeField]
         private float speedRatio = 1f;
+
+        [SerializeField]
+        private float nowSpeed;
+        private float speedForEditor;
 
         [SerializeField]
         private Transform arrowTrs;
@@ -43,6 +49,7 @@ namespace bambong
         private readonly float INPUT_ANIMATE_STOP_TIME = 2f;
         #endregion ReadOnly
 
+
         private void Awake()
         {
             stateController = new PlayerStateController(this);
@@ -61,6 +68,12 @@ namespace bambong
         void Update()
         {
             stateController.Update();
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                speedForEditor++;
+            }
+#endif
         }
 
         public void PlayerMoveUpdate()
@@ -76,7 +89,7 @@ namespace bambong
         //public float GetCurSpeed() => (GameSceneManager.Instance.CurGauage / SpeedRatio) * MoveSpeed;
         public float GetCurSpeed()
         {
-            float testInput = 1;
+            float testInput = 10;
             if (TokenStateShow.instance != null &&
                 TokenStateShow.instance.InputText != "") 
             {
@@ -84,8 +97,13 @@ namespace bambong
             }
 
             float result = ((float)Managers.Token.CurSpeedMeterPerSec) * MoveSpeed * testInput;
-            Debug.Log($"!! testInput {testInput} / result {result}");
-            return result;
+
+            nowSpeed = result;
+#if UNITY_EDITOR
+            nowSpeed = speedForEditor;
+#endif
+
+            return nowSpeed;
         }
 
         public void PlayerInputCheckForStop()
