@@ -9,7 +9,7 @@ namespace bambong
 
     public class PlayerController : MonoBehaviour
     {
-        public float NowSpeed { get => nowSpeed; }
+        public float NowSpeed { get => linearDeceleration.value; }
 
         #region SerializeField
         [SerializeField]
@@ -22,7 +22,6 @@ namespace bambong
         private float speedRatio = 1f;
 
         [SerializeField]
-        private float nowSpeed;
         private float speedForEditor;
 
         [SerializeField]
@@ -49,11 +48,13 @@ namespace bambong
         private readonly float INPUT_ANIMATE_STOP_TIME = 2f;
         #endregion ReadOnly
 
+        private LinearDeceleration linearDeceleration;
 
         private void Awake()
         {
             stateController = new PlayerStateController(this);
             animateController = new WheelChairAnimateController(playerAnimator);
+            linearDeceleration = new LinearDeceleration(0, 10, 2);
             arrowStartY = arrowTrs.transform.localPosition.y;
 #if UNITY_EDITOR
             Managers.Token.AddLeftTokenEvent(AddLeftToken);
@@ -68,11 +69,13 @@ namespace bambong
         void Update()
         {
             stateController.Update();
+            linearDeceleration.Update();
 #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.S))
             {
-                speedForEditor++;
+                linearDeceleration.ValueUpdate(linearDeceleration.value + 1);
             }
+            Debug.Log(linearDeceleration.value);
 #endif
         }
 
@@ -89,6 +92,7 @@ namespace bambong
         //public float GetCurSpeed() => (GameSceneManager.Instance.CurGauage / SpeedRatio) * MoveSpeed;
         public float GetCurSpeed()
         {
+#if !UNITY_EDITOR
             float testInput = 10;
             if (TokenStateShow.instance != null &&
                 TokenStateShow.instance.InputText != "") 
@@ -97,13 +101,10 @@ namespace bambong
             }
 
             float result = ((float)Managers.Token.CurSpeedMeterPerSec) * MoveSpeed * testInput;
-
-            nowSpeed = result;
-#if UNITY_EDITOR
-            nowSpeed = speedForEditor;
+            linearDeceleration.ValueUpdate(result);
 #endif
 
-            return nowSpeed;
+            return linearDeceleration.value;
         }
 
         public void PlayerInputCheckForStop()

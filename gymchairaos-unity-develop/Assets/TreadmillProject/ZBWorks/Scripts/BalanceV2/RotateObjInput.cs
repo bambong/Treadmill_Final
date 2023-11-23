@@ -105,14 +105,14 @@ namespace ZB.Balance2
                     {
                         if (pitch < maxPow)
                         {
-                            pitch = Mathf.Abs((float)Managers.Token.CurSpeedMeterPerSec) * pow;
+                            pitch = -Mathf.Abs((float)Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
                     }
                     else
                     {
                         if (pitch > -maxPow)
                         {
-                            pitch = -Mathf.Abs((float)Managers.Token.CurSpeedMeterPerSec) * pow;
+                            pitch = Mathf.Abs((float)Managers.Token.CurSpeedMeterPerSec) * pow;
                         }
 
                     }

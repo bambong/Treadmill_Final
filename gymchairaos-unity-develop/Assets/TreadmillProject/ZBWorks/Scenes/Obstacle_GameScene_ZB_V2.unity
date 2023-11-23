@@ -16406,6 +16406,7 @@ MonoBehaviour:
   outPos_right: 1
   minPower: 2
   maxPower: 10
+  decel_multiple: 2
   power: 12
   rotMultiple: 20
   processTime: 1200

@@ -10,8 +10,7 @@ namespace ZB
 {
     public class PlayerInputManager2 : MonoBehaviour
     {
-        //public float FocusPower { get => Mathf.Clamp((float)Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower); }
-        public float FocusPower { get; private set; }
+        public float FocusPower { get => linearDeceleration.value; }
 
         [SerializeField] ObjectsScrolling objectScroll;
         [SerializeField] BoostGuage boostGuage;
@@ -45,6 +44,7 @@ namespace ZB
         [Header("전후이동관련")]
         [SerializeField] float minPower;
         [SerializeField] float maxPower;
+        [SerializeField] float decel_multiple;
         [SerializeField] float power;
 
         [Space]
@@ -76,6 +76,8 @@ namespace ZB
         [SerializeField] TMP_InputField hor_moveMultiple;
         [SerializeField] TMP_InputField hor_intervalMultiple;
         [SerializeField] TMP_InputField processTimeField;
+
+        private LinearDeceleration linearDeceleration;
 
         TokenInputManager token { get => Managers.Token; }
 
@@ -138,6 +140,7 @@ namespace ZB
 
         void Start()
         {
+            linearDeceleration = new LinearDeceleration(minPower, maxPower, decel_multiple);
             wfs_minSpeedMinusHp = new WaitForSeconds(time_minSpeedMinusHp);
             resetPos = tf.position;
             TestInputField();
@@ -154,12 +157,12 @@ namespace ZB
 #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.A)) leftRpm += 250;
             if (Input.GetKeyDown(KeyCode.D)) rightRpm += 250;
-            if (Input.GetKeyDown(KeyCode.S)) FocusPower += 1;
-            if (Input.GetKeyDown(KeyCode.R)) { token.Save_left_speed = 0; token.Save_right_speed = 0; FocusPower = 0; }
+            if (Input.GetKeyDown(KeyCode.S)) linearDeceleration.ValueUpdate(linearDeceleration.value + 1);
+            if (Input.GetKeyDown(KeyCode.R)) { token.Save_left_speed = 0; token.Save_right_speed = 0; linearDeceleration.ValueReset(); }
             move = (rightRpm - leftRpm) * moveMultiple;
 #endif
 #if !UNITY_EDITOR
-            FocusPower = Mathf.Clamp((float)Managers.Token.CurSpeedMeterPerSec * power, minPower, maxPower);
+            linearDeceleration.ValueUpdate((float)Managers.Token.CurSpeedMeterPerSec * power);
 #endif
             //이동
             if (tf.position.x <= outPos_left && move < 0)
@@ -184,9 +187,10 @@ namespace ZB
             }
 
             //현재 속도에 따른 스크롤 속도 조정
+            linearDeceleration.Update();
             if (!(boostGuage.NowState == BoostGuage.State.Boost || boostGuage.NowState == BoostGuage.State.BoostBreak))
             {
-                objectScroll.ScrollSpeedChange(FocusPower);
+                objectScroll.ScrollSpeedChange(linearDeceleration.value);
             }
 
             if (checking)
@@ -200,7 +204,7 @@ namespace ZB
                     par_slowAlarm.Stop();
 
                 //최소속도 못넘으면 체력감소 카운트 시작
-                if (FocusPower < minSpeedMinusHp &&
+                if (linearDeceleration.value < minSpeedMinusHp &&
                     !minSpeedMinusHpCounting) 
                 {
                     if (minSpeedMinusHpCycle_C != null)
@@ -208,11 +212,12 @@ namespace ZB
                     minSpeedMinusHpCycle_C = minSpeedMinusHpCycle();
                     StartCoroutine(minSpeedMinusHpCycle_C);
                 }
-                else if (FocusPower >= minSpeedMinusHp &&
+                else if (linearDeceleration.value >= minSpeedMinusHp &&
                     minSpeedMinusHpCounting)
                 {
                     if (minSpeedMinusHpCycle_C != null)
                         StopCoroutine(minSpeedMinusHpCycle_C);
+                    minSpeedMinusHpCounting = false;
                 }
             }
         }
@@ -241,7 +246,7 @@ namespace ZB
                 }
                 //프레임마다 이동할 정도 구함
 
-                move = (rightRpm - leftRpm) * moveMultiple;
+                move = -(rightRpm - leftRpm) * moveMultiple;
                 move = Mathf.Clamp(move, -maxMove, maxMove);
             }
         }

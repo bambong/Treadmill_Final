@@ -56,10 +56,7 @@ namespace ZB
         }
         public void GameRestart()
         {
-            if (GameStart_C != null)
-                StopCoroutine(GameStart_C);
-            GameStart_C = GameStartC();
-            StartCoroutine(GameStart_C);
+            Managers.Scene.LoadScene(E_SceneName.Obstacle_GameScene_ZB_V2);
         }
         public void GameStartProduction_Start()
         {
