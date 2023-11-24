@@ -11,6 +11,7 @@ using System.Net;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using System.Runtime.InteropServices;
 
 namespace Gymchair.Contents.Game
 {
@@ -115,9 +116,16 @@ namespace Gymchair.Contents.Game
         float _save_to_leftRotateZ = -999.0f;
         float _save_to_rightRotateZ = -999.0f;
         
+        // 분당 칼로리 측정을 위한 변수
+        float curCalorie = 0;
+        float curCalorieTime = 0;
+        private long totalBPM = 0;
+        private int bpmCount = 0; 
+
+
         private readonly float MAX_SPEED = 4f;
         private readonly float WHEEL_MAX_SPEED = 4f;
-
+        
         private void Awake()
         {
          
@@ -149,7 +157,7 @@ namespace Gymchair.Contents.Game
             _listData.Clear();
             OnAttemptConnectToServer();
             StartCoroutine(UpdateAnimation());
-            StartCoroutine(UpdateGymchair());
+           // StartCoroutine(UpdateGymchair());
             Managers.Token.ReceivedEvent += UpdateRPM;
 
 
@@ -238,7 +246,23 @@ namespace Gymchair.Contents.Game
                 }
             }
         }
+        public void CalrorieUpdate() 
+        {
+            curCalorieTime += Time.deltaTime;
+            totalBPM += (long)Managers.Token.Bpm;
+            ++bpmCount;
 
+            if (curCalorieTime > 60) 
+            {
+                curCalorieTime = 0;
+             
+                curCalorie += ExerciseCalculation.GetCalorieMin((totalBPM/(float)bpmCount));
+               
+                bpmCount = 0;
+                totalBPM = 0;
+            }
+        
+        }
         public void OnGymEnd()
         {
             UserGymData user = new UserGymData();
@@ -277,7 +301,7 @@ namespace Gymchair.Contents.Game
             user.gymMeter = (float)curMeter;
             Debug.Log("1 단계");
             double co2 = ExerciseCalculation.GetCo2(curMeter); // 최대 산소 섭취량 
-            user.gymCalorie = ExerciseCalculation.GetCalorie(co2, _time);
+            user.gymCalorie = curCalorie;
             
             Debug.Log("2 단계");
             user.speed /= _listData.Count;
@@ -437,6 +461,7 @@ namespace Gymchair.Contents.Game
                 //Managers.Token.Save_left_rpm = Mathf.Lerp(Managers.Token.Save_left_rpm, 0, Time.deltaTime);
                 //Managers.Token.Save_right_rpm = Mathf.Lerp(Managers.Token.Save_right_rpm, 0, Time.deltaTime);
 #endif
+               
                 _time += Time.deltaTime;
                 _sliderTimeGage.value = (int)_time;
 
@@ -458,6 +483,7 @@ namespace Gymchair.Contents.Game
                         OnGymEnd();
                     });
                 }
+                CalrorieUpdate(); // 분 당 칼로리 계산
             }
         }
         void RotateImageUpdate()

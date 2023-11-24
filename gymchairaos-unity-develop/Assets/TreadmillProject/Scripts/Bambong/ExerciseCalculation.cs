@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class ExerciseCalculation
 {
@@ -23,8 +24,17 @@ public class ExerciseCalculation
         return (float)Math.Ceiling(result);
     }
 
-    public static float GetCalorie(float time) // 칼로리 게산 공식 새로운 버전
+    public static float  GetCalorieMin(float bpm) // 분당 칼로리 게산 (BPM 이용) 
     {
-        return time *(0.0175f * Managers.Data.UserData.weight)/60f;
+        if (Managers.Data.UserData.sex == 0) // 남자 공식
+        {
+            return 0.111f * bpm - 6.565f;
+        }
+        else //여자 공식 
+        {
+            return 0.057f * bpm - 2.958f;
+        }
+       
+        //return time *(0.0175f * Managers.Data.UserData.weight)/60f;
     }
 }

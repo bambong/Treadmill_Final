@@ -207,12 +207,7 @@ public class TokenInputManager
     private readonly float MIN_CHECK_RPM = 900;
    
 
-    public double GetCalorie(float curMeter , float time)  // 달린 거리  , 달린 시간(second)
-    {
-        double ml = 5.189f + (2.768f * (curMeter * 0.001f));
-        return ((ml * Managers.Data.UserData.weight * (time / 60.0f)) * 0.001f) * 5.0f;
-    }
-
+ 
 
     private void MessageParse(string[] splitMessage ,int leftIndex , int rightIndex ) 
     {
