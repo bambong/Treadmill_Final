@@ -32,11 +32,6 @@ namespace Gymchair.Contents.Result
         [SerializeField] Text _textSpeed;
         [SerializeField] Text _textBestSpeed;
 
-        [Header("회전수")]
-        [SerializeField] Text _textRpm;
-        [SerializeField] Text _textLowRpm;
-        [SerializeField] Text _textHighRpm;
-
         [Header("심박수")]
         [SerializeField] Text _textBpm;
         [SerializeField] Text _textLowBpm;
@@ -46,7 +41,6 @@ namespace Gymchair.Contents.Result
         [SerializeField] ChartUtil.Chart _charSpeed;
         [SerializeField] ChartUtil.Chart _charLeftSpeed;
         [SerializeField] ChartUtil.Chart _charRightSpeed;
-        [SerializeField] ChartUtil.Chart _charRPM;
         [SerializeField] ChartUtil.Chart _charBPM;
 
 
@@ -102,7 +96,7 @@ namespace Gymchair.Contents.Result
             _textLowBpm.text = string.Format("{0:0.#}", _gymData.low_bpm);
             _textHighBpm.text = string.Format("{0:0.#}", _gymData.high_bpm);
 
-            float co2 = 5.189f + (2.768f * (_gymData.gymMeter / 1000.0f));
+            float co2 = 5.189f + (2.768f * (_gymData.gymMeter / 1000.0f)); // 초디ㅐ
             _textCO2.text = string.Format("{0:0.0}", co2);
 
             if (co2 >= 30.0f)
@@ -127,8 +121,6 @@ namespace Gymchair.Contents.Result
             _charRightSpeed.chartData.series[0].data.Clear();
             _charRightSpeed.chartData.categories.Clear();
 
-            _charRPM.chartData.series[0].data.Clear();
-            _charRPM.chartData.categories.Clear();
 
             _charBPM.chartData.series[0].data.Clear();
             _charBPM.chartData.categories.Clear();
@@ -143,7 +135,6 @@ namespace Gymchair.Contents.Result
             _charSpeed.chartData.categories = categorys;
             _charLeftSpeed.chartData.categories = categorys;
             _charRightSpeed.chartData.categories = categorys;
-            _charRPM.chartData.categories = categorys;
             _charBPM.chartData.categories = categorys;
 
             for (int num = 0; num < _gymTickData.Length; num += 10)
@@ -176,7 +167,6 @@ namespace Gymchair.Contents.Result
             _charSpeed.UpdateChart();
             _charLeftSpeed.UpdateChart();
             _charRightSpeed.UpdateChart();
-            _charRPM.UpdateChart();
             _charBPM.UpdateChart();
         }
 

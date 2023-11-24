@@ -114,7 +114,9 @@ namespace Gymchair.Contents.Game
         float _save_to_rotateZ = -999.0f;
         float _save_to_leftRotateZ = -999.0f;
         float _save_to_rightRotateZ = -999.0f;
-
+        
+        private readonly float MAX_SPEED = 4f;
+        private readonly float WHEEL_MAX_SPEED = 4f;
 
         private void Awake()
         {
@@ -274,8 +276,9 @@ namespace Gymchair.Contents.Game
 
             user.gymMeter = (float)curMeter;
             Debug.Log("1 단계");
-            double ml = 5.189f + (2.768f * (curMeter * 0.001f));
-            user.gymCalorie = (float)((ml * Managers.Data.UserData.weight * (user.gymTime / 60.0f)) * 0.001f) * 5.0f;
+            double co2 = ExerciseCalculation.GetCo2(curMeter); // 최대 산소 섭취량 
+            user.gymCalorie = ExerciseCalculation.GetCalorie(co2, _time);
+            
             Debug.Log("2 단계");
             user.speed /= _listData.Count;
             user.bpm /= _listData.Count;
@@ -438,7 +441,9 @@ namespace Gymchair.Contents.Game
                 _sliderTimeGage.value = (int)_time;
 
                 int minute = (int)(_time / 60);
-                int second = (int)_time % 60;
+                int second = (int)(_time % 60);
+
+                RotateImageUpdate(); // 회전 이미지 업데이트
 
                 _textTimeGage.text = string.Format("{0:D2}:{1:D2}", minute, second);
 
@@ -455,40 +460,17 @@ namespace Gymchair.Contents.Game
                 }
             }
         }
-
-        void UpdateRPM()
+        void RotateImageUpdate()
         {
-            if (!_isPlay)
-                return;
-
-            float bpm = Managers.Token.Bpm;
-            float speed = (float)Managers.Token.CurSpeedMeterPerSec;
-            curMeter += Managers.Token.CurrentMoveMeter;
-           
-
-            if (_maxSpeed < speed)
-                _maxSpeed = speed;
-
-            GymchairData gymchairData = new GymchairData();
-            gymchairData.time = Time.deltaTime;
-            gymchairData.bpm = bpm;
-            gymchairData.speed = speed;
-            gymchairData.left_speed = (float)Managers.Token.CurLeftSpeedMPS;
-            gymchairData.right_speed = (float)Managers.Token.CurRightSpeedMPS;
-            
-            
-            _listData.Add(gymchairData);
-
-
             #region VisulRotate
-            float rotateValue = speed;
 
-            if (rotateValue > 4.8f)
-                rotateValue = 4.8f;
+            float rotateValue = (float)Managers.Token.CurSpeedMeterPerSec;
 
-            float rotateZ = 250 * ((rotateValue >= 4.8f)? 1.0f : rotateValue / 4.8f);
+            rotateValue = Math.Min(rotateValue, MAX_SPEED); // 최대 값 제한
+
+            float rotateZ = 250 * (rotateValue / MAX_SPEED);
             rotateZ = 150 - rotateZ;
-            
+
             if (_save_to_rotateZ < 0.0f)
                 _save_to_rotateZ = rotateZ;
 
@@ -496,7 +478,9 @@ namespace Gymchair.Contents.Game
             _imageGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, _save_to_rotateZ);
 
             float leftPercent = (float)Managers.Token.CurLeftSpeedMPS;
-            leftPercent = (leftPercent > 3f) ? 1.0f : leftPercent / 3f;
+            leftPercent = Mathf.Min(leftPercent, WHEEL_MAX_SPEED);
+            leftPercent = leftPercent / WHEEL_MAX_SPEED;
+
             float leftRotateZ = 180 * leftPercent;
             leftRotateZ = 90 - leftRotateZ;
 
@@ -505,14 +489,17 @@ namespace Gymchair.Contents.Game
 
             _save_to_leftRotateZ = Mathf.Lerp(_save_to_leftRotateZ, leftRotateZ, 0.3f);
 
+
             float rightPercent = (float)Managers.Token.CurRightSpeedMPS;
-            rightPercent = (rightPercent > 4.8f) ? 1.0f : rightPercent / 4.8f;
+            rightPercent = Mathf.Min(rightPercent, WHEEL_MAX_SPEED);
+            rightPercent = rightPercent / WHEEL_MAX_SPEED;
+
             float rightRotateZ = 180 * rightPercent;
             rightRotateZ = 90 - rightRotateZ;
 
             if (_save_to_rightRotateZ < 0.0f)
                 _save_to_rightRotateZ = rightRotateZ;
-            
+
             _save_to_rightRotateZ = Mathf.Lerp(_save_to_rightRotateZ, rightRotateZ, 0.3f);
 
             _imageLeftGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, _save_to_leftRotateZ);
@@ -548,6 +535,7 @@ namespace Gymchair.Contents.Game
             #endregion VisulRotate
 
             #region VisualBG
+
             Sprite background = null;
 
             Sprite gage1 = _spriteNormalGage1;
@@ -603,6 +591,28 @@ namespace Gymchair.Contents.Game
             _imageGage5.sprite = gage5;
 
             #endregion VisualBG
+        }
+        void UpdateRPM()
+        {
+            if (!_isPlay)
+                return;
+
+            float bpm = Managers.Token.Bpm;
+            float speed = (float)Managers.Token.CurSpeedMeterPerSec;
+            curMeter += Managers.Token.CurrentMoveMeter;
+
+            _maxSpeed = Math.Max(_maxSpeed, speed);
+    
+
+            GymchairData gymchairData = new GymchairData();
+            gymchairData.time = Time.deltaTime;
+            gymchairData.bpm = bpm;
+            gymchairData.speed = speed;
+            gymchairData.left_speed = (float)Managers.Token.CurLeftSpeedMPS;
+            gymchairData.right_speed = (float)Managers.Token.CurRightSpeedMPS;
+            
+            
+            _listData.Add(gymchairData);
 
 
             ChartUtil.Data rpmData = new ChartUtil.Data();
@@ -619,7 +629,7 @@ namespace Gymchair.Contents.Game
 
             ChartUtil.Data rightSpeedData = new ChartUtil.Data();
             rightSpeedData.value = (float)Managers.Token.CurRightSpeedMPS;
-                //(Managers.Token.Save_right_speed <= 0.0f) ? 0.00001f : Managers.Token.Save_right_speed;
+            //(Managers.Token.Save_right_speed <= 0.0f) ? 0.00001f : Managers.Token.Save_right_speed;
             rightSpeedData.show = true;
 
             _charBPM.chartData.series[0].data.Add(rpmData);
@@ -660,59 +670,59 @@ namespace Gymchair.Contents.Game
             _charRightSpeed.UpdateChart();
 
 
-            _left_values.Add((float)Managers.Token.CurLeftSpeedMPS);
-            _right_values.Add((float)Managers.Token.CurRightSpeedMPS);
+            //_left_values.Add((float)Managers.Token.CurLeftSpeedMPS);
+            //_right_values.Add((float)Managers.Token.CurRightSpeedMPS);
 
-            if (_left_values.Count > 150)
-                _left_values.RemoveAt(0);
+            //if (_left_values.Count > 150)
+            //    _left_values.RemoveAt(0);
 
-            if (_right_values.Count > 150)
-                _right_values.RemoveAt(0);
+            //if (_right_values.Count > 150)
+            //    _right_values.RemoveAt(0);
 
 
-            if (_left_values.Count >= 150 && _right_values.Count >= 150 && _show_warnning == false)
-            {
-                float sumLeft = 0.0f;
-                float sumRight = 0.0f;
+            //if (_left_values.Count >= 150 && _right_values.Count >= 150 && _show_warnning == false)
+            //{
+            //    float sumLeft = 0.0f;
+            //    float sumRight = 0.0f;
 
-                foreach (var value in _left_values)
-                {
-                    sumLeft += value;
-                }
-                foreach (var value in _right_values)
-                {
-                    sumRight += value;
-                }
+            //    foreach (var value in _left_values)
+            //    {
+            //        sumLeft += value;
+            //    }
+            //    foreach (var value in _right_values)
+            //    {
+            //        sumRight += value;
+            //    }
 
-                sumLeft /= (float)_left_values.Count;
-                sumRight /= (float)_right_values.Count;
+            //    sumLeft /= (float)_left_values.Count;
+            //    sumRight /= (float)_right_values.Count;
                 
-                float per;
+            //    float per;
 
-                if (sumLeft < sumRight)
-                {
-                    per = 1.0f - (sumLeft / sumRight);
-                }
-                else
-                {
-                    per = 1.0f - (sumRight / sumLeft);
-                }
+            //    if (sumLeft < sumRight)
+            //    {
+            //        per = 1.0f - (sumLeft / sumRight);
+            //    }
+            //    else
+            //    {
+            //        per = 1.0f - (sumRight / sumLeft);
+            //    }
 
-                if (per >= 0.15f)
-                {
-                    _show_warnning = true;
-                    _imageTip.sprite = _imageTipDanger;
+            //    if (per >= 0.15f)
+            //    {
+            //        _show_warnning = true;
+            //        _imageTip.sprite = _imageTipDanger;
 
-                    StartCoroutine(OnEndTip());
-                }
-                else if (per >= 0.1f)
-                {
-                    _show_warnning = true;
-                    _imageTip.sprite = _imageTipWarnning;
+            //        StartCoroutine(OnEndTip());
+            //    }
+            //    else if (per >= 0.1f)
+            //    {
+            //        _show_warnning = true;
+            //        _imageTip.sprite = _imageTipWarnning;
                     
-                    StartCoroutine(OnEndTip());
-                }
-            }
+            //        StartCoroutine(OnEndTip());
+            //    }
+            //}
         }
         
         IEnumerator OnEndTip()

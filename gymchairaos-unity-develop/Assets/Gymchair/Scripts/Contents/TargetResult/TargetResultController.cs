@@ -104,7 +104,7 @@ namespace Gymchair.Contents.Result
             _textLowBpm.text = string.Format("{0:0.#}", _gymData.low_bpm);
             _textHighBpm.text = string.Format("{0:0.#}", _gymData.high_bpm);
 
-            float co2 = 5.189f + (2.768f * (_gymData.gymMeter / 1000.0f));
+            float co2 =  ExerciseCalculation.GetCo2(_gymData.gymMeter);
             _textCO2.text = string.Format("{0:0.0}", co2);
 
             if (co2 >= 30.0f)
