@@ -123,8 +123,8 @@ namespace Gymchair.Contents.Game
         private int bpmCount = 0; 
 
 
-        private readonly float MAX_SPEED = 4f;
-        private readonly float WHEEL_MAX_SPEED = 4f;
+        private readonly float MAX_SPEED = 3.2f;
+        private readonly float WHEEL_MAX_SPEED = 3f;
         
         private void Awake()
         {
@@ -135,22 +135,23 @@ namespace Gymchair.Contents.Game
         {
             string[] gyms = Managers.Data.GetGymList();
 
-            if (gyms == null || gyms.Length == 0)
-            {
-                //this._objTimeIcon.SetActive(true);
-                this._sliderTimeGage.gameObject.SetActive(true);
-                //this._textTimeGage.gameObject.SetActive(true);
-                this._objTimeGageBackground.SetActive(false);
-                this._textTimeGage.gameObject.transform.localPosition = new Vector3(-611, 466, 0);
-            }
-            else
-            {
-                //this._objTimeIcon.SetActive(false);
-                this._sliderTimeGage.gameObject.SetActive(false);
-                //this._textTimeGage.gameObject.SetActive(false);
-                this._objTimeGageBackground.SetActive(true);
-                this._textTimeGage.gameObject.transform.localPosition = new Vector3(-517, 466, 0);
-            }
+            //if (gyms == null || gyms.Length == 0) // 측정 모드일 경우 , 운동한 기록이 없다면
+            //{
+            //    //this._objTimeIcon.SetActive(true);
+            //    //  this._sliderTimeGage.gameObject.SetActive(true);
+            //   // this._sliderTimeGage.gameObject.SetActive(false);
+            //    //this._textTimeGage.gameObject.SetActive(true);
+            //   // this._objTimeGageBackground.SetActive(false);
+            //   // this._textTimeGage.gameObject.transform.localPosition = new Vector3(-611, 466, 0);
+            //}
+            //else // 측정 모드가 아닐 경우 
+            //{
+            //    //this._objTimeIcon.SetActive(false);
+            //   // this._sliderTimeGage.gameObject.SetActive(false);
+            //    //this._textTimeGage.gameObject.SetActive(false);
+            //   // this._objTimeGageBackground.SetActive(true);
+            //  //  this._textTimeGage.gameObject.transform.localPosition = new Vector3(-517, 466, 0);
+            //}
 
             _gameCanvas.SetActive(false);
             _isPlay = false;
@@ -164,37 +165,33 @@ namespace Gymchair.Contents.Game
 
         }
 
-        public void OnConnected()
-        {
-            if (!this._connect)
-            {
-                this._connect = true;
-                StartCoroutine(UpdateGymchair());
-            }
-        }
+        //public void OnConnected()
+        //{
+        //    if (!this._connect)
+        //    {
+        //        this._connect = true;
+        //        StartCoroutine(UpdateGymchair());
+        //    }
+        //}
+        //public void OnDisconnect()
+        //{
+        //    if (this._connect)
+        //    {
+        //        this._connect = false;
 
-        public void OnDisconnect()
-        {
-            if (this._connect)
-            {
-                this._connect = false;
+        //        this._isPlay = false;
 
-                this._isPlay = false;
-
-                Information01Popup.Create(() =>
-                {
-                    Managers.Sound.PlayTouchEffect();
+        //        Information01Popup.Create(() =>
+        //        {
+        //            Managers.Sound.PlayTouchEffect();
                    
-                }, () => {
-                    Managers.Sound.PlayTouchEffect();
+        //        }, () => {
+        //            Managers.Sound.PlayTouchEffect();
                  
-                    Managers.Scene.LoadScene(E_SceneName.Login);
-                });
-            }
-        }
-
-   
-     
+        //            Managers.Scene.LoadScene(E_SceneName.Login);
+        //        });
+        //    }
+        //}
         public void OnExitButton()
         {
             Managers.Sound.PlayTouchEffect();
@@ -271,7 +268,7 @@ namespace Gymchair.Contents.Game
             foreach (var gym in _listData)
             {
                 // user.gymMeter += gym.meter;
-                user.gymTime += gym.time;
+                 //+= gym.time;
                 // user.gymCalorie += gym.calorie;
 
                 user.speed += gym.speed;
@@ -297,7 +294,7 @@ namespace Gymchair.Contents.Game
                 if (user.high_bpm < gym.bpm)
                     user.high_bpm = gym.bpm;
             }
-
+            user.gymTime = _time;
             user.gymMeter = (float)curMeter;
             Debug.Log("1 단계");
             double co2 = ExerciseCalculation.GetCo2(curMeter); // 최대 산소 섭취량 
@@ -500,7 +497,7 @@ namespace Gymchair.Contents.Game
             if (_save_to_rotateZ < 0.0f)
                 _save_to_rotateZ = rotateZ;
 
-            _save_to_rotateZ = Mathf.Lerp(_save_to_rotateZ, rotateZ, 0.3f);
+            _save_to_rotateZ = Mathf.Lerp(_save_to_rotateZ, rotateZ, Time.deltaTime * 10);
             _imageGageBar.transform.rotation = Quaternion.Euler(0.0f, 0.0f, _save_to_rotateZ);
 
             float leftPercent = (float)Managers.Token.CurLeftSpeedMPS;
@@ -631,7 +628,7 @@ namespace Gymchair.Contents.Game
     
 
             GymchairData gymchairData = new GymchairData();
-            gymchairData.time = Time.deltaTime;
+            //gymchairData.time = Time.deltaTime;
             gymchairData.bpm = bpm;
             gymchairData.speed = speed;
             gymchairData.left_speed = (float)Managers.Token.CurLeftSpeedMPS;
@@ -642,19 +639,19 @@ namespace Gymchair.Contents.Game
 
 
             ChartUtil.Data rpmData = new ChartUtil.Data();
-            rpmData.value = bpm;
+            rpmData.value = MathF.Max(bpm, 0.00001f);
             rpmData.show = true;
 
             ChartUtil.Data speedData = new ChartUtil.Data();
-            speedData.value = speed;
+            speedData.value = MathF.Max(speed,0.00001f);
             speedData.show = true;
 
             ChartUtil.Data leftSpeedData = new ChartUtil.Data();
-            leftSpeedData.value = (float)Managers.Token.CurLeftSpeedMPS;
+            leftSpeedData.value = MathF.Max((float)Managers.Token.CurLeftSpeedMPS, 0.00001f);
             leftSpeedData.show = true;
 
             ChartUtil.Data rightSpeedData = new ChartUtil.Data();
-            rightSpeedData.value = (float)Managers.Token.CurRightSpeedMPS;
+            rightSpeedData.value = MathF.Max((float)Managers.Token.CurRightSpeedMPS, 0.00001f);
             //(Managers.Token.Save_right_speed <= 0.0f) ? 0.00001f : Managers.Token.Save_right_speed;
             rightSpeedData.show = true;
 
