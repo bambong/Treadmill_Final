@@ -23,7 +23,10 @@ public class HeartRate : MonoBehaviour
             time += Time.deltaTime;
         }
     }
-
+    public string GetString()
+    {
+        return ((int)(sum / time)).ToString();
+    }
     public void AverageCheckStart()
     {
         sum = 0;

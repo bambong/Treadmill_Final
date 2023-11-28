@@ -36,10 +36,10 @@ namespace bambong
         {
             clearPanel.SetInfo(
                 GameSceneManager.Instance.isClear,
-                GameSceneManager.Instance.DistText.ToString(),
+                GameSceneManager.Instance.Dist.ToString(),
                 GetTimeText(),
                 ((int)heartRate.Average).ToString(),
-                "0"
+                GameSceneManager.Instance.Carlorie.ToString()
                 );
 
             clearPanel.Open(); 

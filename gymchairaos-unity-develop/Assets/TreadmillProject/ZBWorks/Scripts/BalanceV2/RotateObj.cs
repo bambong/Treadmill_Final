@@ -19,6 +19,23 @@ namespace ZB.Balance2
         [SerializeField] float lerpPow = 1;
         private readonly float MIN_POW = 0.5f;
        
+        public bool IsRotatingRollPlus(float value)
+        {
+            return rotateVec_Roll > value;
+        }
+        public bool IsRotatingRollMinus(float value)
+        {
+            return rotateVec_Roll < value;
+        }
+        public bool IsRotatingPitchPlus(float value)
+        {
+            return rotateVec_Pitch > value;
+        }
+        public bool IsRotatingPitchMinus(float value)
+        {
+            return rotateVec_Pitch < value;
+        }
+
         /// <summary>
         /// 회전정보 업데이트
         /// </summary>
@@ -29,7 +46,6 @@ namespace ZB.Balance2
             this.rotateVec_Roll = rotateVec_Roll;
             this.rotateVec_Pitch = rotateVec_Pitch;
         }
-
         public void ResetState()
         {
             rotationTarget.eulerAngles = Vector3.zero;
@@ -99,14 +115,6 @@ namespace ZB.Balance2
             }
 
             rotationTarget.rotation = Quaternion.Slerp(rotationTarget.rotation, Quaternion.Euler(0, 0, z), Time.fixedDeltaTime* lerpPow);
-        }
-        private bool CanRotate_Roll()
-        {
-            return true;
-        }
-        private bool CanRotate_Pitch()
-        {
-            return true;
         }
     }
 }

@@ -16,8 +16,9 @@ namespace bambong
         #region SerializeField
 
         public float TimeText { get => curTime; }
-        public int DistText { get => (int)curDistance; }
+        public int Dist { get => (int)moveDist.movedDist; }
         public bool isClear { get; private set; }
+        public float Carlorie { get => calorieCheck.CurCalorie; }
 
         [Header("Player")]
         [SerializeField]
@@ -89,6 +90,8 @@ namespace bambong
         public float CurTime { get => curTime; }
         public Action OnGameClear { get => onGameClear; set => onGameClear = value; }
         public Action OnGameStart { get => onGameStart; set => onGameStart = value; }
+        private MoveDist moveDist = new MoveDist();
+        private CalorieCheck calorieCheck = new CalorieCheck();
         #endregion Property
 
         #region ReadOnly
@@ -109,6 +112,7 @@ namespace bambong
         private void Awake()
         {
             Init();
+            Managers.Token.ReceivedEvent += moveDist.MoveDistUpdate;
             //Managers.Token.ConnectToDevice();
 
             //Managers.Token.AddRightTokenEvent(IncreaseGauage);
@@ -117,6 +121,10 @@ namespace bambong
 #if !UNITY_EDITOR || SOUND_TEST
             Managers.Sound.PlayBGM("bgm_Speed");
 #endif
+        }
+        private void OnDestroy()
+        {
+            Managers.Token.ReceivedEvent -= moveDist.MoveDistUpdate;
         }
         /*
         public void IncreaseGauage()
@@ -140,6 +148,7 @@ namespace bambong
         private void Update()
         {
             GameStateController.Update();
+            calorieCheck.Update();
         }
         /*
         private void DecreaseGauage()
@@ -185,6 +194,10 @@ namespace bambong
         public float GetCurDistanceRatio(Transform transform)
         {
             return  (CurRoadDistance -(DestinationController.transform.position.z - transform.position.z))/ CurRoadDistance;
+        }
+        public float GetPlayerCurDistanceRatio()
+        {
+            return GetCurDistanceRatio(player.transform);
         }
         public float GetAIAnimSpeedRevision() 
         {

@@ -64,6 +64,7 @@ namespace ZB
         [SerializeField] float minSpeedMinusHp;
         [SerializeField] float time_minSpeedMinusHp;
         WaitForSeconds wfs_minSpeedMinusHp;
+        WaitForSeconds wfs_plusHp;
         bool minSpeedMinusHpCounting;
 
         [Space(30)]
@@ -142,6 +143,7 @@ namespace ZB
         {
             linearDeceleration = new LinearDeceleration(minPower, maxPower, decel_multiple);
             wfs_minSpeedMinusHp = new WaitForSeconds(time_minSpeedMinusHp);
+            wfs_plusHp = new WaitForSeconds(5);
             resetPos = tf.position;
             TestInputField();
 
@@ -203,21 +205,32 @@ namespace ZB
                     par_slowAlarm.isPlaying)
                     par_slowAlarm.Stop();
 
-                //최소속도 못넘으면 체력감소 카운트 시작
+                //최소속도 못넘김
+                //체력감소 카운트 시작
                 if (linearDeceleration.value < minSpeedMinusHp &&
-                    !minSpeedMinusHpCounting) 
+                    !minSpeedMinusHpCounting)
                 {
                     if (minSpeedMinusHpCycle_C != null)
                         StopCoroutine(minSpeedMinusHpCycle_C);
                     minSpeedMinusHpCycle_C = minSpeedMinusHpCycle();
                     StartCoroutine(minSpeedMinusHpCycle_C);
+
+                    if (plusHpCycle != null)
+                        StopCoroutine(plusHpCycle);
                 }
+
+                //최소속도 못넘기다가, 최소속도 넘김
                 else if (linearDeceleration.value >= minSpeedMinusHp &&
                     minSpeedMinusHpCounting)
                 {
                     if (minSpeedMinusHpCycle_C != null)
                         StopCoroutine(minSpeedMinusHpCycle_C);
                     minSpeedMinusHpCounting = false;
+
+                    if (plusHpCycle != null)
+                        StopCoroutine(plusHpCycle);
+                    plusHpCycle = PlusHpCycle();
+                    StartCoroutine(plusHpCycle);
                 }
             }
         }
@@ -288,6 +301,16 @@ namespace ZB
             yield return wfs_minSpeedMinusHp;
             hp.MinusHP(1);
             minSpeedMinusHpCounting = false;
+        }
+
+        IEnumerator plusHpCycle;
+        IEnumerator PlusHpCycle()
+        {
+            while (true)
+            {
+                yield return wfs_plusHp;
+                hp.PlusHP(1);
+            }
         }
     }
 }

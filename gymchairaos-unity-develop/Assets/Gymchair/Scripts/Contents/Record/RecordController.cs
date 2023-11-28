@@ -223,7 +223,7 @@ namespace Gymchair.Contents.Record
         public void OnMainSceneButton()
         {
             Managers.Sound.PlayTouchEffect();
-            Managers.Scene.LoadScene(E_SceneName.Login);
+            Managers.Scene.LoadScene(E_SceneName.SelectMenu_ZB);
         }
     }
 }

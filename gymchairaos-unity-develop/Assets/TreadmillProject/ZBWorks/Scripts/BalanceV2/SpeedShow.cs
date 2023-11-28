@@ -5,10 +5,12 @@ using TMPro;
 
 public class SpeedShow : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI tmp;
+    [SerializeField] private TextMeshProUGUI tmp;
+    private float value;
 
-    private void Update()
+    public void SpeedTextUpdate(float value, string text)
     {
-        tmp.text = ((int)Managers.Token.CurSpeedMeterPerSec).ToString();
+        this.value = value;
+        this.tmp.text = text;
     }
 }

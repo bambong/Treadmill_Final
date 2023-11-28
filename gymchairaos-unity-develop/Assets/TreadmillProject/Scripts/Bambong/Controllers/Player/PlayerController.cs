@@ -73,9 +73,8 @@ namespace bambong
 #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.S))
             {
-                linearDeceleration.ValueUpdate(linearDeceleration.value + 1);
+                linearDeceleration.ValueUpdate(linearDeceleration.value + 10);
             }
-            Debug.Log(linearDeceleration.value);
 #endif
         }
 
@@ -86,7 +85,8 @@ namespace bambong
             var pos = transform.position;
             pos += transform.forward * speed; 
             transform.position = pos;
-            animateController.SetMoveAnimSpeed(GameSceneManager.Instance.GetGaugeRatio());
+            //animateController.SetMoveAnimSpeed(GameSceneManager.Instance.GetGaugeRatio());
+            animateController.SetMoveAnimSpeed(NowSpeed / 50);
             GameSceneManager.Instance.AddDistance();
         }
         //public float GetCurSpeed() => (GameSceneManager.Instance.CurGauage / SpeedRatio) * MoveSpeed;
@@ -111,7 +111,9 @@ namespace bambong
         {
             if(Managers.Token.LastEventTime >= INPUT_ANIMATE_STOP_TIME && !animateController.GetBoolNoInput())
             {
+#if !UNITY_EDITOR
                 animateController.PlayAnimateNoInput(true);
+#endif
             }
             else if(Managers.Token.LastEventTime < INPUT_ANIMATE_STOP_TIME && animateController.GetBoolNoInput())
             {

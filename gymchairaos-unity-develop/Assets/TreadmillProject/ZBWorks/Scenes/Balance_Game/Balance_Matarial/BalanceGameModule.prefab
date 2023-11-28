@@ -4920,6 +4920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f55e9ddbbfe6d14a9726f894d20b03c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameStartOnStart: 1
   resetPos: {fileID: 6836015279231933070}
   uiControll: {fileID: 6836015278918913011}
   rotateObj: {fileID: 6836015279116038232}

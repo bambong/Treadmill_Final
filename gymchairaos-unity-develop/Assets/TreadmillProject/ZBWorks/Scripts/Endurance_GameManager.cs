@@ -11,9 +11,10 @@ namespace ZB
     {
         public static Endurance_GameManager Instance;
 
+        public string Dist { get => moveDist.GetString(); }
+
         [SerializeField] GameStartProduction gameStartProduction;
         [SerializeField] ObstacleEvent obstacle;
-        [SerializeField] DistanceRecord distance;
         [SerializeField] HeartRate heartRate;
         [SerializeField] PlayerInputManager2 player;
         [SerializeField] ObjectsScrolling scroll;
@@ -22,19 +23,53 @@ namespace ZB
         [SerializeField] BoostGuage boostGuage;
         [SerializeField] ResultPageController resultPage;
         [SerializeField] RankingDataHolder rankingDataHolder;
+        [SerializeField] DistanceRecord distanceRecord;
+        [SerializeField] SpeedShow speedShow;
+        MoveDist moveDist = new MoveDist();
+        CalorieCheck calorieCheck = new CalorieCheck();
 
         [Space]
         [SerializeField] float startDelay;
         WaitForSeconds startDelay_WFS; 
 
-        void Awake()
+        private void Awake()
         {
             Instance = this;
             startDelay_WFS = new WaitForSeconds(startDelay);
         }
-        void Start()
+        private void Start()
         {
+            //거리 측정 콜백 추가
+            Managers.Token.ReceivedEvent += moveDist.MoveDistUpdate;
+            Managers.Token.ReceivedEvent += DistanceTextUpdate;
+            //속도 측정 콜백 추가
+            Managers.Token.ReceivedEvent += SpeedTextUpdate;
+
             StartCoroutine(BloothConnectWait());
+        }
+        private void Update()
+        {
+            calorieCheck.Update();
+#if UNITY_EDITOR
+            speedShow.SpeedTextUpdate(player.FocusPower, string.Format("{0:0.00}", player.FocusPower));
+#endif
+        }
+        private void OnDestroy()
+        {
+            //거리 측정 콜백 제거
+            Managers.Token.ReceivedEvent -= moveDist.MoveDistUpdate;
+            Managers.Token.ReceivedEvent -= DistanceTextUpdate;
+
+            //속도 측정 콜백 제거
+            Managers.Token.ReceivedEvent -= SpeedTextUpdate;
+        }
+        private void DistanceTextUpdate()
+        {
+            distanceRecord.UpdateText((float)moveDist.movedDist, moveDist.ToString());
+        }
+        private void SpeedTextUpdate()
+        {
+            speedShow.SpeedTextUpdate((float)Managers.Token.CurSpeedMeterPerSec, string.Format("{0:0.00}", Managers.Token.CurSpeedMeterPerSec));
         }
 
         IEnumerator BloothConnectWait() 
@@ -46,7 +81,6 @@ namespace ZB
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(E_SceneName.Obstacle_GameScene_ZB_V2.ToString()));
             GameStartProduction_Start();
         }
-
         IEnumerator GameStart_C;
         IEnumerator GameStartC()
         {
@@ -63,14 +97,12 @@ namespace ZB
             player.MoveFront_OnRebirth();
             gameStartProduction.ProudctionStart();
         }
-
         public void GameOver()
         {
             timeCounter.CountStop();
             player.ResetState();
             player.CheckActive(false);
             player.EnableWheelEffect(false);
-            distance.RecordStop();
             scroll.ResetFlexible();
             obstacle.CheckActive(false);
             obstacle.ResetState();
@@ -78,15 +110,19 @@ namespace ZB
             heartRate.AverageCheckStop();
 
             //랭킹 기록 저장
-            rankingDataHolder.rankingData.ranking_Obstacle.Add(RankingData.GetUserName(), RankingData.GetDate(), timeCounter.CurrentTimeScore, distance.CurrentDistanceRecord);
+            rankingDataHolder.rankingData.ranking_Obstacle.Add(
+                RankingData.GetUserName(),
+                RankingData.GetDate(),
+                timeCounter.CurrentTimeScore, 
+                (float)moveDist.movedDist);
             rankingDataHolder.Write();
 
             //결과UI 등장
             resultPage.SetTextInfo(
-                ((int)distance.CurrentDistanceRecord).ToString(),
+                $"{moveDist.GetString()} M",
                 TimeCounter.FormatTime(timeCounter.CurrentTimeScore),
-                ((int)heartRate.Average).ToString(),
-                "0"
+                $"{heartRate.GetString()} Bpm",
+                $"{calorieCheck.GetString()} Kcal"
                 );
             resultPage.Active(true);
         }
@@ -100,7 +136,6 @@ namespace ZB
             timeCounter.CountStart();
             player.CheckActive(true);
             player.EnableWheelEffect(true);
-            distance.RecordStart();
             obstacle.CheckActive(true);
             boostGuage.ChargeStart();
         }

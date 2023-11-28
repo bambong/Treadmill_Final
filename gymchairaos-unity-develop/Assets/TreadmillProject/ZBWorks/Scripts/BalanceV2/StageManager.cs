@@ -10,6 +10,10 @@ namespace ZB.Balance2
 {
     public class StageManager : MonoBehaviour
     {
+        [SerializeField] UnityEvent gameStartEvent;
+
+        [SerializeField] bool gameStartOnStart;
+
         [SerializeField] Transform resetPos;
 
         [SerializeField] UIControll uiControll;
@@ -35,6 +39,7 @@ namespace ZB.Balance2
         //다시하기 버튼 클릭
         public void GameStart()
         {
+            gameStartEvent.Invoke();
             StartCoroutine(StartCycle());
         }
 
@@ -88,7 +93,8 @@ namespace ZB.Balance2
         {
             img_Shadow.color = Color.black;
 
-            GameStart();
+            if (gameStartOnStart) 
+                GameStart();
         }
 
         IEnumerator StartCycle()
