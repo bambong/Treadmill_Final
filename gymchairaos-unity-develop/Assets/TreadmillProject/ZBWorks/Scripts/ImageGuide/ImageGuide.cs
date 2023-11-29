@@ -44,6 +44,7 @@ public class ImageGuide : MonoBehaviour
     {
         if (guideStartOnStart)
             InitNStart();
+        transform.SetSiblingIndex(4);
     }
     private void Update()
     {
@@ -85,12 +86,9 @@ public class ImageGuide : MonoBehaviour
     {
         for (int i = 0; i < guides.Length; i++)
         {
-            guides[i].enterTargetAlpha = valueHandler.enterTargetAlpha;
-            guides[i].enterLoopDuration = valueHandler.enterLoopDuration;
-            guides[i].enterLoopCount = valueHandler.enterLoopCount;
-            guides[i].stayTargetAlpha = valueHandler.stayTargetAlpha;
-            guides[i].stayLoopDuration = valueHandler.stayLoopDuration;
-            guides[i].exitTargetAlpha = valueHandler.exitTargetAlpha;
+            guides[i].enterDuration = valueHandler.enterDuration;
+            guides[i].enterDelay = valueHandler.enterDelay;
+            guides[i].stayDuration = valueHandler.stayDuration;
             guides[i].exitDuration = valueHandler.exitDuration;
             guides[i].exitDelay = valueHandler.exitDelay;
         }
@@ -102,17 +100,14 @@ public class ImageGuide : MonoBehaviour
         public State nowState;
         [Space]
         public CanvasGroup enterGroup;
-        public float enterTargetAlpha;
-        public float enterLoopDuration;
-        public int enterLoopCount;
+        public float enterDuration;
+        public float enterDelay;
         [Space]
         public CanvasGroup stayGroup;
-        public float stayTargetAlpha;
-        public float stayLoopDuration;
+        public float stayDuration;
         public BoolDelegate condition;
         [Space]
         public CanvasGroup exitGroup;
-        public float exitTargetAlpha;
         public float exitDuration;
         public float exitDelay;
 
@@ -148,19 +143,16 @@ public class ImageGuide : MonoBehaviour
                 enterEvent.Invoke();
 
                 enterGroup.gameObject.SetActive(true);
-                enterGroup.DOFade(1, enterLoopDuration).OnComplete(() =>
+                enterGroup.DOFade(1, enterDuration).OnComplete(() =>
                 {
-                    enterGroup.DOFade(enterTargetAlpha, enterLoopDuration).SetLoops(enterLoopCount, LoopType.Yoyo).OnComplete(() =>
+                    enterGroup.DOFade(0, enterDuration).SetDelay(enterDelay).OnComplete(() =>
                     {
-                        enterGroup.DOFade(0, enterLoopDuration).OnComplete(() =>
-                        {
-                            enterGroup.gameObject.SetActive(false);
+                        enterGroup.gameObject.SetActive(false);
 
-                            nowState = State.isStay;
-                            stayEvent.Invoke();
-                            stayGroup.gameObject.SetActive(true);
-                            stayGroup.DOFade(stayTargetAlpha, stayLoopDuration).SetLoops(-1, LoopType.Yoyo);
-                        });
+                        nowState = State.isStay;
+                        stayEvent.Invoke();
+                        stayGroup.gameObject.SetActive(true);
+                        stayGroup.DOFade(1, stayDuration);
                     });
                 });
             }
@@ -170,7 +162,7 @@ public class ImageGuide : MonoBehaviour
                 nowState = State.isStay;
                 stayEvent.Invoke();
                 stayGroup.gameObject.SetActive(true);
-                stayGroup.DOFade(stayTargetAlpha, stayLoopDuration).SetLoops(-1, LoopType.Yoyo);
+                stayGroup.DOFade(1, stayDuration);
             }
         }
         public void OnExit()
@@ -178,7 +170,7 @@ public class ImageGuide : MonoBehaviour
             if (stayGroup != null)
             {
                 stayGroup.DOKill();
-                stayGroup.DOFade(0, stayLoopDuration).OnComplete(()=> { stayGroup.gameObject.SetActive(false); });
+                stayGroup.DOFade(0, stayDuration).OnComplete(()=> { stayGroup.gameObject.SetActive(false); });
             }
 
             //exitGroup 지정 돼어 있을경우
@@ -189,14 +181,11 @@ public class ImageGuide : MonoBehaviour
                 exitGroup.gameObject.SetActive(true);
                 exitGroup.DOFade(1, exitDuration).OnComplete(() =>
                 {
-                    exitGroup.DOFade(exitTargetAlpha, exitDuration).OnComplete(() =>
+                    exitGroup.DOFade(0, exitDuration).SetDelay(exitDelay).OnComplete(() =>
                     {
-                        exitGroup.DOFade(0, exitDuration).SetDelay(exitDelay).OnComplete(() =>
-                        {
-                            exitGroup.gameObject.SetActive(false);
-                            ExitGroupFaded = true;
-                            FadeDirectly();
-                        });
+                        exitGroup.gameObject.SetActive(false);
+                        ExitGroupFaded = true;
+                        FadeDirectly();
                     });
                 });
             }

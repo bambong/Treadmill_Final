@@ -422,7 +422,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6836015277852261686, guid: a875a365e966bb24196386386e528545, type: 3}
   m_PrefabInstance: {fileID: 6836015277340485655}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 729286637}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f55e9ddbbfe6d14a9726f894d20b03c, type: 3}
@@ -1013,6 +1013,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 707650736}
   m_CullTransparentMesh: 1
+--- !u!1 &729286637 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6836015277852261687, guid: a875a365e966bb24196386386e528545, type: 3}
+  m_PrefabInstance: {fileID: 6836015277340485655}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &729286639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 729286637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f993e0257c25ab42b2de3cea7523ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &764459325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1853,63 +1870,48 @@ MonoBehaviour:
   guides:
   - nowState: 0
     enterGroup: {fileID: 1989304374}
-    enterTargetAlpha: 0.7
-    enterLoopDuration: 0.5
-    enterLoopCount: 8
+    enterDuration: 0.5
+    enterDelay: 4
     stayGroup: {fileID: 59732556}
-    stayTargetAlpha: 0.7
-    stayLoopDuration: 0.5
+    stayDuration: 0.5
     exitGroup: {fileID: 803876702}
-    exitTargetAlpha: 0.7
     exitDuration: 0.5
     exitDelay: 2
   - nowState: 0
     enterGroup: {fileID: 707650738}
-    enterTargetAlpha: 0.7
-    enterLoopDuration: 0.5
-    enterLoopCount: 8
+    enterDuration: 0.5
+    enterDelay: 4
     stayGroup: {fileID: 640828125}
-    stayTargetAlpha: 0.7
-    stayLoopDuration: 0.5
+    stayDuration: 0.5
     exitGroup: {fileID: 803876702}
-    exitTargetAlpha: 0.7
     exitDuration: 0.5
     exitDelay: 2
   - nowState: 0
     enterGroup: {fileID: 870337104}
-    enterTargetAlpha: 0.7
-    enterLoopDuration: 0.5
-    enterLoopCount: 8
+    enterDuration: 0.5
+    enterDelay: 4
     stayGroup: {fileID: 1020275158}
-    stayTargetAlpha: 0.7
-    stayLoopDuration: 0.5
+    stayDuration: 0.5
     exitGroup: {fileID: 1460501044}
-    exitTargetAlpha: 0.7
     exitDuration: 0.5
     exitDelay: 2
   - nowState: 0
     enterGroup: {fileID: 2090268830}
-    enterTargetAlpha: 0.7
-    enterLoopDuration: 0.5
-    enterLoopCount: 8
+    enterDuration: 0.5
+    enterDelay: 4
     stayGroup: {fileID: 1767131838}
-    stayTargetAlpha: 0.7
-    stayLoopDuration: 0.5
+    stayDuration: 0.5
     exitGroup: {fileID: 33697388}
-    exitTargetAlpha: 0.7
     exitDuration: 0.5
     exitDelay: 2
   valueHandler:
     nowState: 0
     enterGroup: {fileID: 0}
-    enterTargetAlpha: 0.7
-    enterLoopDuration: 0.5
-    enterLoopCount: 8
+    enterDuration: 0.5
+    enterDelay: 4
     stayGroup: {fileID: 0}
-    stayTargetAlpha: 0.7
-    stayLoopDuration: 0.5
+    stayDuration: 0.5
     exitGroup: {fileID: 0}
-    exitTargetAlpha: 0.7
     exitDuration: 0.5
     exitDelay: 2
 --- !u!114 &1124450414

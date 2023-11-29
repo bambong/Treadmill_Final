@@ -129,6 +129,22 @@ namespace ZB
             }
         }
 
+        //Á÷Áø
+        public bool IsFrontMoving()
+        {
+            return (Managers.Token.Save_left_speed >= 0 &&
+                    Managers.Token.Save_right_speed >= 0 &&
+                    FocusPower > 5);
+        }
+        public bool IsLeftMoving()
+        {
+            return Mathf.Abs(outPos_left - tf.position.x) < 0.3f;
+        }
+        public bool IsRightMoving()
+        {
+            return Mathf.Abs(tf.position.x - outPos_right) < 0.3f;
+        }
+
         public IEnumerator DecreaseToken()
         {
             while (gameObject != null)
@@ -184,7 +200,6 @@ namespace ZB
             if (currentRotTarget != move * rotMultiple)
             {
                 currentRotTarget = move * rotMultiple;
-                tf.DOKill();
                 tf.DORotate(new Vector3(tf.eulerAngles.x, move * rotMultiple, tf.eulerAngles.z), 0.5f);
             }
 
@@ -270,6 +285,7 @@ namespace ZB
         }
         public void MoveFront_OnRebirth()
         {
+            tf.DOKill();
             tf.position = resetPos + new Vector3(0, 0, -2.5f);
             tf.DOMove(resetPos, 1.6f).SetEase(Ease.OutQuart);
         }

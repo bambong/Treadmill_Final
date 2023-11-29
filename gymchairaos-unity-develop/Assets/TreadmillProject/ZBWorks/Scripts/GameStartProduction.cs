@@ -31,6 +31,11 @@ public class GameStartProduction : MonoBehaviour
         StartCoroutine(production_C);
     }
 
+    public void AddProductionEndEvent(UnityAction action)
+    {
+        if (onProductionEnded == null) onProductionEnded = new UnityEvent();
+        onProductionEnded.AddListener(action);
+    }
 
     WaitForSeconds shadowOn_WFS = new WaitForSeconds(1.5f);
     WaitForSeconds oneSecond_WFS = new WaitForSeconds(0.7f);

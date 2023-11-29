@@ -75,7 +75,6 @@ namespace ZB.Balance2
             {
                 RotatePitch(rotateVec_Pitch);
             }
-
 #else
             if (Managers.Token.Save_left_speed < -1990 || Managers.Token.Save_right_speed < -1990)
             {
@@ -94,7 +93,6 @@ namespace ZB.Balance2
                 RotatePitch(rotateVec_Pitch);
             }
 #endif
-
         }
         private void RotateRoll(float value)
         {
