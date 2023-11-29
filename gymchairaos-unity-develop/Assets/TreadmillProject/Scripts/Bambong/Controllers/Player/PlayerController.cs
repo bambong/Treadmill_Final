@@ -68,6 +68,16 @@ namespace bambong
         }
         void Update()
         {
+            float testInput = 10;
+            if (TokenStateShow.instance != null &&
+                TokenStateShow.instance.InputText != "")
+            {
+                float.TryParse(TokenStateShow.instance.InputText, out testInput);
+            }
+
+            float result = ((float)Managers.Token.CurSpeedMeterPerSec) * MoveSpeed * testInput;
+            linearDeceleration.ValueUpdate(result);
+
             stateController.Update();
             linearDeceleration.Update();
 #if UNITY_EDITOR
@@ -92,18 +102,6 @@ namespace bambong
         //public float GetCurSpeed() => (GameSceneManager.Instance.CurGauage / SpeedRatio) * MoveSpeed;
         public float GetCurSpeed()
         {
-#if !UNITY_EDITOR
-            float testInput = 10;
-            if (TokenStateShow.instance != null &&
-                TokenStateShow.instance.InputText != "") 
-            {
-                float.TryParse(TokenStateShow.instance.InputText, out testInput);
-            }
-
-            float result = ((float)Managers.Token.CurSpeedMeterPerSec) * MoveSpeed * testInput;
-            linearDeceleration.ValueUpdate(result);
-#endif
-
             return linearDeceleration.value;
         }
 

@@ -65,7 +65,7 @@ namespace ZB
         }
         private void DistanceTextUpdate()
         {
-            distanceRecord.UpdateText((float)moveDist.movedDist, moveDist.ToString());
+            distanceRecord.UpdateText((float)moveDist.movedDist, moveDist.GetString());
         }
         private void SpeedTextUpdate()
         {
