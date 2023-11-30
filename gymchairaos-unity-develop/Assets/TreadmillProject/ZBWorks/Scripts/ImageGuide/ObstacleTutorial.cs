@@ -68,6 +68,7 @@ public class ObstacleTutorial : MonoBehaviour
         state = State.tutorialAskFading;
         UnityEvent closeEvent = new UnityEvent();
         closeEvent.AddListener(action);
+        player.MoveCheckActive(true);
         tutorialAskGroup.DOFade(0, 1).SetDelay(0.5f).OnComplete(() =>
         {
             state = isYes ? State.tutorialDoing : State.none;

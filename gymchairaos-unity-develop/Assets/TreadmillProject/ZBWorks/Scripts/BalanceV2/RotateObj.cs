@@ -21,19 +21,21 @@ namespace ZB.Balance2
        
         public bool IsRotatingRollPlus(float value)
         {
-            return rotateVec_Roll > value;
+            return (Mathf.Abs(value - rotationTarget.eulerAngles.x) < 0.1f);
         }
         public bool IsRotatingRollMinus(float value)
         {
-            return rotateVec_Roll < value;
+            value = 360 + value;
+            return (Mathf.Abs(value - rotationTarget.eulerAngles.x) < 0.1f);
         }
         public bool IsRotatingPitchPlus(float value)
         {
-            return rotateVec_Pitch > value;
+            return (Mathf.Abs(value - rotationTarget.eulerAngles.z) < 0.1f);
         }
         public bool IsRotatingPitchMinus(float value)
         {
-            return rotateVec_Pitch < value;
+            value = 360 + value;
+            return (Mathf.Abs(value - rotationTarget.eulerAngles.z) < 0.1f);
         }
 
         /// <summary>
@@ -75,6 +77,7 @@ namespace ZB.Balance2
             {
                 RotatePitch(rotateVec_Pitch);
             }
+            //Debug.Log(rotationTarget.eulerAngles);
 #else
             if (Managers.Token.Save_left_speed < -1990 || Managers.Token.Save_right_speed < -1990)
             {

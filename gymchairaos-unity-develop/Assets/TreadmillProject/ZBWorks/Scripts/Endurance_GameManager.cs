@@ -42,7 +42,8 @@ namespace ZB
         {
             timeCounter.CountStop();
             player.ResetState();
-            player.CheckActive(false);
+            player.HpCheckActive(false);
+            player.MoveCheckActive(false);
             player.EnableWheelEffect(false);
             scroll.ResetFlexible();
             obstacle.CheckActive(false);
@@ -76,7 +77,7 @@ namespace ZB
         private void Start()
         {
             StartCoroutine(BloothConnectWait());
-            gameStartProduction.AddProductionEndEvent(BaseTokenCallback);
+            BaseTokenCallback();
             gameStartProduction.AddProductionEndEvent(GameStart);
             tutorial.AddEvent_GameStart(ProductionStart);
 
@@ -136,7 +137,8 @@ namespace ZB
         }
         private void ProductionStart()
         {
-            player.CheckActive(false);
+            player.MoveCheckActive(false);
+            player.HpCheckActive(false);
             player.MoveFront_OnRebirth();
             gameStartProduction.ProudctionStart();
         }
@@ -145,7 +147,8 @@ namespace ZB
             playerHP.PlusHP(3);
             playerHP.StartAutoHpUByDistance();
             timeCounter.CountStart();
-            player.CheckActive(true);
+            player.HpCheckActive(true);
+            player.MoveCheckActive(true);
             obstacle.CheckActive(true);
             boostGuage.ChargeStart();
         }

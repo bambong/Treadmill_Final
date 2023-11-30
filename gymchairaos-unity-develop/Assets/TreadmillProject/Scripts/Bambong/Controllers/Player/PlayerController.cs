@@ -83,8 +83,12 @@ namespace bambong
 #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.S))
             {
-                linearDeceleration.ValueUpdate(linearDeceleration.value + 10);
+                linearDeceleration.ValueUpdate(linearDeceleration.value + 50);
             }
+            if (Input.GetKey(KeyCode.X))
+                linearDeceleration.ValueUpdate(linearDeceleration.value  + Time.deltaTime * 10);
+            if (Input.GetKey(KeyCode.C))
+                linearDeceleration.ValueUpdate(30);
 #endif
         }
 

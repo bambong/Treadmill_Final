@@ -24,7 +24,8 @@ namespace ZB
         [SerializeField] float rightRpm;
         [SerializeField] Vector3 resetPos;
 
-        [SerializeField] bool checking;
+        [SerializeField] bool hpChecking;
+        [SerializeField] bool moveChecking;
         [SerializeField] List<ParticleSystem> wheelEffects;
 
         [Space]
@@ -104,9 +105,9 @@ namespace ZB
         {
             Managers.Token.Save_right_speed += 500;
         }
-        public void CheckActive(bool active)
+        public void HpCheckActive(bool active)
         {
-            checking = active;
+            hpChecking = active;
             if (!active)
             {
                 if (minSpeedMinusHpCycle_C != null)
@@ -114,6 +115,11 @@ namespace ZB
                 minSpeedMinusHpCounting = false;
             }
         }
+        public void MoveCheckActive(bool active)
+        {
+            moveChecking = active;
+        }
+
         public void EnableWheelEffect(bool acitve) 
         {
             for(int i = 0; i < wheelEffects.Count; ++i) 
@@ -210,7 +216,7 @@ namespace ZB
                 objectScroll.ScrollSpeedChange(linearDeceleration.value);
             }
 
-            if (checking)
+            if (hpChecking)
             {
                 if (Managers.Token.CurSpeedMeterPerSec < appearSpeed &&
                     !par_slowAlarm.isPlaying)
@@ -252,7 +258,7 @@ namespace ZB
 
         void SideMove()
         {
-            if (checking)
+            if (moveChecking)
             {
                 if (Mathf.Abs(leftRpm - token.Save_left_speed) > processTime || Mathf.Abs(rightRpm - token.Save_right_speed) > processTime)
                 {
