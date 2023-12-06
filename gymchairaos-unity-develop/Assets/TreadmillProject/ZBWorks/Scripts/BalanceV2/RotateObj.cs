@@ -21,21 +21,21 @@ namespace ZB.Balance2
        
         public bool IsRotatingRollPlus(float value)
         {
-            return (Mathf.Abs(value - rotationTarget.eulerAngles.x) < 0.1f);
+            return (Mathf.Abs(value - rotationTarget.eulerAngles.x) < 1f);
         }
         public bool IsRotatingRollMinus(float value)
         {
             value = 360 + value;
-            return (Mathf.Abs(value - rotationTarget.eulerAngles.x) < 0.1f);
+            return (Mathf.Abs(value - rotationTarget.eulerAngles.x) < 1f);
         }
         public bool IsRotatingPitchPlus(float value)
         {
-            return (Mathf.Abs(value - rotationTarget.eulerAngles.z) < 0.1f);
+            return (Mathf.Abs(value - rotationTarget.eulerAngles.z) < 1f);
         }
         public bool IsRotatingPitchMinus(float value)
         {
             value = 360 + value;
-            return (Mathf.Abs(value - rotationTarget.eulerAngles.z) < 0.1f);
+            return (Mathf.Abs(value - rotationTarget.eulerAngles.z) < 1f);
         }
 
         /// <summary>

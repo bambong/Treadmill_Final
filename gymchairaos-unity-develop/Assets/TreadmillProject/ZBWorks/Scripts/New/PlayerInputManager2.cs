@@ -260,10 +260,10 @@ namespace ZB
         {
             if (moveChecking)
             {
-                if (Mathf.Abs(leftRpm - token.Save_left_speed) > processTime || Mathf.Abs(rightRpm - token.Save_right_speed) > processTime)
-                {
-                    return;
-                }
+                //if (Mathf.Abs(leftRpm - token.Save_left_speed) > processTime || Mathf.Abs(rightRpm - token.Save_right_speed) > processTime)
+                //{
+                //    return;
+                //}
 
                 if (token.Save_left_speed < -1990 || token.Save_right_speed < -1990) 
                 {

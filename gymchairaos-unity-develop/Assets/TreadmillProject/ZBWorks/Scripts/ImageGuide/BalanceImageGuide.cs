@@ -7,6 +7,7 @@ public class BalanceImageGuide : MonoBehaviour
     [SerializeField] private ZB.Balance2.RotateObj rotateObj;
     [SerializeField] private ImageGuide imageGuide;
     [SerializeField] private ZB.Balance2.StageManager stageManager;
+    [SerializeField] private GameObject clearArea;
 
     private void Awake()
     {
@@ -16,7 +17,14 @@ public class BalanceImageGuide : MonoBehaviour
         imageGuide.AddCondition(3, ()=>rotateObj.IsRotatingRollPlus(20));
 
         imageGuide.AddGuideEndAction(stageManager.GameStart);
+        imageGuide.AddGuideEndAction(()=>StartCoroutine(DelayNClearAreaActive()));
 
         imageGuide.InitNStart();
+    }
+
+    IEnumerator DelayNClearAreaActive()
+    {
+        yield return new WaitForSeconds(1);
+        clearArea.SetActive(true);
     }
 }

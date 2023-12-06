@@ -79,6 +79,7 @@ namespace ZB
             StartCoroutine(BloothConnectWait());
             BaseTokenCallback();
             gameStartProduction.AddProductionEndEvent(GameStart);
+            gameStartProduction.AddProductionEndEvent(StartTokenCallback);
             tutorial.AddEvent_GameStart(ProductionStart);
 
             scroll.ScrollStart();
@@ -110,11 +111,14 @@ namespace ZB
         }
         private void BaseTokenCallback()
         {
+            //속도 측정 콜백 추가
+            Managers.Token.ReceivedEvent += SpeedTextUpdate;
+        }
+        private void StartTokenCallback()
+        {
             //거리 측정 콜백 추가
             Managers.Token.ReceivedEvent += moveDist.MoveDistUpdate;
             Managers.Token.ReceivedEvent += DistanceTextUpdate;
-            //속도 측정 콜백 추가
-            Managers.Token.ReceivedEvent += SpeedTextUpdate;
         }
 
         private void TutorialCheckAndStart()

@@ -16,7 +16,7 @@ namespace ZB
         public void UpdateText(float value, string text)
         {
             nowRecord = value;
-            tmp.text = text;
+            tmp.text = $"{text} M";
         }
     }
 }
